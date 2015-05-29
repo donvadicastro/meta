@@ -32,3 +32,22 @@ Containers are the repository for other simple controls or other containers. Usi
 
 ### Forms ###
 Form is a logical container to be used to aggreate all form-specific controls and create relations between them and create API to work with this logical container (validation, action executing etc)
+
+### Component UI properties ###
+Each component supports UI specific properties to be used by renderer to draw control as expected. Examples of UI specific properties are:
+- label - form field label as short control puprose description
+- placeholder - value to be showed in empty controls, like 'enter name...' or 'select...'
+- tooltip - control tooltip
+- layout - label & editor placement variety
+
+### Component Validation properties ###
+Data bounded components should pass validation check before action executing to ensure data validity. Field validation can be described using validation attributes:
+- required
+- min
+- max
+- custom validator
+
+### Component Action properties ###
+Components also should allow describe reactions to field specific actions, e.g. click on button or change on input field. Actions can be described using attributes:
+- action - action name to be executed when field action occurs
+- confirmarion - confirmation message to be showed before action executing. User should allow or decline executing
