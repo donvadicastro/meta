@@ -49,7 +49,7 @@ Data bounded components should pass validation check before action executing to 
 
 ### Component Action properties ###
 Components also should allow describe reactions to field specific actions, e.g. click on button or change on input field. Actions can be described using attributes:
-- action - action name to be executed when field action occurs
+- name - action name to be executed when field action occurs
 - confirmarion - confirmation message to be showed before action executing. User should allow or decline executing
 
 ### Component Filtration properties ###
@@ -57,3 +57,40 @@ Dictionary based components should support filtration and filtration process sho
 - by - the field to be used to check with
 - comparator - comparision fucntion to be used to compare values
 - val - value to be used as second comparator operand. This can be static value or refernce to data in data model to check with
+
+### Example component declaration ###
+
+simple text component
+```javascript
+{
+  binding: 'country.name',
+  ui: { label: 'Contry name' }
+}
+```
+
+simple number component
+```javascript
+{
+  binding: 'address.num',
+  type: 'number',
+  ui: { label: 'Address number' }
+}
+```
+
+container
+```javascript
+{
+  children: [
+    { binding: 'country.name' },
+    { binding: 'country.code' }
+  ]
+}
+```
+
+action
+```javascript
+{
+  action: {name: 'save'},
+  ui: { label: 'Save' }
+}
+```
