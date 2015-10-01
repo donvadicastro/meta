@@ -58,6 +58,9 @@ Dictionary based components should support filtration and filtration process sho
 - comparator - comparision fucntion to be used to compare values
 - val - value to be used as second comparator operand. This can be static value or refernce to data in data model to check with
 
+### Component Dynamic properties ###
+Each element should support dynamic property changing based on data model state changes.
+
 ### Component declaration example ###
 
 simple text component
