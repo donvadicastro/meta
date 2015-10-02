@@ -7,4 +7,4 @@ Meta - is a way to describe form tree abstractively without any implementation o
 - we want to live is REST word so JSON/XML data formats is more preffered to our needs
 - we do not want limitation is using just HTML markup on our devices
 
-Detailed architecture description can be found on [wiki](wiki).
+Detailed architecture description can be found on [wiki](../../wiki).
