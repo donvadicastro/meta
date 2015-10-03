@@ -3,7 +3,7 @@ module MetaApp.Models.Components {
 		private name: string;
 		private type: string = 'field';
 		
-		constructor(options: any) {
+		constructor(meta: any) {
 			
 		}
 		
