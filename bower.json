@@ -1,0 +1,22 @@
+{
+  "name": "meta",
+  "version": "1.0.0",
+  "homepage": "https://github.com/donvadicastro/meta",
+  "authors": [
+    "Vadym Barylo <vadim.barilo@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "~1.2.3"
+  }
+}

@@ -1,4 +1,4 @@
-///<reference path='../../../contracts/IMetaBaseComponent.ts'/>
+///<reference path='../../../../contracts/IMetaBaseComponent.ts'/>
 var MetaApp;
 (function (MetaApp) {
     var Models;
@@ -11,6 +11,7 @@ var MetaApp;
             var ElementBase = (function () {
                 function ElementBase(meta) {
                     this.type = 'field';
+                    this.name = meta.name;
                 }
                 ElementBase.prototype.validate = function () {
                     return true;

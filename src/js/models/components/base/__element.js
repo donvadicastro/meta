@@ -11,6 +11,7 @@ var MetaApp;
             var ElementBase = (function () {
                 function ElementBase(meta) {
                     this.type = 'field';
+                    this.name = meta.name;
                 }
                 ElementBase.prototype.validate = function () {
                     return true;
@@ -22,4 +23,4 @@ var MetaApp;
     })(Models = MetaApp.Models || (MetaApp.Models = {}));
 })(MetaApp || (MetaApp = {}));
 
-//# sourceMappingURL=element.js.map
+//# sourceMappingURL=__element.js.map

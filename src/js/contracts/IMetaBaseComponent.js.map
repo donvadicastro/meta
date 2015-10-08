@@ -1,0 +1,1 @@
+{"version":3,"sources":["contracts/IMetaBaseComponent.ts"],"names":[],"mappings":"AAIC","file":"contracts/IMetaBaseComponent.js","sourcesContent":["module MetaApp.Contracts {\r\n\texport interface IMetaBaseComponent {\r\n\t\tname: string;\r\n\t}\r\n}"],"sourceRoot":"/source/"}
