@@ -1,11 +1,13 @@
 ///<reference path='../../../Contracts/IMetaDataComponent.ts'/>
-///<reference path='base/element.ts'/>
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+///<reference path='../../../extensions/converters/date.ts'/>
+///<reference path='../../../extensions/converters/number.ts'/>
+///<reference path='base/element.ts'/>
 var MetaApp;
 (function (MetaApp) {
     var Models;
@@ -21,7 +23,9 @@ var MetaApp;
                 function DataBase(meta, options) {
                     _super.call(this, meta, options);
                     this.binding = meta.binding;
+                    this.type = meta.type;
                     this.bind();
+                    (meta.value === undefined) || this.setValue(meta.value);
                 }
                 DataBase.prototype.setValue = function (value) {
                     this.value = value;
@@ -41,8 +45,9 @@ var MetaApp;
                     this.form && this.form.eventManager.off('data:' + this.binding, this.onDataChange, this);
                 };
                 DataBase.prototype.onDataChange = function (value) {
-                    if (value !== this.value)
-                        this.value = value;
+                    var type = this.type && this.type.charAt(0).toUpperCase() + this.type.slice(1), converter = type && MetaApp.Extensions.Converters[type + 'Converter'], newValue = converter ? converter.getInstance().parse(value) : value;
+                    if (newValue !== this.value)
+                        this.value = newValue;
                 };
                 return DataBase;
             })(Components.ElementBase);

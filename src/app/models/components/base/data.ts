@@ -1,4 +1,8 @@
 ///<reference path='../../../Contracts/IMetaDataComponent.ts'/>
+
+///<reference path='../../../extensions/converters/date.ts'/>
+///<reference path='../../../extensions/converters/number.ts'/>
+
 ///<reference path='base/element.ts'/>
 
 module MetaApp.Models.Components {
@@ -9,12 +13,16 @@ module MetaApp.Models.Components {
     export class DataBase extends ElementBase implements Contracts.IMetaDataComponent {
         binding: string;
         value: any;
+        type: string;
 
         constructor(meta: Contracts.IMetaDataComponent, options: any) {
             super(meta, options);
 
             this.binding = meta.binding;
+            this.type = meta.type;
+
             this.bind();
+            (meta.value === undefined) || this.setValue(meta.value);
         }
 
         public setValue(value: any) {
@@ -41,8 +49,12 @@ module MetaApp.Models.Components {
         }
 
         private onDataChange(value) {
-            if(value !== this.value)
-                this.value = value;
+            var type = this.type && this.type.charAt(0).toUpperCase() + this.type.slice(1),
+                converter = type && MetaApp.Extensions.Converters[type + 'Converter'],
+                newValue = converter ? converter.getInstance().parse(value) : value;
+
+            if(newValue !== this.value)
+                this.value = newValue;
         }
     }
 }
