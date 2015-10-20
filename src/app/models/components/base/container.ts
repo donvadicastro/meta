@@ -1,3 +1,4 @@
+///<reference path='../../../Enums/MetaComponentType.ts'/>
 ///<reference path='../../../Contracts/IMetaBaseComponent.ts'/>
 ///<reference path='../../../Contracts/IMetaContainerComponent.ts'/>
 ///<reference path='base/element.ts'/>
@@ -17,7 +18,13 @@ module MetaApp.Models.Components {
 
 			//parse all childs and instantiate child list
 			for(var i=0, len=(meta.items || []).length, e; i<len; i++) {
-				this.items.push(new (this.getComponentConstructor(meta.items[i]))(meta.items[i], {parent: this, form: this.form}));
+				e = meta.items[i];
+
+				if(_.isString(e.type)) {
+					e.type = Enums.MetaComponentType[e.type.charAt(0).toUpperCase() + e.type.slice(1).toLowerCase()];
+				}
+
+				this.items.push(new (this.getComponentConstructor(e))(e, {parent: this, form: this._form}));
 			}
 		}
 
@@ -33,19 +40,19 @@ module MetaApp.Models.Components {
 
 		//#region "Container CRUD"
 		public add(component: ElementBase, position?: number) {
-			component.parent = this;
+			component._parent = this;
 			this.items.splice(position >= 0 ? position : -1, 0, component);
 		}
 
 		public remove(component: ElementBase, destroy?: boolean) {
-			delete component.parent;
+			delete component._parent;
 
 			this.items.splice(this.items.indexOf(component), 1);
 			destroy && component.destroy();
 		}
 
 		public move(component: ElementBase) {
-			component.parent.remove(component);
+			component._parent.remove(component);
 			this.add(component);
 		}
 		//#endregion
