@@ -3,6 +3,7 @@
 ///<reference path='../../../Contracts/IMetaContainerComponent.ts'/>
 ///<reference path='base/element.ts'/>
 ///<reference path='data.ts'/>
+///<reference path='dictionary.ts'/>
 
 module MetaApp.Models.Components {
 	/**
@@ -33,6 +34,7 @@ module MetaApp.Models.Components {
 		}
 
 		private getComponentConstructor(meta: any) {
+			if(meta.dictionary) { return DictionaryBase; }
 			if(meta.binding) { return DataBase; }
 
 			return ElementBase;
