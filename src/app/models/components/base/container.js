@@ -24,7 +24,9 @@ var MetaApp;
                     _super.call(this, meta, options);
                     this.items = [];
                     for (var i = 0, len = (meta.items || []).length, e; i < len; i++) {
-                        this.items.push(new (this.getComponentConstructor(meta.items[i]))(meta.items[i], { parent: this, form: this.form }));
+                        e = new (this.getComponentConstructor(meta.items[i]))(meta.items[i], { parent: this, form: this.form });
+                        this.items.push(e);
+                        this.form && (this.form.componentByName[e.name] = e);
                     }
                 }
                 ContainerBase.prototype.destroy = function () {

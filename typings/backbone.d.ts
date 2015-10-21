@@ -310,7 +310,7 @@ declare module Backbone {
 
     interface ViewOptions<TModel extends Model> {
         model?: TModel;
-        // TODO: quickfix, this can't be fixed easy. The collection does not need to have the same model as the parent view.
+        // TODO: quickfix, this can't be fixed easy. The collection does not need to have the same model as the _parent view.
         collection?: Backbone.Collection<any>;
         el?: any;
         id?: string;

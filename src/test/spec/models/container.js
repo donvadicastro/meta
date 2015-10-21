@@ -9,9 +9,9 @@ describe('Models: Container', function () {
         expect('child2').toBe(element.items[1].name);
     });
 
-    it('parent-child relations should be stored', function () {
+    it('_parent-child relations should be stored', function () {
         var element = new MetaApp.Models.Components.ContainerBase({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]});
-        expect(element).toBe(element.items[0].parent);
+        expect(element).toBe(element.items[0]._parent);
     });
 
     it('should support adding item', function () {
@@ -21,30 +21,30 @@ describe('Models: Container', function () {
         element.add(child);
 
         expect(child).toBe(element.items[0]);
-        expect(element).toBe(child.parent);
+        expect(element).toBe(child._parent);
     });
 
     it('should support deleting item', function () {
         var element = new MetaApp.Models.Components.ContainerBase({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]}),
             child = element.items[0];
 
-        expect(element).toBe(child.parent);
+        expect(element).toBe(child._parent);
         element.remove(element.items[0]);
 
         expect(1).toBe(element.items.length);
-        expect(child.parent).toBeUndefined();
+        expect(child._parent).toBeUndefined();
     });
 
     it('should support move element', function () {
         var element1 = new MetaApp.Models.Components.ContainerBase({name: 'testContainerComponent1', items: [{name: 'child1', binding: 'b1'}]}),
             element2 = new MetaApp.Models.Components.ContainerBase({name: 'testContainerComponent2', items: [{name: 'child2', binding: 'b2'}]});
 
-        expect(element1).toBe(element1.items[0].parent);
+        expect(element1).toBe(element1.items[0]._parent);
         element2.move(element1.items[0]);
 
         expect(0).toBe(element1.items.length);
         expect(2).toBe(element2.items.length);
-        expect(element2).toBe(element2.items[0].parent);
-        expect(element2).toBe(element2.items[1].parent);
+        expect(element2).toBe(element2.items[0]._parent);
+        expect(element2).toBe(element2.items[1]._parent);
     });
 });

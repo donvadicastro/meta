@@ -15,10 +15,14 @@ module MetaApp.Models.Components {
     export class DataBase extends ElementBase implements Contracts.IMetaDataComponent {
         binding: string;
         value: any;
+<<<<<<< HEAD
         type: string;
         validation: any;
 
         private validators: Array<any> = [];
+=======
+        type: Enums.MetaComponentType;
+>>>>>>> 5ac5ad719ad8bf9e933b5f8f701c421ed7aa4346
 
         constructor(meta: Contracts.IMetaDataComponent, options: any) {
             super(meta, options);
@@ -36,8 +40,8 @@ module MetaApp.Models.Components {
         public setValue(value: any) {
             this.value = value;
 
-            this.form && this.form.eventManager.trigger('data:' + this.binding, value);
-            this.form && this.form.eventManager.trigger('data:*', this.binding, value);
+            this._form && this._form.eventManager.trigger('data:' + this.binding, value);
+            this._form && this._form.eventManager.trigger('data:*', this.binding, value);
         }
 
         public getValue() {
@@ -56,16 +60,16 @@ module MetaApp.Models.Components {
         }
 
         private bind() {
-            this.form && this.form.eventManager.on('data:' + this.binding, this.onDataChange, this);
+            this._form && this._form.eventManager.on('data:' + this.binding, this.onDataChange, this);
         }
 
         private unbind() {
-            this.form && this.form.eventManager.off('data:' + this.binding, this.onDataChange, this);
+            this._form && this._form.eventManager.off('data:' + this.binding, this.onDataChange, this);
         }
 
         private onDataChange(value) {
-            var type = this.type && this.type.charAt(0).toUpperCase() + this.type.slice(1),
-                converter = type && MetaApp.Extensions.Converters[type + 'Converter'],
+            var type = this.type,
+                converter = type && MetaApp.Extensions.Converters[Enums.MetaComponentType[type] + 'Converter'],
                 newValue = converter ? converter.getInstance().parse(value) : value;
 
             if(newValue !== this.value)

@@ -22,11 +22,15 @@ var MetaApp;
                     this.eventManager = new MetaApp.Managers.EventManager();
                     this.data = {};
                     this.dataByBinding = {};
+                    this.componentByName = {};
                     _super.call(this, meta, { form: this });
                     this.eventManager.on('data:*', this.onDataChange, this);
                 }
                 Form.prototype.validate = function () {
-                    return true;
+                    for (var name in this.componentByName) {
+                        this.componentByName[name].validate();
+                    }
+                    return { success: true, message: undefined };
                 };
                 Form.prototype.destroy = function () {
                 };

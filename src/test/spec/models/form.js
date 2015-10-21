@@ -7,7 +7,7 @@ beforeEach(function() {
 });
 
 describe('Models: Form', function () {
-    it('should create form component correct', function () {
+    it('should create _form component correct', function () {
         var element = new MetaApp.Models.Components.Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]});
 
         expect('testContainerComponent').toBe(element.name);
@@ -17,9 +17,9 @@ describe('Models: Form', function () {
         expect('child2').toBe(element.items[1].name);
     });
 
-    it('should save form reference child level', function () {
+    it('should save _form reference child level', function () {
         var element = new MetaApp.Models.Components.Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]});
-        expect(element).toBe(element.items[0].form);
+        expect(element).toBe(element.items[0]._form);
     });
 
     it('should create data model correct', function () {

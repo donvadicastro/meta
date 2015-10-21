@@ -1,7 +1,9 @@
+///<reference path='../../../Enums/MetaComponentType.ts'/>
 ///<reference path='../../../Contracts/IMetaBaseComponent.ts'/>
 ///<reference path='../../../Contracts/IMetaContainerComponent.ts'/>
 ///<reference path='base/element.ts'/>
 ///<reference path='data.ts'/>
+///<reference path='dictionary.ts'/>
 
 module MetaApp.Models.Components {
 	/**
@@ -17,10 +19,20 @@ module MetaApp.Models.Components {
 
 			//parse all childs and instantiate child list
 			for(var i=0, len=(meta.items || []).length, e; i<len; i++) {
+<<<<<<< HEAD
 				e = new (this.getComponentConstructor(meta.items[i]))(meta.items[i], {parent: this, form: this.form});
 
 				this.items.push(e);
 				this.form && (this.form.componentByName[e.name] = e);
+=======
+				e = meta.items[i];
+
+				if(_.isString(e.type)) {
+					e.type = Enums.MetaComponentType[e.type.charAt(0).toUpperCase() + e.type.slice(1).toLowerCase()];
+				}
+
+				this.items.push(new (this.getComponentConstructor(e))(e, {parent: this, form: this._form}));
+>>>>>>> 5ac5ad719ad8bf9e933b5f8f701c421ed7aa4346
 			}
 		}
 
@@ -29,6 +41,7 @@ module MetaApp.Models.Components {
 		}
 
 		private getComponentConstructor(meta: any) {
+			if(meta.dictionary) { return DictionaryBase; }
 			if(meta.binding) { return DataBase; }
 
 			return ElementBase;
@@ -36,19 +49,19 @@ module MetaApp.Models.Components {
 
 		//#region "Container CRUD"
 		public add(component: ElementBase, position?: number) {
-			component.parent = this;
+			component._parent = this;
 			this.items.splice(position >= 0 ? position : -1, 0, component);
 		}
 
 		public remove(component: ElementBase, destroy?: boolean) {
-			delete component.parent;
+			delete component._parent;
 
 			this.items.splice(this.items.indexOf(component), 1);
 			destroy && component.destroy();
 		}
 
 		public move(component: ElementBase) {
-			component.parent.remove(component);
+			component._parent.remove(component);
 			this.add(component);
 		}
 		//#endregion

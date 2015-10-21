@@ -1195,11 +1195,11 @@ interface JQuery {
     load(url: string, data?: string|Object, complete?: (responseText: string, textStatus: string, XMLHttpRequest: XMLHttpRequest) => any): JQuery;
 
     /**
-     * Encode a set of form elements as a string for submission.
+     * Encode a set of _form elements as a string for submission.
      */
     serialize(): string;
     /**
-     * Encode a set of form elements as an array of names and values.
+     * Encode a set of _form elements as an array of names and values.
      */
     serializeArray(): JQuerySerializeArrayElement[];
 
@@ -1484,7 +1484,7 @@ interface JQuery {
     outerWidth(width: number|string): JQuery;
 
     /**
-     * Get the current coordinates of the first element in the set of matched elements, relative to the offset parent.
+     * Get the current coordinates of the first element in the set of matched elements, relative to the offset _parent.
      */
     position(): JQueryCoordinates;
 
@@ -3048,7 +3048,7 @@ interface JQuery {
     offsetParent(): JQuery;
 
     /**
-     * Get the parent of each element in the current set of matched elements, optionally filtered by a selector.
+     * Get the _parent of each element in the current set of matched elements, optionally filtered by a selector.
      * 
      * @param selector A string containing a selector expression to match elements against.
      */

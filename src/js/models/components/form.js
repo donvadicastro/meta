@@ -17,14 +17,43 @@ var MetaApp;
              */
             var Form = (function (_super) {
                 __extends(Form, _super);
-                function Form(meta) {
-                    _super.call(this, meta);
+                function Form(meta, options) {
                     this.eventManager = new MetaApp.Managers.EventManager();
+                    this.data = {};
+                    this.dataByBinding = {};
+                    this.componentByName = {};
+                    _super.call(this, meta, { form: this });
+                    this.eventManager.on('data:*', this.onDataChange, this);
                 }
                 Form.prototype.validate = function () {
-                    return true;
+                    var result = true;
+                    for (var name in this.componentByName) {
+                        result = result && this.componentByName[name].validate();
+                    }
+                    return result;
                 };
                 Form.prototype.destroy = function () {
+                };
+                Form.prototype.onDataChange = function (binding, value) {
+                    this.dataByBinding[binding] = value;
+                    this.setByPath(binding, value);
+                };
+                Form.prototype.setByPath = function (binding, value) {
+                    var bindingParts = binding.split('.'), data = this.data;
+                    for (var i = 0, len = bindingParts.length - 1, b; i < len; i++) {
+                        b = bindingParts[i];
+                        data[b] || (data[b] = {});
+                        data = data[b];
+                    }
+                    data[bindingParts[bindingParts.length - 1]] = value;
+                };
+                Form.prototype.getByPath = function (binding) {
+                    var bindingParts = binding.split('.'), data = this.data;
+                    for (var i = 0, len = bindingParts.length, b; i < len; i++) {
+                        b = bindingParts[i];
+                        data && data[b] && (data = data[b]);
+                    }
+                    return data;
                 };
                 return Form;
             })(Components.ContainerBase);

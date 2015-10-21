@@ -11,18 +11,18 @@ module MetaApp.Models.Components {
 	export class ElementBase {
 		//element metadata properties
 		name: string;
-		type: string = 'field';
+		type: Enums.MetaComponentType;
 
-		//parent and form relations
-		parent: ContainerBase;
-		form: Form;
+		//_parent and _form relations
+		_parent: ContainerBase;
+		_form: Form;
 
 		constructor(meta: Contracts.IMetaBaseComponent, options: any) {
 			options || (options = {});
 
 			this.name = meta.name;
-			this.parent = options.parent;
-			this.form = options.form;
+			this._parent = options.parent;
+			this._form = options.form;
 		}
 
 		public validate(): Contracts.IValidationResult {

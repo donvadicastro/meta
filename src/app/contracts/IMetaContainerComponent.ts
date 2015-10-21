@@ -3,5 +3,6 @@
 module MetaApp.Contracts {
 	export interface IMetaContainerComponent extends IMetaBaseComponent {
 		items: Array<IMetaBaseComponent>;
+		dictionaries?: Object;
 	}
 }

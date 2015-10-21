@@ -420,7 +420,7 @@ declare module angular {
         [name: string]: any;
 
         /**
-         * Converts an attribute name (e.g. dash/colon/underscore-delimited string, optionally prefixed with x- or data-) to its normalized, camelCase form.
+         * Converts an attribute name (e.g. dash/colon/underscore-delimited string, optionally prefixed with x- or data-) to its normalized, camelCase _form.
          * 
          * Also there is special case for Moz prefix starting with upper case letter.
          * 
@@ -463,8 +463,8 @@ declare module angular {
     }
 
     /**
-     * form.FormController - type in module ng
-     * see https://docs.angularjs.org/api/ng/type/form.FormController
+     * _form.FormController - type in module ng
+     * see https://docs.angularjs.org/api/ng/type/_form.FormController
      */
     interface IFormController {
 

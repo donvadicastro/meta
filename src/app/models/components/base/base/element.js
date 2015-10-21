@@ -1,4 +1,5 @@
 ///<reference path='../../../../contracts/IMetaBaseComponent.ts'/>
+///<reference path='../../../../contracts/IValidationResult.ts'/>
 ///<reference path='../container.ts'/>
 ///<reference path='../../form.ts'/>
 var MetaApp;
@@ -19,7 +20,7 @@ var MetaApp;
                     this.form = options.form;
                 }
                 ElementBase.prototype.validate = function () {
-                    return true;
+                    return { success: true, message: undefined };
                 };
                 ElementBase.prototype.destroy = function () {
                 };

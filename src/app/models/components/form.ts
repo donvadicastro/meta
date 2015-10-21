@@ -11,7 +11,11 @@ module MetaApp.Models.Components {
 
         data: any;
         dataByBinding: any;
+<<<<<<< HEAD
         componentByName: any;
+=======
+        dictionaries: Object;
+>>>>>>> 5ac5ad719ad8bf9e933b5f8f701c421ed7aa4346
 
         constructor(meta: Contracts.IMetaContainerComponent, options: any) {
             this.eventManager = new Managers.EventManager();
@@ -22,6 +26,8 @@ module MetaApp.Models.Components {
 
             super(meta, {form: this});
             this.eventManager.on('data:*', this.onDataChange, this);
+
+            this.dictionaries = meta.dictionaries;
         }
 
         public validate(): Contracts.IValidationResult {
