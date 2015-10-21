@@ -1,4 +1,6 @@
 ///<reference path='../../../../contracts/IMetaBaseComponent.ts'/>
+///<reference path='../../../../contracts/IValidationResult.ts'/>
+
 ///<reference path='../container.ts'/>
 ///<reference path='../../form.ts'/>
 
@@ -23,8 +25,8 @@ module MetaApp.Models.Components {
 			this.form = options.form;
 		}
 
-		public validate(): boolean {
-			return true;
+		public validate(): Contracts.IValidationResult {
+			return {success: true, message: undefined};
 		}
 
 		public destroy(): void {

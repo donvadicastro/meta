@@ -11,19 +11,25 @@ module MetaApp.Models.Components {
 
         data: any;
         dataByBinding: any;
+        componentByName: any;
 
         constructor(meta: Contracts.IMetaContainerComponent, options: any) {
             this.eventManager = new Managers.EventManager();
 
             this.data = {};
             this.dataByBinding = {};
+            this.componentByName = {};
 
             super(meta, {form: this});
             this.eventManager.on('data:*', this.onDataChange, this);
         }
 
-        public validate(): boolean {
-            return true;
+        public validate(): Contracts.IValidationResult {
+            for(var name in this.componentByName) {
+                this.componentByName[name].validate();
+            }
+
+            return {success: true, message: undefined};
         }
 
         public destroy() {

@@ -5,5 +5,7 @@ module MetaApp.Contracts {
 		binding: string;
 		value: any;
 		type?: string;
+
+		validation?: any;
 	}
 }

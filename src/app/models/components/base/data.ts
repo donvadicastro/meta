@@ -3,6 +3,8 @@
 ///<reference path='../../../extensions/converters/date.ts'/>
 ///<reference path='../../../extensions/converters/number.ts'/>
 
+///<reference path='../../../validators/requiredValidator.ts'/>
+
 ///<reference path='base/element.ts'/>
 
 module MetaApp.Models.Components {
@@ -14,14 +16,20 @@ module MetaApp.Models.Components {
         binding: string;
         value: any;
         type: string;
+        validation: any;
+
+        private validators: Array<any> = [];
 
         constructor(meta: Contracts.IMetaDataComponent, options: any) {
             super(meta, options);
 
             this.binding = meta.binding;
             this.type = meta.type;
+            this.validation = meta.validation;
 
             this.bind();
+            this.addValidators();
+
             (meta.value === undefined) || this.setValue(meta.value);
         }
 
@@ -40,6 +48,13 @@ module MetaApp.Models.Components {
             this.unbind();
         }
 
+        public validate(): Contracts.IValidationResult {
+            for(var i=0, len=this.validators.length, v; i<len; i++) {
+                v = this.validators[i].validate(this.value);
+                if(!v.success) return v;
+            }
+        }
+
         private bind() {
             this.form && this.form.eventManager.on('data:' + this.binding, this.onDataChange, this);
         }
@@ -55,6 +70,15 @@ module MetaApp.Models.Components {
 
             if(newValue !== this.value)
                 this.value = newValue;
+        }
+
+        private addValidators() {
+            var vRef = {required: Validators.RequiredValidator};
+
+            for(var name in this.validation) {
+                var v = this.validation[name];
+                this.validators.push(vRef[name]);
+            }
         }
     }
 }
