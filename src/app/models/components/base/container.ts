@@ -4,6 +4,7 @@
 ///<reference path='base/element.ts'/>
 ///<reference path='data.ts'/>
 ///<reference path='dictionary.ts'/>
+///<reference path='../../../utils/string.ts'/>
 
 module MetaApp.Models.Components {
 	/**
@@ -19,20 +20,16 @@ module MetaApp.Models.Components {
 
 			//parse all childs and instantiate child list
 			for(var i=0, len=(meta.items || []).length, e; i<len; i++) {
-<<<<<<< HEAD
-				e = new (this.getComponentConstructor(meta.items[i]))(meta.items[i], {parent: this, form: this.form});
-
-				this.items.push(e);
-				this.form && (this.form.componentByName[e.name] = e);
-=======
 				e = meta.items[i];
 
 				if(_.isString(e.type)) {
-					e.type = Enums.MetaComponentType[e.type.charAt(0).toUpperCase() + e.type.slice(1).toLowerCase()];
+					e.type = Enums.MetaComponentType[MetaApp.Utils.String.toUpperCaseFirstLetter(e.type)];
 				}
 
-				this.items.push(new (this.getComponentConstructor(e))(e, {parent: this, form: this._form}));
->>>>>>> 5ac5ad719ad8bf9e933b5f8f701c421ed7aa4346
+				e = new (this.getComponentConstructor(e))(e, {parent: this, form: this._form});
+
+				this.items.push(e);
+				this._form && (this._form._componentByName[e.name] = e);
 			}
 		}
 
@@ -43,6 +40,7 @@ module MetaApp.Models.Components {
 		private getComponentConstructor(meta: any) {
 			if(meta.dictionary) { return DictionaryBase; }
 			if(meta.binding) { return DataBase; }
+			if(meta.items) { return ContainerBase; }
 
 			return ElementBase;
 		}
@@ -63,6 +61,17 @@ module MetaApp.Models.Components {
 		public move(component: ElementBase) {
 			component._parent.remove(component);
 			this.add(component);
+		}
+
+		public validate(): Contracts.IValidationResult {
+			var isValid = true;
+
+			for(var i=0, len=(this.items || []).length, e; i<len; i++) {
+				e = this.items[i];
+				e.validate && !e.validate().isValid && (isValid = false);
+			}
+
+			return {isValid: isValid, message: undefined};
 		}
 		//#endregion
 	}

@@ -47,4 +47,20 @@ describe('Models: Container', function () {
         expect(element2).toBe(element2.items[0]._parent);
         expect(element2).toBe(element2.items[1]._parent);
     });
+
+    it('should support children validation', function () {
+        var element = new MetaApp.Models.Components.ContainerBase({name: 'testContainerComponent1', items: [
+            {name: 'child1', binding: 'b1', validation: {required: true}},
+            {name: 'child2', binding: 'b2', validation: {required: true}},
+            {name: 'child3'}
+        ]});
+
+        expect(element.validate().isValid).toBeFalsy();
+
+        element.items[0].setValue('a');
+        expect(element.validate().isValid).toBeFalsy();
+
+        element.items[1].setValue('a');
+        expect(element.validate().isValid).toBeTruthy();
+    });
 });

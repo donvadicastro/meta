@@ -1,11 +1,14 @@
 ///<reference path='base/baseValidator.ts'/>
+///<reference path='../managers/resourceManager.ts'/>
 
 module MetaApp.Validators {
     export class RequiredValidator extends BaseValidator {
-        public validate(value: any): Contracts.IValidationResult {
+        public validate(): Contracts.IValidationResult {
+            var value = this._element.getValue();
+
             return {
-                success: value !== undefined && value !== null && value !== '',
-                message: 'this field is required'
+                isValid: value !== undefined && value !== null && value !== '',
+                message: MetaApp.Managers.ResourceManager.get('validators.requiredValidator.message')
             };
         }
     }

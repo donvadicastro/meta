@@ -21,22 +21,26 @@ var MetaApp;
                 function Form(meta, options) {
                     this.eventManager = new MetaApp.Managers.EventManager();
                     this.data = {};
-                    this.dataByBinding = {};
-                    this.componentByName = {};
+                    this.invalidElements = {};
+                    this._dataByBinding = {};
+                    this._componentByName = {};
                     _super.call(this, meta, { form: this });
                     this.eventManager.on('data:*', this.onDataChange, this);
+                    this.eventManager.on('valid:*', this.onValid, this);
+                    this.eventManager.on('invalid:*', this.onInvalid, this);
+                    this.dictionaries = meta.dictionaries;
                 }
-                Form.prototype.validate = function () {
-                    for (var name in this.componentByName) {
-                        this.componentByName[name].validate();
-                    }
-                    return { success: true, message: undefined };
-                };
                 Form.prototype.destroy = function () {
                 };
                 Form.prototype.onDataChange = function (binding, value) {
-                    this.dataByBinding[binding] = value;
+                    this._dataByBinding[binding] = value;
                     this.setByPath(binding, value);
+                };
+                Form.prototype.onValid = function (name) {
+                    delete this.invalidElements[name];
+                };
+                Form.prototype.onInvalid = function (name, message) {
+                    this.invalidElements[name] = message;
                 };
                 Form.prototype.setByPath = function (binding, value) {
                     var bindingParts = binding.split('.'), data = this.data;
@@ -46,14 +50,6 @@ var MetaApp;
                         data = data[b];
                     }
                     data[bindingParts[bindingParts.length - 1]] = value;
-                };
-                Form.prototype.getByPath = function (binding) {
-                    var bindingParts = binding.split('.'), data = this.data;
-                    for (var i = 0, len = bindingParts.length, b; i < len; i++) {
-                        b = bindingParts[i];
-                        data && data[b] && (data = data[b]);
-                    }
-                    return data;
                 };
                 return Form;
             })(Components.ContainerBase);

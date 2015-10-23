@@ -1,6 +1,6 @@
 module MetaApp.Contracts {
     export interface IValidationResult {
-        success: boolean;
+        isValid: boolean;
         message: string;
     }
 }

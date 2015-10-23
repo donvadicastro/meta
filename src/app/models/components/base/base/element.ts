@@ -26,7 +26,7 @@ module MetaApp.Models.Components {
 		}
 
 		public validate(): Contracts.IValidationResult {
-			return {success: true, message: undefined};
+			return {isValid: true, message: undefined};
 		}
 
 		public destroy(): void {

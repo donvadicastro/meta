@@ -15,14 +15,10 @@ module MetaApp.Models.Components {
     export class DataBase extends ElementBase implements Contracts.IMetaDataComponent {
         binding: string;
         value: any;
-<<<<<<< HEAD
-        type: string;
+        type: Enums.MetaComponentType;
         validation: any;
 
         private validators: Array<any> = [];
-=======
-        type: Enums.MetaComponentType;
->>>>>>> 5ac5ad719ad8bf9e933b5f8f701c421ed7aa4346
 
         constructor(meta: Contracts.IMetaDataComponent, options: any) {
             super(meta, options);
@@ -50,13 +46,21 @@ module MetaApp.Models.Components {
 
         public destroy() {
             this.unbind();
+            this.validators.length = 0;
         }
 
         public validate(): Contracts.IValidationResult {
+            var valResult: Contracts.IValidationResult = super.validate();;
+
             for(var i=0, len=this.validators.length, v; i<len; i++) {
                 v = this.validators[i].validate(this.value);
-                if(!v.success) return v;
+                if(!v.success) { valResult = v; };
             }
+
+            this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:' : 'invalid:') + this.name, valResult.message);
+            this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:*' : 'invalid:*'), this.name, valResult.message);
+
+            return valResult;
         }
 
         private bind() {
@@ -72,16 +76,18 @@ module MetaApp.Models.Components {
                 converter = type && MetaApp.Extensions.Converters[Enums.MetaComponentType[type] + 'Converter'],
                 newValue = converter ? converter.getInstance().parse(value) : value;
 
-            if(newValue !== this.value)
+            if(newValue !== this.value) {
                 this.value = newValue;
+                this.validate();
+            }
         }
 
         private addValidators() {
-            var vRef = {required: Validators.RequiredValidator};
-
             for(var name in this.validation) {
-                var v = this.validation[name];
-                this.validators.push(vRef[name]);
+                var v = this.validation[name],
+                    vRef = Validators[MetaApp.Utils.String.toUpperCaseFirstLetter(name) + 'Validator'];
+
+                this.validators.push(new vRef(this));
             }
         }
     }
