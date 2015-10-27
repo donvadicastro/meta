@@ -29,7 +29,7 @@ module MetaApp.Models.Components {
 				e = new (this.getComponentConstructor(e))(e, {parent: this, form: this._form});
 
 				this.items.push(e);
-				this._form && (this._form._componentByName[e.name] = e);
+				this._form && this._form.registerComponent(e);
 			}
 		}
 

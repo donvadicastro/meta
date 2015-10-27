@@ -33,38 +33,47 @@ var MetaApp;
                 }
                 DataBase.prototype.setValue = function (value) {
                     this.value = value;
-                    this.form && this.form.eventManager.trigger('data:' + this.binding, value);
-                    this.form && this.form.eventManager.trigger('data:*', this.binding, value);
+                    this._form && this._form.eventManager.trigger('data:' + this.binding, value);
+                    this._form && this._form.eventManager.trigger('data:*', this.binding, value);
                 };
                 DataBase.prototype.getValue = function () {
                     return this.value;
                 };
                 DataBase.prototype.destroy = function () {
                     this.unbind();
+                    this.validators.length = 0;
                 };
                 DataBase.prototype.validate = function () {
+                    var valResult = _super.prototype.validate.call(this);
+                    ;
                     for (var i = 0, len = this.validators.length, v; i < len; i++) {
                         v = this.validators[i].validate(this.value);
-                        if (!v.success)
-                            return v;
+                        if (!v.success) {
+                            valResult = v;
+                        }
+                        ;
                     }
+                    this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:' : 'invalid:') + this.name, valResult.message);
+                    this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:*' : 'invalid:*'), this.name, valResult.message);
+                    return valResult;
                 };
                 DataBase.prototype.bind = function () {
-                    this.form && this.form.eventManager.on('data:' + this.binding, this.onDataChange, this);
+                    this._form && this._form.eventManager.on('data:' + this.binding, this.onDataChange, this);
                 };
                 DataBase.prototype.unbind = function () {
-                    this.form && this.form.eventManager.off('data:' + this.binding, this.onDataChange, this);
+                    this._form && this._form.eventManager.off('data:' + this.binding, this.onDataChange, this);
                 };
                 DataBase.prototype.onDataChange = function (value) {
-                    var type = this.type && this.type.charAt(0).toUpperCase() + this.type.slice(1), converter = type && MetaApp.Extensions.Converters[type + 'Converter'], newValue = converter ? converter.getInstance().parse(value) : value;
-                    if (newValue !== this.value)
+                    var type = this.type, converter = type && MetaApp.Extensions.Converters[MetaApp.Enums.MetaComponentType[type] + 'Converter'], newValue = converter ? converter.getInstance().parse(value) : value;
+                    if (newValue !== this.value) {
                         this.value = newValue;
+                        this.validate();
+                    }
                 };
                 DataBase.prototype.addValidators = function () {
-                    var vRef = { required: MetaApp.Validators.RequiredValidator };
                     for (var name in this.validation) {
-                        var v = this.validation[name];
-                        this.validators.push(vRef[name]);
+                        var v = this.validation[name], vRef = MetaApp.Validators[MetaApp.Utils.String.toUpperCaseFirstLetter(name) + 'Validator'];
+                        this.validators.push(new vRef(this));
                     }
                 };
                 return DataBase;

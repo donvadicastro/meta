@@ -30,6 +30,9 @@ var MetaApp;
                     this.eventManager.on('invalid:*', this.onInvalid, this);
                     this.dictionaries = meta.dictionaries;
                 }
+                Form.prototype.registerComponent = function (element) {
+                    this._form._componentByName[element.name] = element;
+                };
                 Form.prototype.destroy = function () {
                 };
                 Form.prototype.onDataChange = function (binding, value) {

@@ -13,14 +13,13 @@ var MetaApp;
              */
             var ElementBase = (function () {
                 function ElementBase(meta, options) {
-                    this.type = 'field';
                     options || (options = {});
                     this.name = meta.name;
-                    this.parent = options.parent;
-                    this.form = options.form;
+                    this._parent = options.parent;
+                    this._form = options.form;
                 }
                 ElementBase.prototype.validate = function () {
-                    return { success: true, message: undefined };
+                    return { isValid: true, message: undefined };
                 };
                 ElementBase.prototype.destroy = function () {
                 };
