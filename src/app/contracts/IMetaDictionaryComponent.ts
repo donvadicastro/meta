@@ -5,8 +5,18 @@
 module MetaApp.Contracts {
     import DictionaryModel = MetaApp.Models.DictionaryModel;
 
+    /**
+     * Base meta dictionary component contract declaration. Inherits from IMetaDataComponent
+     */
     export interface IMetaDictionaryComponent extends IMetaDataComponent {
+        /**
+         * Component dictionary reference
+         */
         dictionary: string;
+
+        /**
+         * Component filters
+         */
         filters?: Array<any>;
     }
 }

@@ -3,7 +3,14 @@ var MetaApp;
 (function (MetaApp) {
     var Managers;
     (function (Managers) {
+        /**
+         * Global event mediator class implementation. Used to receive and send event across application.
+         * Components can subscribe to app events through this mediator as well as send events through mediator.
+         */
         var EventManager = (function () {
+            /**
+             * Constructor
+             */
             function EventManager() {
                 //CUSTOM EVENT CONSTANTS
                 this.INIT = "APP_INIT";

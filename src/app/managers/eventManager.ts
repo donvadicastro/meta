@@ -1,7 +1,14 @@
 ///<reference path='../../../typings/backbone.d.ts'/>
 
 module MetaApp.Managers {
+    /**
+     * Global event mediator class implementation. Used to receive and send event across application.
+     * Components can subscribe to app events through this mediator as well as send events through mediator.
+     */
     export class EventManager{
+        /**
+         * Constructor
+         */
         constructor(){
             _.extend(this , Backbone.Events);
         }
