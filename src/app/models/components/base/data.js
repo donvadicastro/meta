@@ -1,14 +1,14 @@
 ///<reference path='../../../Contracts/IMetaDataComponent.ts'/>
+///<reference path='../../../extensions/converters/date.ts'/>
+///<reference path='../../../extensions/converters/number.ts'/>
+///<reference path='../../../validators/requiredValidator.ts'/>
+///<reference path='base/element.ts'/>
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-///<reference path='../../../extensions/converters/date.ts'/>
-///<reference path='../../../extensions/converters/number.ts'/>
-///<reference path='../../../validators/requiredValidator.ts'/>
-///<reference path='base/element.ts'/>
 var MetaApp;
 (function (MetaApp) {
     var Models;
@@ -21,8 +21,17 @@ var MetaApp;
              */
             var DataBase = (function (_super) {
                 __extends(DataBase, _super);
+                /**
+                 * Constructor
+                 * @param meta
+                 * @param options
+                 */
                 function DataBase(meta, options) {
                     _super.call(this, meta, options);
+                    /**
+                     * Component instantiated validators
+                     * @type {Array}
+                     */
                     this.validators = [];
                     this.binding = meta.binding;
                     this.type = meta.type;
@@ -31,18 +40,33 @@ var MetaApp;
                     this.addValidators();
                     (meta.value === undefined) || this.setValue(meta.value);
                 }
+                /**
+                 * Set new component value
+                 * @param value
+                 */
                 DataBase.prototype.setValue = function (value) {
                     this.value = value;
                     this._form && this._form.eventManager.trigger('data:' + this.binding, value);
                     this._form && this._form.eventManager.trigger('data:*', this.binding, value);
                 };
+                /**
+                 * Get current component value
+                 * @returns {any}
+                 */
                 DataBase.prototype.getValue = function () {
                     return this.value;
                 };
+                /**
+                 * Destroy
+                 */
                 DataBase.prototype.destroy = function () {
                     this.unbind();
                     this.validators.length = 0;
                 };
+                /**
+                 * Validate component and return validation result
+                 * @returns {Contracts.IValidationResult}
+                 */
                 DataBase.prototype.validate = function () {
                     var valResult = _super.prototype.validate.call(this);
                     ;
@@ -57,12 +81,22 @@ var MetaApp;
                     this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:*' : 'invalid:*'), this.name, valResult.message);
                     return valResult;
                 };
+                /**
+                 * Bind component to form data processing mechanism
+                 */
                 DataBase.prototype.bind = function () {
                     this._form && this._form.eventManager.on('data:' + this.binding, this.onDataChange, this);
                 };
+                /**
+                 * Unbind component from form data processing mechanism
+                 */
                 DataBase.prototype.unbind = function () {
                     this._form && this._form.eventManager.off('data:' + this.binding, this.onDataChange, this);
                 };
+                /**
+                 * Component data was changed event listener
+                 * @param value
+                 */
                 DataBase.prototype.onDataChange = function (value) {
                     var type = this.type, converter = type && MetaApp.Extensions.Converters[MetaApp.Enums.MetaComponentType[type] + 'Converter'], newValue = converter ? converter.getInstance().parse(value) : value;
                     if (newValue !== this.value) {
@@ -70,6 +104,9 @@ var MetaApp;
                         this.validate();
                     }
                 };
+                /**
+                 * Apply component validators
+                 */
                 DataBase.prototype.addValidators = function () {
                     for (var name in this.validation) {
                         var v = this.validation[name], vRef = MetaApp.Validators[MetaApp.Utils.String.toUpperCaseFirstLetter(name) + 'Validator'];

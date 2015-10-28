@@ -12,9 +12,17 @@ module MetaApp.Models.Components {
 	 * Handle all child relations.
 	 */
 	export class ContainerBase extends ElementBase implements Contracts.IMetaContainerComponent {
-		name: string;
+		/**
+		 * Component children list
+		 * @type {Array}
+		 */
 		items: Array<Contracts.IMetaBaseComponent> = [];
-		
+
+		/**
+		 * Constructor
+		 * @param meta
+		 * @param options
+		 */
 		constructor(meta: Contracts.IMetaContainerComponent, options: any) {
 			super(meta, options);
 
@@ -33,10 +41,18 @@ module MetaApp.Models.Components {
 			}
 		}
 
+		/**
+		 * Destroy
+		 */
 		destroy() {
 			this.items.length = 0;
 		}
 
+		/**
+		 * Returns child component constructor class
+		 * @param meta
+		 * @returns {any}
+		 */
 		private getComponentConstructor(meta: any) {
 			if(meta.dictionary) { return DictionaryBase; }
 			if(meta.binding) { return DataBase; }
@@ -46,11 +62,21 @@ module MetaApp.Models.Components {
 		}
 
 		//#region "Container CRUD"
+		/**
+		 * Add new component into container
+		 * @param component Component
+		 * @param position Position
+		 */
 		public add(component: ElementBase, position?: number) {
 			component._parent = this;
 			this.items.splice(position >= 0 ? position : -1, 0, component);
 		}
 
+		/**
+		 * Remove component from container
+		 * @param component
+		 * @param destroy Destroy this component after removing
+		 */
 		public remove(component: ElementBase, destroy?: boolean) {
 			delete component._parent;
 
@@ -58,11 +84,19 @@ module MetaApp.Models.Components {
 			destroy && component.destroy();
 		}
 
+		/**
+		 * Move component into new container
+		 * @param component
+		 */
 		public move(component: ElementBase) {
 			component._parent.remove(component);
 			this.add(component);
 		}
 
+		/**
+		 * Validate component and return validation result
+		 * @returns {{isValid: boolean, message: string}}
+		 */
 		public validate(): Contracts.IValidationResult {
 			var isValid = true;
 

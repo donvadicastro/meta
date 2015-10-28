@@ -4,12 +4,31 @@
 ///<reference path='base/element.ts'/>
 
 module MetaApp.Models.Components {
+    /**
+     * Dictionary-based component class implementation.
+     * Main generic class to be inherited from for all components which uses dictionaries as set of allowed component values.
+     */
     export class DictionaryBase extends DataBase implements Contracts.IMetaDictionaryComponent{
+        /**
+         * Dictionary manager reference
+         */
         private _dictionaryModel: DictionaryModel;
 
+        /**
+         * Dictionary name to get data from
+         */
         dictionary: string;
+
+        /**
+         * List of component filters
+         */
         filters: Array<any>;
 
+        /**
+         * Constructor
+         * @param meta
+         * @param options
+         */
         constructor(meta: Contracts.IMetaDictionaryComponent, options: any) {
             super(meta, options);
 
@@ -19,7 +38,11 @@ module MetaApp.Models.Components {
             this._dictionaryModel = new DictionaryModel(this);
         }
 
-        public getList() {
+        /**
+         * Returns component dictionary content which passed through dictionary manager pipeline
+         * @returns {Array<any>}
+         */
+        public getList(): Array<any> {
             return this._dictionaryModel.getList();
         }
     }

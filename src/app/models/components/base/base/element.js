@@ -12,15 +12,27 @@ var MetaApp;
              * Base class to describe meta component. All custom components should inherit from this base class.
              */
             var ElementBase = (function () {
+                /**
+                 * Constructor
+                 * @param meta
+                 * @param options
+                 */
                 function ElementBase(meta, options) {
                     options || (options = {});
                     this.name = meta.name;
                     this._parent = options.parent;
                     this._form = options.form;
                 }
+                /**
+                 * Validate component and returns validation result
+                 * @returns {{isValid: boolean, message: string}}
+                 */
                 ElementBase.prototype.validate = function () {
                     return { isValid: true, message: undefined };
                 };
+                /**
+                 * Destroy
+                 */
                 ElementBase.prototype.destroy = function () {
                 };
                 return ElementBase;

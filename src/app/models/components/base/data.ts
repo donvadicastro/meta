@@ -1,10 +1,7 @@
 ///<reference path='../../../Contracts/IMetaDataComponent.ts'/>
-
 ///<reference path='../../../extensions/converters/date.ts'/>
 ///<reference path='../../../extensions/converters/number.ts'/>
-
 ///<reference path='../../../validators/requiredValidator.ts'/>
-
 ///<reference path='base/element.ts'/>
 
 module MetaApp.Models.Components {
@@ -13,13 +10,37 @@ module MetaApp.Models.Components {
      * Handle all child relations.
      */
     export class DataBase extends ElementBase implements Contracts.IMetaDataComponent {
+        /**
+         * Data binding as path in data model tree
+         */
         binding: string;
+
+        /**
+         * Component predefined value
+         */
         value: any;
+
+        /**
+         * Component data type
+         */
         type: Enums.MetaComponentType;
+
+        /**
+         * Component validators declaration
+         */
         validation: any;
 
+        /**
+         * Component instantiated validators
+         * @type {Array}
+         */
         private validators: Array<any> = [];
 
+        /**
+         * Constructor
+         * @param meta
+         * @param options
+         */
         constructor(meta: Contracts.IMetaDataComponent, options: any) {
             super(meta, options);
 
@@ -33,6 +54,10 @@ module MetaApp.Models.Components {
             (meta.value === undefined) || this.setValue(meta.value);
         }
 
+        /**
+         * Set new component value
+         * @param value
+         */
         public setValue(value: any) {
             this.value = value;
 
@@ -40,15 +65,26 @@ module MetaApp.Models.Components {
             this._form && this._form.eventManager.trigger('data:*', this.binding, value);
         }
 
+        /**
+         * Get current component value
+         * @returns {any}
+         */
         public getValue() {
             return this.value;
         }
 
+        /**
+         * Destroy
+         */
         public destroy() {
             this.unbind();
             this.validators.length = 0;
         }
 
+        /**
+         * Validate component and return validation result
+         * @returns {Contracts.IValidationResult}
+         */
         public validate(): Contracts.IValidationResult {
             var valResult: Contracts.IValidationResult = super.validate();;
 
@@ -63,14 +99,24 @@ module MetaApp.Models.Components {
             return valResult;
         }
 
+        /**
+         * Bind component to form data processing mechanism
+         */
         private bind() {
             this._form && this._form.eventManager.on('data:' + this.binding, this.onDataChange, this);
         }
 
+        /**
+         * Unbind component from form data processing mechanism
+         */
         private unbind() {
             this._form && this._form.eventManager.off('data:' + this.binding, this.onDataChange, this);
         }
 
+        /**
+         * Component data was changed event listener
+         * @param value
+         */
         private onDataChange(value) {
             var type = this.type,
                 converter = type && MetaApp.Extensions.Converters[Enums.MetaComponentType[type] + 'Converter'],
@@ -82,6 +128,9 @@ module MetaApp.Models.Components {
             }
         }
 
+        /**
+         * Apply component validators
+         */
         private addValidators() {
             for(var name in this.validation) {
                 var v = this.validation[name],

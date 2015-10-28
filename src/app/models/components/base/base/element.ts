@@ -10,13 +10,32 @@ module MetaApp.Models.Components {
 	 */
 	export class ElementBase {
 		//element metadata properties
+		/**
+		 * Component unique name. Should be unique per form
+		 */
 		name: string;
+
+		/**
+		 * Component data type
+		 */
 		type: Enums.MetaComponentType;
 
 		//_parent and _form relations
+		/**
+		 * Parent container reference
+		 */
 		_parent: ContainerBase;
+
+		/**
+		 * Root form reference
+		 */
 		_form: Form;
 
+		/**
+		 * Constructor
+		 * @param meta
+		 * @param options
+		 */
 		constructor(meta: Contracts.IMetaBaseComponent, options: any) {
 			options || (options = {});
 
@@ -25,10 +44,17 @@ module MetaApp.Models.Components {
 			this._form = options.form;
 		}
 
+		/**
+		 * Validate component and returns validation result
+		 * @returns {{isValid: boolean, message: string}}
+		 */
 		public validate(): Contracts.IValidationResult {
 			return {isValid: true, message: undefined};
 		}
 
+		/**
+		 * Destroy
+		 */
 		public destroy(): void {
 
 		}

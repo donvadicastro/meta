@@ -23,8 +23,17 @@ var MetaApp;
              */
             var ContainerBase = (function (_super) {
                 __extends(ContainerBase, _super);
+                /**
+                 * Constructor
+                 * @param meta
+                 * @param options
+                 */
                 function ContainerBase(meta, options) {
                     _super.call(this, meta, options);
+                    /**
+                     * Component children list
+                     * @type {Array}
+                     */
                     this.items = [];
                     for (var i = 0, len = (meta.items || []).length, e; i < len; i++) {
                         e = meta.items[i];
@@ -36,9 +45,17 @@ var MetaApp;
                         this._form && this._form.registerComponent(e);
                     }
                 }
+                /**
+                 * Destroy
+                 */
                 ContainerBase.prototype.destroy = function () {
                     this.items.length = 0;
                 };
+                /**
+                 * Returns child component constructor class
+                 * @param meta
+                 * @returns {any}
+                 */
                 ContainerBase.prototype.getComponentConstructor = function (meta) {
                     if (meta.dictionary) {
                         return Components.DictionaryBase;
@@ -52,19 +69,37 @@ var MetaApp;
                     return Components.ElementBase;
                 };
                 //#region "Container CRUD"
+                /**
+                 * Add new component into container
+                 * @param component Component
+                 * @param position Position
+                 */
                 ContainerBase.prototype.add = function (component, position) {
                     component._parent = this;
                     this.items.splice(position >= 0 ? position : -1, 0, component);
                 };
+                /**
+                 * Remove component from container
+                 * @param component
+                 * @param destroy Destroy this component after removing
+                 */
                 ContainerBase.prototype.remove = function (component, destroy) {
                     delete component._parent;
                     this.items.splice(this.items.indexOf(component), 1);
                     destroy && component.destroy();
                 };
+                /**
+                 * Move component into new container
+                 * @param component
+                 */
                 ContainerBase.prototype.move = function (component) {
                     component._parent.remove(component);
                     this.add(component);
                 };
+                /**
+                 * Validate component and return validation result
+                 * @returns {{isValid: boolean, message: string}}
+                 */
                 ContainerBase.prototype.validate = function () {
                     var isValid = true;
                     for (var i = 0, len = (this.items || []).length, e; i < len; i++) {

@@ -14,10 +14,15 @@ var MetaApp;
         (function (Components) {
             /**
              * Form is the main logical container for some set of components which bound to some single data model.
-             * Form handle all communications inside this logical container and is fully isolated.
+             * Form handles all communications inside this logical container and is fully isolated.
              */
             var Form = (function (_super) {
                 __extends(Form, _super);
+                /**
+                 * Constructor
+                 * @param meta
+                 * @param options
+                 */
                 function Form(meta, options) {
                     this.eventManager = new MetaApp.Managers.EventManager();
                     this.data = {};
@@ -30,21 +35,42 @@ var MetaApp;
                     this.eventManager.on('invalid:*', this.onInvalid, this);
                     this.dictionaries = meta.dictionaries;
                 }
+                /**
+                 * Component registration inside form
+                 * @param element
+                 */
                 Form.prototype.registerComponent = function (element) {
                     this._form._componentByName[element.name] = element;
                 };
+                /**
+                 * Form destroy
+                 */
                 Form.prototype.destroy = function () {
                 };
+                /**
+                 * Data changes event listener
+                 * @param binding
+                 * @param value
+                 */
                 Form.prototype.onDataChange = function (binding, value) {
                     this._dataByBinding[binding] = value;
                     this.setByPath(binding, value);
                 };
+                /**
+                 * Component is valid event listener
+                 * @param name
+                 */
                 Form.prototype.onValid = function (name) {
                     delete this.invalidElements[name];
                 };
                 Form.prototype.onInvalid = function (name, message) {
                     this.invalidElements[name] = message;
                 };
+                /**
+                 * Component is invalid event listener
+                 * @param binding
+                 * @param value
+                 */
                 Form.prototype.setByPath = function (binding, value) {
                     var bindingParts = binding.split('.'), data = this.data;
                     for (var i = 0, len = bindingParts.length - 1, b; i < len; i++) {
