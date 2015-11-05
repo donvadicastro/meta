@@ -54,7 +54,13 @@ module MetaApp.Collections {
          * @returns {boolean}
          */
         private filterItem(item): boolean {
-            return _.all(this._items, i => MetaApp.Comparators[i.comparator](Utils.Object.getByPath(i.by, item), i.val));
+            return _.all(this._items, i => {
+                //comparator can be specified with negation (!eq, !contains), check this first
+                var hasNegation = i.comparator.charAt(0) === '!',
+                    compare = MetaApp.Comparators[hasNegation ? i.comparator.substr(1) : i.comparator](Utils.Object.getByPath(i.by, item), i.val);
+
+                return hasNegation ? !compare : compare;
+            });
         }
     }
 }
