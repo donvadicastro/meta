@@ -43,6 +43,14 @@ var MetaApp;
                     this._form._componentByName[element.name] = element;
                 };
                 /**
+                 * Returns value in data model tree by path accessor
+                 * @param binding
+                 * @returns {any}
+                 */
+                Form.prototype.getDataByPath = function (binding) {
+                    return this._dataByBinding[binding];
+                };
+                /**
                  * Form destroy
                  */
                 Form.prototype.destroy = function () {

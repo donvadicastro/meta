@@ -69,6 +69,15 @@ module MetaApp.Models.Components {
         }
 
         /**
+         * Returns value in data model tree by path accessor
+         * @param binding
+         * @returns {any}
+         */
+        public getDataByPath(binding: string): any {
+            return this._dataByBinding[binding];
+        }
+
+        /**
          * Form destroy
          */
         public destroy() {
@@ -114,17 +123,5 @@ module MetaApp.Models.Components {
 
             data[bindingParts[bindingParts.length-1]] = value;
         }
-
-        //private getByPath(binding: string): any {
-        //    var bindingParts = binding.split('.'),
-        //        data = this.data;
-        //
-        //    for(var i=0, len=bindingParts.length, b; i<len; i++) {
-        //        b = bindingParts[i];
-        //        data && data[b] && (data = data[b]);
-        //    }
-        //
-        //    return data;
-        //}
     }
 }

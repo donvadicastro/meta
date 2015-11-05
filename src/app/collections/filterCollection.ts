@@ -29,6 +29,8 @@ module MetaApp.Collections {
         constructor(element: DictionaryBase) {
             this._element = element;
             this._items = element.filters;
+
+            this.bind();
         }
 
         /**
@@ -61,6 +63,42 @@ module MetaApp.Collections {
 
                 return hasNegation ? !compare : compare;
             });
+        }
+
+        /**
+         * Bind dynamic filters
+         */
+        private bind(): void {
+            this._items && this._items.forEach(i => this.isDynamicValue(i.val || '') && this.bindFilter(i));
+        }
+
+        /**
+         * Bind particular dynamic filter to data model
+         * @param filter
+         */
+        private bindFilter(filter): void {
+            var path = filter.val.substr(1),
+                form = this._element._form;
+
+            form.eventManager.on('data:' + path, this.onDataChange, filter)
+            filter.val = form.getDataByPath(path);
+        }
+
+        /**
+         * Check if filter value is dynamic value
+         * @param filter
+         */
+        private isDynamicValue(filter: string): boolean {
+            return filter.charAt(0) === '@';
+        }
+
+        /**
+         * Dynamic value was changed event handler
+         * @param value
+         */
+        private onDataChange(value): void {
+            var context: any = this;
+            context.val = value;
         }
     }
 }
