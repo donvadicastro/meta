@@ -4,6 +4,7 @@
 ///<reference path='base/element.ts'/>
 ///<reference path='data.ts'/>
 ///<reference path='dictionary.ts'/>
+///<reference path='../collection.ts'/>
 ///<reference path='../../../utils/string.ts'/>
 
 module MetaApp.Models.Components {
@@ -54,6 +55,8 @@ module MetaApp.Models.Components {
 		 * @returns {any}
 		 */
 		private getComponentConstructor(meta: any) {
+			if(meta.type === MetaApp.Enums.MetaComponentType.List) { return CollectionBase; }
+
 			if(meta.dictionary) { return DictionaryBase; }
 			if(meta.binding) { return DataBase; }
 			if(meta.items) { return ContainerBase; }

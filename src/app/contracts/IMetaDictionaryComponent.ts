@@ -13,10 +13,5 @@ module MetaApp.Contracts {
          * Component dictionary reference
          */
         dictionary: string;
-
-        /**
-         * Component filters
-         */
-        filters?: Array<any>;
     }
 }

@@ -29,8 +29,8 @@ module MetaApp.Enums {
         Object,
 
         /**
-         * Array data type
+         * List data type
          */
-        Array
+        List
     }
 }

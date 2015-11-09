@@ -24,5 +24,10 @@ module MetaApp.Contracts {
 		 * Component validation rules
 		 */
 		validation?: any;
+
+		/**
+		 * Component filtration rules
+		 */
+		filters?: Array<any>;
 	}
 }
