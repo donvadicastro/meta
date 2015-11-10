@@ -31,6 +31,11 @@ module MetaApp.Models.Components {
         validation: any;
 
         /**
+         * List of component filters
+         */
+        filters: Array<any>;
+
+        /**
          * Component instantiated validators
          * @type {Array}
          */
@@ -47,6 +52,7 @@ module MetaApp.Models.Components {
             this.binding = meta.binding;
             this.type = meta.type;
             this.validation = meta.validation;
+            this.filters = meta.filters;
 
             this.bind();
             this.addValidators();
@@ -58,11 +64,19 @@ module MetaApp.Models.Components {
          * Set new component value
          * @param value
          */
-        public setValue(value: any) {
-            this.value = value;
+        public setValue(value: any): DataBase {
+            var type = this.type,
+                converter = type && MetaApp.Extensions.Converters[Enums.MetaComponentType[type] + 'Converter'],
+                newValue = converter ? converter.getInstance().parse(value) : value;
 
-            this._form && this._form.eventManager.trigger('data:' + this.binding, value);
-            this._form && this._form.eventManager.trigger('data:*', this.binding, value);
+            if(this.value !== newValue) {
+                this.value = newValue;
+
+                this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
+                this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
+            }
+
+            return this;
         }
 
         /**
@@ -117,15 +131,8 @@ module MetaApp.Models.Components {
          * Component data was changed event listener
          * @param value
          */
-        private onDataChange(value) {
-            var type = this.type,
-                converter = type && MetaApp.Extensions.Converters[Enums.MetaComponentType[type] + 'Converter'],
-                newValue = converter ? converter.getInstance().parse(value) : value;
-
-            if(newValue !== this.value) {
-                this.value = newValue;
-                this.validate();
-            }
+        private onDataChange(value, sender) {
+            sender === this || this.setValue(value).validate();
         }
 
         /**

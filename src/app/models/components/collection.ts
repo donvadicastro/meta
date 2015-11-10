@@ -1,16 +1,20 @@
 ///<reference path='../../Contracts/IMetaDataComponent.ts'/>
+///<reference path='../../Collections/FilterCollection.ts'/>
+
 ///<reference path='base/data.ts'/>
 
 module MetaApp.Models.Components {
+    import FilterCollection = MetaApp.Collections.FilterCollection;
+
     /**
      * Base class to describe containers. All container-based components should inherit from this base.
      * Handle all child relations.
      */
     export class CollectionBase extends DataBase implements Contracts.IMetaDataComponent {
         /**
-         * List of component filters
+         * Filter collection
          */
-        filters: Array<any>;
+        private _filters: FilterCollection;
 
         /**
          * Constructor
@@ -18,9 +22,10 @@ module MetaApp.Models.Components {
          * @param options
          */
         constructor(meta: Contracts.IMetaDataComponent, options: any) {
-            this.filters = meta.filters;
-
             super(meta, options);
+
+            //create filter collection
+            this._filters = new FilterCollection(this, this.onFilterChange);
         }
 
         /**
@@ -29,6 +34,13 @@ module MetaApp.Models.Components {
          */
         public setValue(value: any) {
             super.setValue(value);
+
+            this.value = this._filters.filter(value);
+            return this;
+        }
+
+        private onFilterChange() {
+            this.setValue(this._form.getDataByPath(this.binding));
         }
     }
 }

@@ -5,6 +5,7 @@
 
 module MetaApp.Collections {
     import DictionaryBase = MetaApp.Models.Components.DictionaryBase;
+    import CollectionBase = MetaApp.Models.Components.CollectionBase;
 
     /**
      * Collection to store and work with component filters. Can support filters recalculation.
@@ -13,7 +14,7 @@ module MetaApp.Collections {
         /**
          * Dictionary component with applied filters
          */
-        private _element: DictionaryBase;
+        private _element: DictionaryBase | CollectionBase;
 
         /**
          * Component filters collection
@@ -23,12 +24,18 @@ module MetaApp.Collections {
         private _items: Array<any> = [];
 
         /**
+         * Event notifier when filters was changed
+         */
+        private _onChange: Function;
+
+        /**
          * Constructor
          * @param element
          */
-        constructor(element: DictionaryBase) {
+        constructor(element: DictionaryBase | CollectionBase, onChange?: Function) {
             this._element = element;
             this._items = element.filters;
+            this._onChange = onChange;
 
             this.bind();
         }
@@ -80,7 +87,7 @@ module MetaApp.Collections {
             var path = filter.val.substr(1),
                 form = this._element._form;
 
-            form.eventManager.on('data:' + path, this.onDataChange, filter)
+            form.eventManager.on('data:' + path, this.onDataChange, {filter: filter, parent: this});
             filter.val = form.getDataByPath(path);
         }
 
@@ -97,8 +104,11 @@ module MetaApp.Collections {
          * @param value
          */
         private onDataChange(value): void {
-            var context: any = this;
-            context.val = value;
+            var filter: any = this['filter'],
+                parent = this['parent'];
+
+            filter.val = value;
+            parent._onChange && parent._onChange.apply(parent._element);
         }
     }
 }
