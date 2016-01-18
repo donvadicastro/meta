@@ -4,12 +4,12 @@
 ///<reference path='base/element.ts'/>
 ///<reference path='data.ts'/>
 ///<reference path='dictionary.ts'/>
+///<reference path='../collection.ts'/>
 ///<reference path='../../../utils/string.ts'/>
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var MetaApp;
 (function (MetaApp) {
@@ -35,6 +35,7 @@ var MetaApp;
                      * @type {Array}
                      */
                     this.items = [];
+                    //parse all childs and instantiate child list
                     for (var i = 0, len = (meta.items || []).length, e; i < len; i++) {
                         e = meta.items[i];
                         if (_.isString(e.type)) {
@@ -57,6 +58,9 @@ var MetaApp;
                  * @returns {any}
                  */
                 ContainerBase.prototype.getComponentConstructor = function (meta) {
+                    if (meta.type === MetaApp.Enums.MetaComponentType.List) {
+                        return Components.CollectionBase;
+                    }
                     if (meta.dictionary) {
                         return Components.DictionaryBase;
                     }

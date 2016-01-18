@@ -5,6 +5,8 @@
 ///<reference path='../../form.ts'/>
 
 module MetaApp.Models.Components {
+	import DynamicManager = MetaApp.Managers.DynamicManager;
+
 	/**
 	 * Base class to describe meta component. All custom components should inherit from this base class.
 	 */
@@ -20,6 +22,16 @@ module MetaApp.Models.Components {
 		 */
 		type: Enums.MetaComponentType;
 
+		/**
+		 * Component dynamic settings
+		 */
+		dynamic: any;
+
+		/**
+		 * Component UI settings
+		 */
+		ui: any;
+
 		//_parent and _form relations
 		/**
 		 * Parent container reference
@@ -32,6 +44,11 @@ module MetaApp.Models.Components {
 		_form: Form;
 
 		/**
+		 * Manager to handle component dynamic actions
+		 */
+		private _dynamicManager: DynamicManager;
+
+		/**
 		 * Constructor
 		 * @param meta
 		 * @param options
@@ -40,8 +57,14 @@ module MetaApp.Models.Components {
 			options || (options = {});
 
 			this.name = meta.name;
+			this.dynamic = meta.dynamic;
+			this.ui = meta.ui;
+
 			this._parent = options.parent;
 			this._form = options.form;
+			this._dynamicManager = new DynamicManager(this);
+
+			this.bindDynamic();
 		}
 
 		/**
@@ -53,10 +76,31 @@ module MetaApp.Models.Components {
 		}
 
 		/**
+		 * Returns element property value
+		 */
+		public getPropertyValue(property: string) {
+			return this._dynamicManager.getPropertyValue(property) || MetaApp.Utils.Object.getByPath(property, this);
+		}
+
+		/**
 		 * Destroy
 		 */
 		public destroy(): void {
+			this.unbindDynamic();
+		}
 
+		/**
+		 * Bind component to form data processing
+		 */
+		private bindDynamic(): void {
+			this._dynamicManager.bind();
+		}
+
+		/**
+		 * Unbind component from form processing
+		 */
+		private unbindDynamic(): void {
+			this._dynamicManager.unbind();
 		}
 	}
 }

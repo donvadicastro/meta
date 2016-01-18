@@ -3,11 +3,10 @@
 ///<reference path='../../../extensions/converters/number.ts'/>
 ///<reference path='../../../validators/requiredValidator.ts'/>
 ///<reference path='base/element.ts'/>
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var MetaApp;
 (function (MetaApp) {
@@ -36,6 +35,7 @@ var MetaApp;
                     this.binding = meta.binding;
                     this.type = meta.type;
                     this.validation = meta.validation;
+                    this.filters = meta.filters;
                     this.bind();
                     this.addValidators();
                     (meta.value === undefined) || this.setValue(meta.value);
@@ -45,9 +45,13 @@ var MetaApp;
                  * @param value
                  */
                 DataBase.prototype.setValue = function (value) {
-                    this.value = value;
-                    this._form && this._form.eventManager.trigger('data:' + this.binding, value);
-                    this._form && this._form.eventManager.trigger('data:*', this.binding, value);
+                    var type = this.type, converter = type && MetaApp.Extensions.Converters[MetaApp.Enums.MetaComponentType[type] + 'Converter'], newValue = converter ? converter.getInstance().parse(value) : value;
+                    if (this.value !== newValue) {
+                        this.value = newValue;
+                        this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
+                        this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
+                    }
+                    return this;
                 };
                 /**
                  * Get current component value
@@ -97,12 +101,8 @@ var MetaApp;
                  * Component data was changed event listener
                  * @param value
                  */
-                DataBase.prototype.onDataChange = function (value) {
-                    var type = this.type, converter = type && MetaApp.Extensions.Converters[MetaApp.Enums.MetaComponentType[type] + 'Converter'], newValue = converter ? converter.getInstance().parse(value) : value;
-                    if (newValue !== this.value) {
-                        this.value = newValue;
-                        this.validate();
-                    }
+                DataBase.prototype.onDataChange = function (value, sender) {
+                    sender === this || this.setValue(value).validate();
                 };
                 /**
                  * Apply component validators

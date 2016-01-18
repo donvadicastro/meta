@@ -8,6 +8,7 @@ var MetaApp;
     (function (Models) {
         var Components;
         (function (Components) {
+            var DynamicManager = MetaApp.Managers.DynamicManager;
             /**
              * Base class to describe meta component. All custom components should inherit from this base class.
              */
@@ -20,8 +21,12 @@ var MetaApp;
                 function ElementBase(meta, options) {
                     options || (options = {});
                     this.name = meta.name;
+                    this.dynamic = meta.dynamic;
+                    this.ui = meta.ui;
                     this._parent = options.parent;
                     this._form = options.form;
+                    this._dynamicManager = new DynamicManager(this);
+                    this.bindDynamic();
                 }
                 /**
                  * Validate component and returns validation result
@@ -31,9 +36,28 @@ var MetaApp;
                     return { isValid: true, message: undefined };
                 };
                 /**
+                 * Returns element property value
+                 */
+                ElementBase.prototype.getPropertyValue = function (property) {
+                    return this._dynamicManager.getPropertyValue(property) || MetaApp.Utils.Object.getByPath(property, this);
+                };
+                /**
                  * Destroy
                  */
                 ElementBase.prototype.destroy = function () {
+                    this.unbindDynamic();
+                };
+                /**
+                 * Bind component to form data processing
+                 */
+                ElementBase.prototype.bindDynamic = function () {
+                    this._dynamicManager.bind();
+                };
+                /**
+                 * Unbind component from form processing
+                 */
+                ElementBase.prototype.unbindDynamic = function () {
+                    this._dynamicManager.unbind();
                 };
                 return ElementBase;
             })();
