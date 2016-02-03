@@ -94,6 +94,7 @@ module MetaApp.Models.Components {
 		 */
 		private bindDynamic(): void {
 			this._dynamicManager.bind();
+			this._form && this._form.eventManager.on('prop:' + this.name, this.onPropertyChange, this);
 		}
 
 		/**
@@ -101,6 +102,15 @@ module MetaApp.Models.Components {
 		 */
 		private unbindDynamic(): void {
 			this._dynamicManager.unbind();
+			this._form && this._form.eventManager.off('prop:' + this.name, this.onPropertyChange, this);
+		}
+
+		/**
+		 * Fire when element property was changed
+		 * @param property
+         */
+		private onPropertyChange(property): void {
+			//to get property: this.getPropertyValue(property);
 		}
 	}
 }

@@ -52,12 +52,21 @@ var MetaApp;
                  */
                 ElementBase.prototype.bindDynamic = function () {
                     this._dynamicManager.bind();
+                    this._form && this._form.eventManager.on('prop:' + this.name, this.onPropertyChange, this);
                 };
                 /**
                  * Unbind component from form processing
                  */
                 ElementBase.prototype.unbindDynamic = function () {
                     this._dynamicManager.unbind();
+                    this._form && this._form.eventManager.off('prop:' + this.name, this.onPropertyChange, this);
+                };
+                /**
+                 * Fire when element property was changed
+                 * @param property
+                 */
+                ElementBase.prototype.onPropertyChange = function (property) {
+                    //to get property: this.getPropertyValue(property);
                 };
                 return ElementBase;
             })();

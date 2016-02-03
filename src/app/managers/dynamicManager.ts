@@ -42,9 +42,10 @@ module MetaApp.Managers {
                 form = element._form,
                 when = element.dynamic && element.dynamic.when;
 
-            if(form && when && when[0].binding) {
-                form.eventManager.on('data:' + when[0].binding, this.onDataChange, this);
-            }
+            form && when && when.forEach(i => {
+                i.binding && form.eventManager.on('data:' + i.binding, this.onDataChange, { context: this, when: i });
+                i.val && i.val.indexOf('@')+1 && form.eventManager.on('data:' + i.val.slice(1), this.onDataChange, { context: this, when: i });
+            });
         }
 
         /**
@@ -55,9 +56,9 @@ module MetaApp.Managers {
                 form = element._form,
                 when = element.dynamic && element.dynamic.when;
 
-            if(form && when && when[0].binding) {
-                form.eventManager.off('data:' + when[0].binding, this.onDataChange, this);
-            }
+            form && when && when.forEach(i => {
+                i.binding && form.eventManager.off('data:' + i.binding, this.onDataChange, { context: this, when: i });
+            });
         }
 
         /**
@@ -65,17 +66,49 @@ module MetaApp.Managers {
          * @param model
          * @param value
          */
-        private onDataChange(val): void {
-            let dynamic = this._element.dynamic,
-                when = dynamic.when[0],
+        private onDataChange(val, options): void {
+            options || (options = {});
+
+            let context = this['context'],
+                element = context._element,
+                dynamic = element.dynamic,
+                when = this['when'],
                 res = {};
 
-            if(Comparators[when.fn](val, when.val)) {
-                res[dynamic.prop] = dynamic.val;
+            //comparator can be specified with negation (!eq, !contains), check this first
+            var hasNegation = when.fn.charAt(0) === '!',
+                compare = Comparators[hasNegation ? when.fn.substr(1) : when.fn](element._form.getDataByPath(when.binding), when.val.indexOf('@')+1 ?
+                    element._form.getDataByPath(when.val.slice(1)) : when.val);
 
-                this._dynamicEvaluations[dynamic.prop] = dynamic.val;
-                this._element._form.eventManager.trigger('prop:' + this._element.name, res);
+            //store evaluation result into local object
+            when._evaluationResult = hasNegation ? !compare : compare;
+
+            if(!options.silent) {
+                //set dynamic
+                res[dynamic.prop] = context.evaluateDynamic() ? dynamic.val : undefined;
+
+                //notify listeners that dynamic was changed
+                context._dynamicEvaluations[dynamic.prop] = res[dynamic.prop];
+                element._form.eventManager.trigger('prop:' + element.name, dynamic.prop, res[dynamic.prop]);
             }
+        }
+
+        /**
+         * Evaluate full dynamic
+         */
+        private evaluateDynamic(): boolean {
+            return (this._element.dynamic.operator || 'and').toLowerCase() === 'and' ?
+                this._element.dynamic.when.reduce((memo, i) => this.evaluateWhen(i) && memo, true):
+                this._element.dynamic.when.reduce((memo, i) => this.evaluateWhen(i) || memo, false);
+        }
+
+        /**
+         * Evaluate expression
+         * @param when
+         */
+        private evaluateWhen(when: any): boolean {
+            _.isBoolean(when._evaluationResult) || this.onDataChange.call({context: this, when: when}, this._element._form.getDataByPath(when.binding), {silent: true});
+            return when._evaluationResult;
         }
     }
 }
