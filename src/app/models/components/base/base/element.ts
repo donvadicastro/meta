@@ -27,6 +27,11 @@ module MetaApp.Models.Components {
 		_parent: ContainerBase;
 
 		/**
+		 * Root container reference
+		 */
+		_container: CollectionBase;
+
+		/**
 		 * Root form reference
 		 */
 		_form: Form;
@@ -40,6 +45,8 @@ module MetaApp.Models.Components {
 			options || (options = {});
 
 			this.name = meta.name;
+
+			this._container = options.container;
 			this._parent = options.parent;
 			this._form = options.form;
 		}

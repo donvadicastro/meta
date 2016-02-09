@@ -111,17 +111,7 @@ module MetaApp.Models.Components {
          * @param value
          */
         private setByPath(binding: string, value): void {
-            var bindingParts = binding.split('.'),
-                data = this.data;
-
-            for(var i=0, len=bindingParts.length-1, b; i<len; i++) {
-                b = bindingParts[i];
-
-                data[b] || (data[b] = {});
-                data = data[b];
-            }
-
-            data[bindingParts[bindingParts.length-1]] = value;
+            MetaApp.Utils.Object.setByPath(this.data, binding, value);
         }
     }
 }

@@ -4,12 +4,12 @@
 ///<reference path='base/element.ts'/>
 ///<reference path='data.ts'/>
 ///<reference path='dictionary.ts'/>
+///<reference path='../collection.ts'/>
 ///<reference path='../../../utils/string.ts'/>
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var MetaApp;
 (function (MetaApp) {
@@ -35,15 +35,8 @@ var MetaApp;
                      * @type {Array}
                      */
                     this.items = [];
-                    for (var i = 0, len = (meta.items || []).length, e; i < len; i++) {
-                        e = meta.items[i];
-                        if (_.isString(e.type)) {
-                            e.type = MetaApp.Enums.MetaComponentType[MetaApp.Utils.String.toUpperCaseFirstLetter(e.type)];
-                        }
-                        e = new (this.getComponentConstructor(e))(e, { parent: this, form: this._form });
-                        this.items.push(e);
-                        this._form && this._form.registerComponent(e);
-                    }
+                    //parse all children and instantiate child list
+                    this.initializeItems(meta.items, options);
                 }
                 /**
                  * Destroy
@@ -52,11 +45,29 @@ var MetaApp;
                     this.items.length = 0;
                 };
                 /**
+                 * Initialize children
+                 */
+                ContainerBase.prototype.initializeItems = function (items, options) {
+                    options || (options = {});
+                    for (var i = 0, len = (items || []).length, e; i < len; i++) {
+                        e = items[i];
+                        if (_.isString(e.type)) {
+                            e.type = MetaApp.Enums.MetaComponentType[MetaApp.Utils.String.toUpperCaseFirstLetter(e.type)];
+                        }
+                        e = new (this.getComponentConstructor(e))(e, { parent: this, form: this._form, container: options.container });
+                        this.items.push(e);
+                        this._form && this._form.registerComponent(e);
+                    }
+                };
+                /**
                  * Returns child component constructor class
                  * @param meta
                  * @returns {any}
                  */
                 ContainerBase.prototype.getComponentConstructor = function (meta) {
+                    if (meta.type === MetaApp.Enums.MetaComponentType.List) {
+                        return Components.CollectionBase;
+                    }
                     if (meta.dictionary) {
                         return Components.DictionaryBase;
                     }

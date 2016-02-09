@@ -20,6 +20,7 @@ var MetaApp;
                 function ElementBase(meta, options) {
                     options || (options = {});
                     this.name = meta.name;
+                    this._container = options.container;
                     this._parent = options.parent;
                     this._form = options.form;
                 }

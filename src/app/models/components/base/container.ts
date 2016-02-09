@@ -8,6 +8,8 @@
 ///<reference path='../../../utils/string.ts'/>
 
 module MetaApp.Models.Components {
+	import List = _.List;
+
 	/**
 	 * Base class to describe containers. All container-based components should inherit from this base.
 	 * Handle all child relations.
@@ -17,29 +19,18 @@ module MetaApp.Models.Components {
 		 * Component children list
 		 * @type {Array}
 		 */
-		items: Array<Contracts.IMetaBaseComponent> = [];
+		items: Array<Contracts.IMetaBaseComponent | Contracts.IMetaCollectionComponent> = [];
 
 		/**
 		 * Constructor
 		 * @param meta
 		 * @param options
 		 */
-		constructor(meta: Contracts.IMetaContainerComponent, options: any) {
+		constructor(meta: Contracts.IMetaContainerComponent | Contracts.IMetaCollectionComponent, options: any) {
 			super(meta, options);
 
-			//parse all childs and instantiate child list
-			for(var i=0, len=(meta.items || []).length, e; i<len; i++) {
-				e = meta.items[i];
-
-				if(_.isString(e.type)) {
-					e.type = Enums.MetaComponentType[MetaApp.Utils.String.toUpperCaseFirstLetter(e.type)];
-				}
-
-				e = new (this.getComponentConstructor(e))(e, {parent: this, form: this._form});
-
-				this.items.push(e);
-				this._form && this._form.registerComponent(e);
-			}
+			//parse all children and instantiate child list
+			this.initializeItems(meta.items, options);
 		}
 
 		/**
@@ -50,11 +41,30 @@ module MetaApp.Models.Components {
 		}
 
 		/**
+		 * Initialize children
+		 */
+		private initializeItems(items: List<Contracts.IMetaBaseComponent | Contracts.IMetaCollectionComponent>, options: any) {
+			options || (options = {});
+			for(var i=0, len=(items || []).length, e; i<len; i++) {
+				e = items[i];
+
+				if(_.isString(e.type)) {
+					e.type = Enums.MetaComponentType[MetaApp.Utils.String.toUpperCaseFirstLetter(e.type)];
+				}
+
+				e = new (this.getComponentConstructor(e))(e, {parent: this, form: this._form, container: options.container});
+
+				this.items.push(e);
+				this._form && this._form.registerComponent(e);
+			}
+		}
+
+		/**
 		 * Returns child component constructor class
 		 * @param meta
 		 * @returns {any}
 		 */
-		private getComponentConstructor(meta: any) {
+		public getComponentConstructor(meta: any): any {
 			if(meta.type === MetaApp.Enums.MetaComponentType.List) { return CollectionBase; }
 
 			if(meta.dictionary) { return DictionaryBase; }

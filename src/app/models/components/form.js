@@ -1,10 +1,9 @@
 ///<reference path='../../managers/eventManager.ts'/>
 ///<reference path='base/container.ts'/>
-var __extends = this.__extends || function (d, b) {
+var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var MetaApp;
 (function (MetaApp) {
@@ -80,13 +79,7 @@ var MetaApp;
                  * @param value
                  */
                 Form.prototype.setByPath = function (binding, value) {
-                    var bindingParts = binding.split('.'), data = this.data;
-                    for (var i = 0, len = bindingParts.length - 1, b; i < len; i++) {
-                        b = bindingParts[i];
-                        data[b] || (data[b] = {});
-                        data = data[b];
-                    }
-                    data[bindingParts[bindingParts.length - 1]] = value;
+                    MetaApp.Utils.Object.setByPath(this.data, binding, value);
                 };
                 return Form;
             })(Components.ContainerBase);

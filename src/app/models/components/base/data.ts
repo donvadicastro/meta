@@ -74,6 +74,8 @@ module MetaApp.Models.Components {
 
                 this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
                 this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
+
+                this._container && MetaApp.Utils.Object.setByPath(this._container.data, this.binding, newValue);
             }
 
             return this;
