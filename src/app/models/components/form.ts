@@ -1,117 +1,120 @@
-///<reference path='../../managers/eventManager.ts'/>
-///<reference path='base/container.ts'/>
+import {ContainerBase} from './base/container';
+import {EventManager} from '../../managers/eventManager';
+import {IMetaContainerComponent} from '../../contracts/IMetaContainerComponent';
+import {ElementBase} from "./base/base/element";
+import {setByPath} from '../../utils/object';
 
-module MetaApp.Models.Components {
+/**
+ * Form is the main logical container for some set of components which bound to some single data model.
+ * Form handles all communications inside this logical container and is fully isolated.
+ */
+export class Form extends ContainerBase {
     /**
-     * Form is the main logical container for some set of components which bound to some single data model.
-     * Form handles all communications inside this logical container and is fully isolated.
+     * Data hash as set of key-value pairs where key is the binding
      */
-    export class Form extends ContainerBase {
-        /**
-         * Data hash as set of key-value pairs where key is the binding
-         */
-        private _dataByBinding: any;
+    private _dataByBinding: any;
 
-        /**
-         * Component hash as set of key-value pairs where key is the component name
-         */
-        private _componentByName: any;
+    /**
+     * Component hash as set of key-value pairs where key is the component name
+     */
+    private _componentByName: any;
 
-        /**
-         * Event mediator reference
-         */
-        public eventManager: Managers.EventManager;
+    /**
+     * Event mediator reference
+     */
+    public eventManager: EventManager;
 
-        /**
-         * Form data reference
-         */
-        public data: Object;
+    /**
+     * Form data reference
+     */
+    public data: Object;
 
-        /**
-         * Form-specific dictionaries
-         */
-        public dictionaries: Object;
+    /**
+     * Form-specific dictionaries
+     */
+    public dictionaries: Object;
 
-        /**
-         * Hash list of invalid elements
-         */
-        private invalidElements: Object;
+    /**
+     * Hash list of invalid elements
+     */
+    private invalidElements: Object;
 
-        /**
-         * Constructor
-         * @param meta
-         * @param options
-         */
-        constructor(meta: Contracts.IMetaContainerComponent, options: any) {
-            this.eventManager = new Managers.EventManager();
+    /**
+     * Constructor
+     * @param meta
+     * @param options
+     */
+    constructor(meta: IMetaContainerComponent, options: any) {
+        super(meta, options);
 
-            this.data = {};
-            this.invalidElements = {};
+        this.eventManager = new EventManager();
 
-            this._dataByBinding = {};
-            this._componentByName = {};
+        this.data = {};
+        this.invalidElements = {};
 
-            super(meta, {form: this});
+        this._dataByBinding = {};
+        this._componentByName = {};
 
-            this.eventManager.on('data:*', this.onDataChange, this);
-            this.eventManager.on('valid:*', this.onValid, this);
-            this.eventManager.on('invalid:*', this.onInvalid, this);
+        super(meta, {form: this});
 
-            this.dictionaries = meta.dictionaries;
-        }
+        this.eventManager.on('data:*', this.onDataChange, this);
+        this.eventManager.on('valid:*', this.onValid, this);
+        this.eventManager.on('invalid:*', this.onInvalid, this);
 
-        /**
-         * Component registration inside form
-         * @param element
-         */
-        public registerComponent(element: ElementBase): void {
-            this._form._componentByName[element.name] = element;
-        }
+        this.dictionaries = meta.dictionaries;
+    }
 
-        /**
-         * Returns value in data model tree by path accessor
-         * @param binding
-         * @returns {any}
-         */
-        public getDataByPath(binding: string): any {
-            return this._dataByBinding[binding];
-        }
+    /**
+     * Component registration inside form
+     * @param element
+     */
+    public registerComponent(element: ElementBase): void {
+        this._form._componentByName[element.name] = element;
+    }
 
-        /**
-         * Form destroy
-         */
-        public destroy() {
-        }
+    /**
+     * Returns value in data model tree by path accessor
+     * @param binding
+     * @returns {any}
+     */
+    public getDataByPath(binding: string): any {
+        return this._dataByBinding[binding];
+    }
 
-        /**
-         * Data changes event listener
-         * @param binding
-         * @param value
-         */
-        private onDataChange(binding: string, value): void {
-            this._dataByBinding[binding] = value;
-            this.setByPath(binding, value);
-        }
+    /**
+     * Form destroy
+     */
+    public destroy() {
+    }
 
-        /**
-         * Component is valid event listener
-         * @param name
-         */
-        private onValid(name: string) {
-            delete this.invalidElements[name];
-        }
+    /**
+     * Data changes event listener
+     * @param binding
+     * @param value
+     */
+    private onDataChange(binding: string, value): void {
+        this._dataByBinding[binding] = value;
+        this.setByPath(binding, value);
+    }
 
-        private onInvalid(name: string, message: string) {
-            this.invalidElements[name] = message;
-        }
+    /**
+     * Component is valid event listener
+     * @param name
+     */
+    private onValid(name: string) {
+        delete this.invalidElements[name];
+    }
 
-        /**
-         * Component is invalid event listener
-         * @param binding
-         * @param value
-         */
-        private setByPath(binding: string, value): void {
-            MetaApp.Utils.Object.setByPath(this.data, binding, value);
-        }
+    private onInvalid(name: string, message: string) {
+        this.invalidElements[name] = message;
+    }
+
+    /**
+     * Component is invalid event listener
+     * @param binding
+     * @param value
+     */
+    private setByPath(binding: string, value): void {
+        setByPath(this.data, binding, value);
     }
 }

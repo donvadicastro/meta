@@ -1,18 +1,16 @@
-///<reference path='IMetaBaseComponent.ts'/>
+import {IMetaBaseComponent} from "./IMetaBaseComponent";
 
-module MetaApp.Contracts {
+/**
+ * Base meta container contract declaration. Inherits from IMetaBaseComponent.
+ */
+export interface IMetaContainerComponent extends IMetaBaseComponent {
 	/**
-	 * Base meta container contract declaration. Inherits from IMetaBaseComponent.
+	 * List of child components
 	 */
-	export interface IMetaContainerComponent extends IMetaBaseComponent {
-		/**
-		 * List of child components
-		 */
-		items: Array<IMetaBaseComponent>;
+	items: Array<IMetaBaseComponent>;
 
-		/**
-		 * Container specific dictionaries to be used by children
-		 */
-		dictionaries?: Object;
-	}
+	/**
+	 * Container specific dictionaries to be used by children
+	 */
+	dictionaries?: Object;
 }

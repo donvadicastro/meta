@@ -1,152 +1,155 @@
-///<reference path='../../../Contracts/IMetaDataComponent.ts'/>
-///<reference path='../../../extensions/converters/date.ts'/>
-///<reference path='../../../extensions/converters/number.ts'/>
-///<reference path='../../../validators/requiredValidator.ts'/>
-///<reference path='base/element.ts'/>
+import {ElementBase} from "./base/element";
+import {IMetaDataComponent} from "../../../contracts/IMetaDataComponent";
+import {MetaComponentType} from "../../../enums/metaComponentType";
+import {IValidationResult} from "../../../contracts/IValidationResult";
+import {setByPath} from "../../../utils/object";
+import {toUpperCaseFirstLetter} from "../../../utils/string";
 
-module MetaApp.Models.Components {
+import * as Converters from "../../../extensions/converters";
+import * as Validators from "../../../validators";
+
+/**
+ * Base class to describe containers. All container-based components should inherit from this base.
+ * Handle all child relations.
+ */
+export class DataBase extends ElementBase implements IMetaDataComponent {
     /**
-     * Base class to describe containers. All container-based components should inherit from this base.
-     * Handle all child relations.
+     * Data binding as path in data model tree
      */
-    export class DataBase extends ElementBase implements Contracts.IMetaDataComponent {
-        /**
-         * Data binding as path in data model tree
-         */
-        binding: string;
+    binding: string;
 
-        /**
-         * Component predefined value
-         */
-        value: any;
+    /**
+     * Component predefined value
+     */
+    value: any;
 
-        /**
-         * Component data type
-         */
-        type: Enums.MetaComponentType;
+    /**
+     * Component data type
+     */
+    type: MetaComponentType;
 
-        /**
-         * Component validators declaration
-         */
-        validation: any;
+    /**
+     * Component validators declaration
+     */
+    validation: any;
 
-        /**
-         * List of component filters
-         */
-        filters: Array<any>;
+    /**
+     * List of component filters
+     */
+    filters: Array<any>;
 
-        /**
-         * Component instantiated validators
-         * @type {Array}
-         */
-        private validators: Array<any> = [];
+    /**
+     * Component instantiated validators
+     * @type {Array}
+     */
+    private validators: Array<any> = [];
 
-        /**
-         * Constructor
-         * @param meta
-         * @param options
-         */
-        constructor(meta: Contracts.IMetaDataComponent, options: any) {
-            super(meta, options);
+    /**
+     * Constructor
+     * @param meta
+     * @param options
+     */
+    constructor(meta: IMetaDataComponent, options: any) {
+        super(meta, options);
 
-            this.binding = meta.binding;
-            this.type = meta.type;
-            this.validation = meta.validation;
-            this.filters = meta.filters;
+        this.binding = meta.binding;
+        this.type = meta.type;
+        this.validation = meta.validation;
+        this.filters = meta.filters;
 
-            this.bind();
-            this.addValidators();
+        this.bind();
+        this.addValidators();
 
-            (meta.value === undefined) || this.setValue(meta.value);
+        (meta.value === undefined) || this.setValue(meta.value);
+    }
+
+    /**
+     * Set new component value
+     * @param value
+     */
+    public setValue(value: any): DataBase {
+        var type = this.type,
+            converter = type && Converters[MetaComponentType[type] + 'Converter'],
+            newValue = converter ? converter.getInstance().parse(value) : value;
+
+        if(this.value !== newValue) {
+            this.value = newValue;
+
+            this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
+            this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
+
+            this._container && setByPath(this._container.data, this.binding, newValue);
         }
 
-        /**
-         * Set new component value
-         * @param value
-         */
-        public setValue(value: any): DataBase {
-            var type = this.type,
-                converter = type && MetaApp.Extensions.Converters[Enums.MetaComponentType[type] + 'Converter'],
-                newValue = converter ? converter.getInstance().parse(value) : value;
+        return this;
+    }
 
-            if(this.value !== newValue) {
-                this.value = newValue;
+    /**
+     * Get current component value
+     * @returns {any}
+     */
+    public getValue() {
+        return this.value;
+    }
 
-                this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
-                this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
+    /**
+     * Destroy
+     */
+    public destroy() {
+        this.unbind();
+        this.validators.length = 0;
+    }
 
-                this._container && MetaApp.Utils.Object.setByPath(this._container.data, this.binding, newValue);
-            }
+    /**
+     * Validate component and return validation result
+     * @returns {IValidationResult}
+     */
+    public validate(): IValidationResult {
+        var valResult: IValidationResult = super.validate();
 
-            return this;
+        for(var i=0, len=this.validators.length, v; i<len; i++) {
+            v = this.validators[i].validate(this.value);
+            if(!v.success) { valResult = v; }
         }
 
-        /**
-         * Get current component value
-         * @returns {any}
-         */
-        public getValue() {
-            return this.value;
-        }
+        this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:' : 'invalid:') + this.name, valResult.message);
+        this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:*' : 'invalid:*'), this.name, valResult.message);
 
-        /**
-         * Destroy
-         */
-        public destroy() {
-            this.unbind();
-            this.validators.length = 0;
-        }
+        return valResult;
+    }
 
-        /**
-         * Validate component and return validation result
-         * @returns {Contracts.IValidationResult}
-         */
-        public validate(): Contracts.IValidationResult {
-            var valResult: Contracts.IValidationResult = super.validate();;
+    /**
+     * Bind component to form data processing mechanism
+     */
+    private bind() {
+        this._form && this._form.eventManager.on('data:' + this.binding, this.onDataChange, this);
+    }
 
-            for(var i=0, len=this.validators.length, v; i<len; i++) {
-                v = this.validators[i].validate(this.value);
-                if(!v.success) { valResult = v; };
-            }
+    /**
+     * Unbind component from form data processing mechanism
+     */
+    private unbind() {
+        this._form && this._form.eventManager.off('data:' + this.binding, this.onDataChange, this);
+    }
 
-            this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:' : 'invalid:') + this.name, valResult.message);
-            this._form && this._form.eventManager.trigger((valResult.isValid ? 'valid:*' : 'invalid:*'), this.name, valResult.message);
+    /**
+     * Component data was changed event listener
+     * @param value
+     * @param sender
+     */
+    private onDataChange(value, sender) {
+        sender === this || this.setValue(value).validate();
+    }
 
-            return valResult;
-        }
+    /**
+     * Apply component validators
+     */
+    private addValidators() {
+        for(var name in this.validation) {
+            var v = this.validation[name],
+                vRef = Validators[toUpperCaseFirstLetter(name) + 'Validator'];
 
-        /**
-         * Bind component to form data processing mechanism
-         */
-        private bind() {
-            this._form && this._form.eventManager.on('data:' + this.binding, this.onDataChange, this);
-        }
-
-        /**
-         * Unbind component from form data processing mechanism
-         */
-        private unbind() {
-            this._form && this._form.eventManager.off('data:' + this.binding, this.onDataChange, this);
-        }
-
-        /**
-         * Component data was changed event listener
-         * @param value
-         */
-        private onDataChange(value, sender) {
-            sender === this || this.setValue(value).validate();
-        }
-
-        /**
-         * Apply component validators
-         */
-        private addValidators() {
-            for(var name in this.validation) {
-                var v = this.validation[name],
-                    vRef = Validators[MetaApp.Utils.String.toUpperCaseFirstLetter(name) + 'Validator'];
-
-                this.validators.push(new vRef(this));
-            }
+            this.validators.push(new vRef(this));
         }
     }
 }

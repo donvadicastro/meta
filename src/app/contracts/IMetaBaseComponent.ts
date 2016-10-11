@@ -1,19 +1,16 @@
-///<reference path="../enums/metaComponentType.ts"/>
-///<reference path="../enums/metaComponentRenderer.ts"/>
+import {MetaComponentRenderer} from "../enums/metaComponentRenderer";
 
-module MetaApp.Contracts {
+/**
+ * Base meta component contract declaration.
+ */
+export interface IMetaBaseComponent {
 	/**
-	 * Base meta component contract declaration.
+	 * Component unique name
 	 */
-	export interface IMetaBaseComponent {
-		/**
-		 * Component unique name
-		 */
-		name: string;
+	name: string;
 
-		/**
-		 * UI renderer type
-		 */
-		renderer?: Enums.MetaComponentRenderer;
-	}
+	/**
+	 * UI renderer type
+	 */
+	renderer?: MetaComponentRenderer;
 }

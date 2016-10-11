@@ -1,69 +1,68 @@
-///<reference path='../../../../contracts/IMetaBaseComponent.ts'/>
-///<reference path='../../../../contracts/IValidationResult.ts'/>
+import {MetaComponentType} from "../../../../enums/metaComponentType";
+import {ContainerBase} from "../container";
+import {Form} from "../../form";
+import {CollectionBase} from "../../collection";
+import {IValidationResult} from "../../../../contracts/IValidationResult";
+import {IMetaBaseComponent} from "../../../../contracts/IMetaBaseComponent";
 
-///<reference path='../container.ts'/>
-///<reference path='../../form.ts'/>
-
-module MetaApp.Models.Components {
+/**
+ * Base class to describe meta component. All custom components should inherit from this base class.
+ */
+export class ElementBase {
+	//element metadata properties
 	/**
-	 * Base class to describe meta component. All custom components should inherit from this base class.
+	 * Component unique name. Should be unique per form
 	 */
-	export class ElementBase {
-		//element metadata properties
-		/**
-		 * Component unique name. Should be unique per form
-		 */
-		name: string;
+	name: string;
 
-		/**
-		 * Component data type
-		 */
-		type: Enums.MetaComponentType;
+	/**
+	 * Component data type
+	 */
+	type: MetaComponentType;
 
-		//_parent and _form relations
-		/**
-		 * Parent container reference
-		 */
-		_parent: ContainerBase;
+	//_parent and _form relations
+	/**
+	 * Parent container reference
+	 */
+	_parent: ContainerBase;
 
-		/**
-		 * Root container reference
-		 */
-		_container: CollectionBase;
+	/**
+	 * Root container reference
+	 */
+	_container: CollectionBase;
 
-		/**
-		 * Root form reference
-		 */
-		_form: Form;
+	/**
+	 * Root form reference
+	 */
+	_form: Form;
 
-		/**
-		 * Constructor
-		 * @param meta
-		 * @param options
-		 */
-		constructor(meta: Contracts.IMetaBaseComponent, options: any) {
-			options || (options = {});
+	/**
+	 * Constructor
+	 * @param meta
+	 * @param options
+	 */
+	constructor(meta: IMetaBaseComponent, options: any) {
+		options || (options = {});
 
-			this.name = meta.name;
+		this.name = meta.name;
 
-			this._container = options.container;
-			this._parent = options.parent;
-			this._form = options.form;
-		}
+		this._container = options.container;
+		this._parent = options.parent;
+		this._form = options.form;
+	}
 
-		/**
-		 * Validate component and returns validation result
-		 * @returns {{isValid: boolean, message: string}}
-		 */
-		public validate(): Contracts.IValidationResult {
-			return {isValid: true, message: undefined};
-		}
+	/**
+	 * Validate component and returns validation result
+	 * @returns {{isValid: boolean, message: string}}
+	 */
+	public validate(): IValidationResult {
+		return {isValid: true, message: undefined};
+	}
 
-		/**
-		 * Destroy
-		 */
-		public destroy(): void {
+	/**
+	 * Destroy
+	 */
+	public destroy(): void {
 
-		}
 	}
 }

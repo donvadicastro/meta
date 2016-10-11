@@ -1,16 +1,14 @@
-module MetaApp.Contracts {
+/**
+ * Meta component validation status contract declaration
+ */
+export interface IValidationResult {
     /**
-     * Meta component validation status contract declaration
+     * Is component valid
      */
-    export interface IValidationResult {
-        /**
-         * Is component valid
-         */
-        isValid: boolean;
+    isValid: boolean;
 
-        /**
-         * Validation message for invalid state
-         */
-        message: string;
-    }
+    /**
+     * Validation message for invalid state
+     */
+    message: string;
 }

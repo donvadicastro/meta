@@ -1,11 +1,9 @@
-declare module MetaApp.Enums {
+/**
+ * Meta component renderer types
+ */
+export enum MetaComponentRenderer {
     /**
-     * Meta component renderer types
+     * Default rendered as predefined type if no other specified in declaration
      */
-    export enum MetaComponentRenderer {
-        /**
-         * Default rendered as predefined type if no other specified in declaration
-         */
-        Default = 1
-    }
+    Default = 1
 }

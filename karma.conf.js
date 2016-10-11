@@ -1,4 +1,5 @@
 // Karma configuration
+var webpackConfig = require('./webpack.config');
 
 module.exports = function(config) {
     config.set({
@@ -11,11 +12,7 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'bower_components/underscore/underscore.js',
-            'bower_components/backbone/backbone.js',
-
-            'src/app/**/*.js',
-            'src/test/**/*.js'
+            'src/test/**/*.ts'
         ],
 
         // list of files to exclude
@@ -25,7 +22,20 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'src/app/**/*.js': ['coverage']
+            'src/test/**/*.ts': ['webpack']
+        },
+
+        webpack: {
+            debug: true,
+            module: webpackConfig.module,
+            resolve: webpackConfig.resolve
+        },
+
+        webpackMiddleware: {
+            quiet: true,
+            stats: {
+                colors: true
+            }
         },
 
         // preload all installed karma plugins

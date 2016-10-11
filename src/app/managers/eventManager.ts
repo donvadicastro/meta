@@ -1,36 +1,36 @@
-///<reference path='../../../typings/backbone.d.ts'/>
+/// <reference path="../../../typings/backbone.d.ts" />
+import Backbone = require('backbone');
 
-module MetaApp.Managers {
+/**
+ * Global event mediator class implementation. Used to receive and send event across application.
+ * Components can subscribe to app events through this mediator as well as send events through mediator.
+ */
+export class EventManager{
     /**
-     * Global event mediator class implementation. Used to receive and send event across application.
-     * Components can subscribe to app events through this mediator as well as send events through mediator.
+     * Constructor
      */
-    export class EventManager{
-        /**
-         * Constructor
-         */
-        constructor(){
-            _.extend(this , Backbone.Events);
-        }
-
-        //Call interface for Backbone.Events
-        on:any;
-        off:any;
-        trigger:any;
-        once:any;
-        listenTo:any;
-        stopListening:any;
-
-
-        //CUSTOM EVENT CONSTANTS
-        INIT:string =                   "APP_INIT";
-        CHANNEL:string =                "APP_CHANNEL";
-        COMPLETE:string =               "APP_COMPLETE";
-
-        ERROR_CATALOG_LOADED:string =   "APP_ERROR_CATALOG_LOADED";
-        ERROR_LOGGED:string =           "APP_ERROR_LOGGED";
-
-        USER_REGISTER:string =          "APP_USER_REGISTER";
-        USER_LOGIN:string =             "APP_USER_LOGIN";
+    constructor(){
+        _.extend(this , Backbone.Events);
     }
+
+    //Call interface for Backbone.Events
+    on:any;
+    off:any;
+    trigger:any;
+    once:any;
+
+    listenTo:any;
+    stopListening:any;
+
+
+    //CUSTOM EVENT CONSTANTS
+    INIT:string =                   "APP_INIT";
+    CHANNEL:string =                "APP_CHANNEL";
+    COMPLETE:string =               "APP_COMPLETE";
+
+    ERROR_CATALOG_LOADED:string =   "APP_ERROR_CATALOG_LOADED";
+    ERROR_LOGGED:string =           "APP_ERROR_LOGGED";
+
+    USER_REGISTER:string =          "APP_USER_REGISTER";
+    USER_LOGIN:string =             "APP_USER_LOGIN";
 }
