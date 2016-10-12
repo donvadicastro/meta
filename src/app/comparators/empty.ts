@@ -1,3 +1,7 @@
+/// <reference path="../../../typings/underscore.d.ts" />
+
+import _ = require('underscore');
+
 /**
  * "empty" comparator function implementation. Used to check value is empty.
  * @param actual Current data value to check

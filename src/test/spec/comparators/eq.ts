@@ -1,7 +1,8 @@
+/// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
+import eq from '../../../app/comparators/eq';
+
 describe('Comparators: eq', function () {
 	it('should compare correct', function () {
-		var eq = MetaApp.Comparators.eq;
-
 		expect(eq(1,1)).toBeTruthy();
 		expect(eq(1,12)).toBeFalsy();
 

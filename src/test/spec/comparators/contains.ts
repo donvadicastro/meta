@@ -1,7 +1,9 @@
+/// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
+
+import contains from '../../../app/comparators/contains';
+
 describe('Comparators: contains', function () {
 	it('should compare correct', function () {
-		var contains = MetaApp.Comparators.contains;
-
 		expect(contains('a', 'abc')).toBeTruthy();
 		expect(contains('abc', 'a')).toBeTruthy();
 

@@ -1,7 +1,8 @@
+/// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
+import empty from '../../../app/comparators/empty';
+
 describe('Comparators: empty', function () {
 	it('should compare correct', function () {
-		var empty = MetaApp.Comparators.empty;
-
 		expect(empty()).toBeTruthy();
 		expect(empty('')).toBeTruthy();
 		expect(empty(null)).toBeTruthy();

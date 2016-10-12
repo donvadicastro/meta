@@ -1,3 +1,5 @@
+/// <reference path="../../../../../typings/underscore.d.ts" />
+
 import {ElementBase} from "./base/element";
 import {IMetaCollectionComponent} from "../../../contracts/IMetaCollectionComponent";
 import {IMetaBaseComponent} from "../../../contracts/IMetaBaseComponent";
@@ -8,7 +10,7 @@ import {DictionaryBase} from "./dictionary";
 import {DataBase} from "./data";
 import {IValidationResult} from "../../../contracts/IValidationResult";
 import {toUpperCaseFirstLetter} from "../../../utils/string";
-import List = _.List;
+import _ = require('underscore');
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
@@ -43,7 +45,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	/**
 	 * Initialize children
 	 */
-	private initializeItems(items: List<IMetaBaseComponent | IMetaCollectionComponent>, options: any) {
+	private initializeItems(items: Array<IMetaBaseComponent | IMetaCollectionComponent>, options: any) {
 		options || (options = {});
 		for(var i=0, len=(items || []).length, e; i<len; i++) {
 			e = items[i];

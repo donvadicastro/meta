@@ -1,6 +1,8 @@
+import {Form} from "../../../app/models/components/form";
+
 describe('Filtration: Dynamic', function () {
 	it('should support dynamic string local filter', function () {
-		var form = new MetaApp.Models.Components.Form({name: 'testFormComponent', items: [
+		var form = new Form({name: 'testFormComponent', items: [
 			{name: 'child1', binding: 'b1', dictionary: 'dic1', filters: [{by: 'name', comparator: 'eq', val: '@b2'}]},
 			{name: 'child1', binding: 'b2'}
 		], dictionaries: {
