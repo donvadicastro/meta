@@ -7,6 +7,6 @@ import _ = require('underscore');
  * @param declared Statically declared value to check
  * @returns {boolean}
  */
-export default function eq(actual, declared) {
+export function eq(actual, declared) {
     return (_.isString(actual) ? actual : JSON.stringify(actual)) === (_.isString(declared) ? declared : JSON.stringify(declared));
 }

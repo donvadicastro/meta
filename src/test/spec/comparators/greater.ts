@@ -1,5 +1,5 @@
 /// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
-import greater from '../../../app/comparators/greater';
+import {greater} from '../../../app/comparators/greater';
 
 describe('Comparators: greater', function () {
 	it('should compare correct', function () {

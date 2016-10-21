@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
 
-import contains from '../../../app/comparators/contains';
+import {contains} from '../../../app/comparators/contains';
 
 describe('Comparators: contains', function () {
 	it('should compare correct', function () {

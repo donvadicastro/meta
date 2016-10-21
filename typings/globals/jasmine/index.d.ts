@@ -311,6 +311,7 @@ declare namespace jasmine {
 
         toBe(expected: any, expectationFailOutput?: any): boolean;
         toEqual(expected: any, expectationFailOutput?: any): boolean;
+        toEqualData(expected: any, expectationFailOutput?: any): boolean;
         toMatch(expected: string | RegExp, expectationFailOutput?: any): boolean;
         toBeDefined(expectationFailOutput?: any): boolean;
         toBeUndefined(expectationFailOutput?: any): boolean;

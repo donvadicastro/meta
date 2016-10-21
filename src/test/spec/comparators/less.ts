@@ -1,5 +1,5 @@
 /// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
-import less from '../../../app/comparators/less';
+import {less} from '../../../app/comparators/less';
 
 describe('Comparators: less', function () {
 	it('should compare correct', function () {

@@ -8,7 +8,7 @@ import _ = require('underscore');
  * @param declared Statically declared value to check
  * @returns {boolean}
  */
-export default function empty(actual) {
+export function empty(actual?: any) {
     if(_.isNumber(actual)) return false;
     if(_.isBoolean(actual)) return false;
     if(_.isString(actual) && actual.length) return false;

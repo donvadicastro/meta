@@ -20,6 +20,11 @@ export class ElementBase {
 	 */
 	type: MetaComponentType;
 
+	/**
+	 * Element meta declaration
+	 */
+	_meta: any;
+
 	//_parent and _form relations
 	/**
 	 * Parent container reference
@@ -46,8 +51,10 @@ export class ElementBase {
 
 		this.name = meta.name;
 
+		this._meta = meta;
 		this._container = options.container;
 		this._parent = options.parent;
+
 		this._form = options.form;
 	}
 

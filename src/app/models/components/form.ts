@@ -46,22 +46,23 @@ export class Form extends ContainerBase {
      */
     constructor(meta: IMetaContainerComponent, options: any) {
         super(meta, options);
-
         this.eventManager = new EventManager();
 
         this.data = {};
         this.invalidElements = {};
 
+        this._form = this;
         this._dataByBinding = {};
         this._componentByName = {};
-
-        super(meta, {form: this});
 
         this.eventManager.on('data:*', this.onDataChange, this);
         this.eventManager.on('valid:*', this.onValid, this);
         this.eventManager.on('invalid:*', this.onInvalid, this);
 
         this.dictionaries = meta.dictionaries;
+
+        //initialize component
+        this.initialize(options);
     }
 
     /**

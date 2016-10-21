@@ -1,5 +1,5 @@
 /// <reference path="../../../../typings/globals/jasmine/index.d.ts" />
-import eq from '../../../app/comparators/eq';
+import {eq} from '../../../app/comparators/eq';
 
 describe('Comparators: eq', function () {
 	it('should compare correct', function () {

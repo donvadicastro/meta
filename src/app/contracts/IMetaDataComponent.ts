@@ -13,7 +13,7 @@ export interface IMetaDataComponent extends IMetaBaseComponent {
 	/**
 	 * Predefined component value
 	 */
-	value: any;
+	value?: any;
 
 	/**
 	 * Component data type

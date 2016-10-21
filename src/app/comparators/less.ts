@@ -4,6 +4,6 @@
  * @param declared Statically declared value to check
  * @returns {boolean}
  */
-export default function less(actual, declared) {
+export function less(actual, declared) {
     return actual < declared;
 }

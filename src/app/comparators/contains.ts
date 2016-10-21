@@ -7,7 +7,7 @@ import _ = require('underscore');
  * @param declared Statically declared value to check
  * @returns {boolean}
  */
-export default function contains(actual, declared) {
+export function contains(actual, declared) {
     if((_.isArray(actual) || _.isString(actual)) && actual.indexOf(declared) !== -1) {
         return true;
     }

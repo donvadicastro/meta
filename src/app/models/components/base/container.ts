@@ -30,9 +30,6 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 */
 	constructor(meta: IMetaContainerComponent | IMetaCollectionComponent, options: any) {
 		super(meta, options);
-
-		//parse all children and instantiate child list
-		this.initializeItems(meta.items, options);
 	}
 
 	/**
@@ -40,6 +37,15 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 */
 	destroy() {
 		this.items.length = 0;
+	}
+
+	/**
+	 * Initialize component
+	 * @param options options
+	 */
+	initialize(options) {
+		//parse all children and instantiate child list
+		this.initializeItems(this._meta.items, options);
 	}
 
 	/**
