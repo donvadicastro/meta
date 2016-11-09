@@ -6,7 +6,7 @@ import {ResourceManager} from "../managers/resourceManager";
  * Max value component validator. Used to check that input value is less then allowed.
  * This check includes string length max criteria checking, number max criteria checking or date max value checking.
  */
-export default class MaxValidator extends BaseValidator {
+export class MaxValidator extends BaseValidator {
     /**
      * Validates component and returns validation result
      * @returns {any}

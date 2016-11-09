@@ -27,24 +27,24 @@ export class Form extends ContainerBase {
     /**
      * Form data reference
      */
-    public data: Object;
+    public data: any;
 
     /**
      * Form-specific dictionaries
      */
-    public dictionaries: Object;
+    public dictionaries: any;
 
     /**
      * Hash list of invalid elements
      */
-    private invalidElements: Object;
+    private invalidElements: any;
 
     /**
      * Constructor
      * @param meta
      * @param options
      */
-    constructor(meta: IMetaContainerComponent, options: any) {
+    constructor(meta: IMetaContainerComponent, options?: any) {
         super(meta, options);
         this.eventManager = new EventManager();
 
@@ -60,9 +60,6 @@ export class Form extends ContainerBase {
         this.eventManager.on('invalid:*', this.onInvalid, this);
 
         this.dictionaries = meta.dictionaries;
-
-        //initialize component
-        this.initialize(options);
     }
 
     /**

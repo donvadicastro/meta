@@ -5,7 +5,7 @@ import {ResourceManager} from "../managers/resourceManager";
 /**
  * Required value validator class implementation. Used to check component value is set.
  */
-export default class RequiredValidator extends BaseValidator {
+export class RequiredValidator extends BaseValidator {
     /**
      * Validates component and return validation result.
      * @returns {{isValid: boolean, message: string}}

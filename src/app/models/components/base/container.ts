@@ -1,9 +1,10 @@
 /// <reference path="../../../../../typings/underscore.d.ts" />
 
-import {ElementBase} from "./base/element";
 import {IMetaCollectionComponent} from "../../../contracts/IMetaCollectionComponent";
 import {IMetaBaseComponent} from "../../../contracts/IMetaBaseComponent";
 import {IMetaContainerComponent} from "../../../contracts/IMetaContainerComponent";
+
+import {ElementBase} from "./base/element";
 import {MetaComponentType} from "../../../enums/metaComponentType";
 import {CollectionBase} from "../collection";
 import {DictionaryBase} from "./dictionary";
@@ -11,6 +12,7 @@ import {DataBase} from "./data";
 import {IValidationResult} from "../../../contracts/IValidationResult";
 import {toUpperCaseFirstLetter} from "../../../utils/string";
 import _ = require('underscore');
+
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
@@ -21,14 +23,14 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 * Component children list
 	 * @type {Array}
 	 */
-	items: Array<IMetaBaseComponent | IMetaCollectionComponent> = [];
+	items: Array<any> = [];
 
 	/**
 	 * Constructor
 	 * @param meta
 	 * @param options
 	 */
-	constructor(meta: IMetaContainerComponent | IMetaCollectionComponent, options: any) {
+	constructor(meta: IMetaContainerComponent | IMetaCollectionComponent, options?: any) {
 		super(meta, options);
 	}
 
@@ -43,9 +45,9 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 * Initialize component
 	 * @param options options
 	 */
-	initialize(options) {
+	initialize(options?: any) {
 		//parse all children and instantiate child list
-		this.initializeItems(this._meta.items, options);
+		this.initializeItems(this._meta.items, options || {});
 	}
 
 	/**
@@ -60,7 +62,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 				e.type = MetaComponentType[toUpperCaseFirstLetter(e.type)];
 			}
 
-			e = new (this.getComponentConstructor(e))(e, {parent: this, form: this._form, container: options.container});
+			e = new (ContainerBase.getComponentConstructor(e))(e, {parent: this, form: this._form, container: options.container});
 
 			this.items.push(e);
 			this._form && this._form.registerComponent(e);
@@ -72,7 +74,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 * @param meta
 	 * @returns {any}
 	 */
-	public getComponentConstructor(meta: any): any {
+	public static getComponentConstructor(meta: any): any {
 		if(meta.type === MetaComponentType.List) { return CollectionBase; }
 
 		if(meta.dictionary) { return DictionaryBase; }

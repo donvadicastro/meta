@@ -1,11 +1,11 @@
-import MaxValidator from "./maxValidator";
+import {MaxValidator} from "./maxValidator";
 import {ResourceManager} from "../managers/resourceManager";
 
 /**
  * Min value component validator. Used to check that input value is more then allowed.
  * This check includes string length min criteria checking, number min criteria checking or date min value checking.
  */
-export default class MinValidator extends MaxValidator {
+export class MinValidator extends MaxValidator {
     /**
      * Gets min validation value to be used as left boundary
      * @returns {number} validation to check with

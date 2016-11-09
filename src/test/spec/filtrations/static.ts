@@ -17,6 +17,7 @@ describe('Filtration: Static', function () {
 			dic1: [{id:1, name: 'a'},{id:2, name: 'b'},{id:3, name: 'c'}]
 		}}, {});
 
+		form.initialize();
 		expect((<DictionaryBase>form.items[0]).getList()).toEqualData([{id:2, name: 'b'}]);
 	});
 });

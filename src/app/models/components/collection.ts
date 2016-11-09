@@ -1,9 +1,11 @@
-import List = _.List;
+/// <reference path="../../../../typings/underscore.d.ts" />
+
 import {DataBase} from "./base/data";
 import {FilterCollection} from "../../collections/filterCollection";
 import {IMetaDataComponent} from "../../contracts/IMetaDataComponent";
 import {ContainerBase} from "./base/container";
 import {IMetaCollectionComponent} from "../../contracts/IMetaCollectionComponent";
+import _ = require('underscore');
 
 /**
  * Base class to describe collections. All collection-based components should inherit from this base.
@@ -30,11 +32,13 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
      * @param meta
      * @param options
      */
-    constructor(meta: IMetaCollectionComponent, options: any) {
+    constructor(meta: IMetaCollectionComponent, options?: any) {
         super(meta, options);
 
         //create container
-        this._collectionContainer = new ContainerBase(meta, _.extend(options || {}, {container: this}));
+        var o = _.extend(options || {}, {container: this});
+        this._collectionContainer = new ContainerBase(meta, o);
+        this._collectionContainer.initialize(o);
 
         //create children
         //ContainerBase.prototype.initializeItems.call(this, meta.items);

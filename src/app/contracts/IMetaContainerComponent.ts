@@ -10,7 +10,7 @@ export interface IMetaContainerComponent extends IMetaBaseComponent {
 	/**
 	 * List of child components
 	 */
-	items: Array<IMetaDataComponent | IMetaContainerComponent | IMetaDictionaryComponent | IMetaCollectionComponent>;
+	items?: Array<IMetaDataComponent | IMetaContainerComponent | IMetaDictionaryComponent | IMetaCollectionComponent>;
 
 	/**
 	 * Container specific dictionaries to be used by children

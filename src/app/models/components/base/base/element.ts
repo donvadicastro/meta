@@ -46,7 +46,7 @@ export class ElementBase {
 	 * @param meta
 	 * @param options
 	 */
-	constructor(meta: IMetaBaseComponent, options: any) {
+	constructor(meta: IMetaBaseComponent, options?: any) {
 		options || (options = {});
 
 		this.name = meta.name;
