@@ -37,7 +37,7 @@ export class Form extends ContainerBase {
     /**
      * Hash list of invalid elements
      */
-    private invalidElements: any;
+    public invalidElements: any;
 
     /**
      * Constructor

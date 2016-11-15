@@ -59,6 +59,14 @@ export class ElementBase {
 	}
 
 	/**
+	 * Element initialization
+	 * @param options
+	 */
+	public initialize(options?: any): void {
+
+	}
+
+	/**
 	 * Validate component and returns validation result
 	 * @returns {{isValid: boolean, message: string}}
 	 */

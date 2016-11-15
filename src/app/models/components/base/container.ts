@@ -53,7 +53,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	/**
 	 * Initialize children
 	 */
-	private initializeItems(items: Array<IMetaBaseComponent | IMetaCollectionComponent>, options: any) {
+	private initializeItems(items: Array<IMetaBaseComponent | IMetaCollectionComponent | IMetaContainerComponent>, options: any) {
 		options || (options = {});
 		for(var i=0, len=(items || []).length, e; i<len; i++) {
 			e = items[i];
@@ -63,6 +63,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 			}
 
 			e = new (ContainerBase.getComponentConstructor(e))(e, {parent: this, form: this._form, container: options.container});
+			e.initialize();
 
 			this.items.push(e);
 			this._form && this._form.registerComponent(e);
@@ -75,6 +76,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 * @returns {any}
 	 */
 	public static getComponentConstructor(meta: any): any {
+
 		if(meta.type === MetaComponentType.List) { return CollectionBase; }
 
 		if(meta.dictionary) { return DictionaryBase; }
@@ -125,6 +127,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 
 		for(var i=0, len=(this.items || []).length, e; i<len; i++) {
 			e = this.items[i];
+
 			e.validate && !e.validate().isValid && (isValid = false);
 		}
 
