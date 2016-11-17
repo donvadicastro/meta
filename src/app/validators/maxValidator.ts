@@ -1,3 +1,7 @@
+/// <reference path="../../../typings/underscore.d.ts" />
+
+import _ = require('underscore');
+
 import {BaseValidator} from "./base/baseValidator";
 import {IValidationResult} from "../contracts/IValidationResult";
 import {ResourceManager} from "../managers/resourceManager";

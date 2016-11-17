@@ -1,6 +1,9 @@
+import {DataBase} from "../../../app/models/components/base/data";
+import {ResourceManager} from "../../../app/managers/resourceManager";
+
 describe('Validators: Min', function () {
 	it('should support min validation for string type', function () {
-		var element = new MetaApp.Models.Components.DataBase({name: 'testDataComponent', binding: 'binding', validation: {min: 5}}),
+		var element = new DataBase({name: 'testDataComponent', binding: 'binding', validation: {min: 5}}),
 			valResult = element.validate();
 
 		expect(valResult.isValid).toBeTruthy();
@@ -9,7 +12,7 @@ describe('Validators: Min', function () {
 		valResult = element.validate();
 
 		expect(valResult.isValid).toBeFalsy();
-		expect(valResult.message).toBe(MetaApp.Managers.ResourceManager.get('validators.minValidator.message.string'));
+		expect(valResult.message).toBe(ResourceManager.get('validators.minValidator.message.string'));
 
 		element.setValue('abcde');
 		valResult = element.validate();
@@ -17,7 +20,7 @@ describe('Validators: Min', function () {
 	});
 
 	it('should support min validation for number type', function () {
-		var element = new MetaApp.Models.Components.DataBase({name: 'testDataComponent', binding: 'binding', type: 'number', validation: {min: 5}}),
+		var element = new DataBase({name: 'testDataComponent', binding: 'binding', type: 'number', validation: {min: 5}}),
 			valResult = element.validate();
 
 		expect(valResult.isValid).toBeTruthy();
@@ -26,7 +29,7 @@ describe('Validators: Min', function () {
 		valResult = element.validate();
 
 		expect(valResult.isValid).toBeFalsy();
-		expect(valResult.message).toBe(MetaApp.Managers.ResourceManager.get('validators.minValidator.message.number'));
+		expect(valResult.message).toBe(ResourceManager.get('validators.minValidator.message.number'));
 
 		element.setValue(5);
 		valResult = element.validate();
