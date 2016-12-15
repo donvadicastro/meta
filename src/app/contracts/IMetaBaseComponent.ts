@@ -15,5 +15,15 @@ module MetaApp.Contracts {
 		 * UI renderer type
 		 */
 		renderer?: Enums.MetaComponentRenderer;
+
+		/**
+		 * Component dynamic settings
+		 */
+		dynamic?: any;
+
+		/**
+		 * Component UI settings
+		 */
+		ui?: any;
 	}
 }
