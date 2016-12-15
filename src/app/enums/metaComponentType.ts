@@ -1,36 +1,34 @@
-module MetaApp.Enums {
+/**
+ * Meta component bind data types
+ */
+export enum MetaComponentType {
     /**
-     * Meta component bind data types
+     * String data type
      */
-    export enum MetaComponentType {
-        /**
-         * String data type
-         */
-        String,
+    String,
 
-        /**
-         * Number data type
-         */
-        Number,
+    /**
+     * Number data type
+     */
+    Number,
 
-        /**
-         * Boolean data type
-         */
-        Bool,
+    /**
+     * Boolean data type
+     */
+    Bool,
 
-        /**
-         * Date data type
-         */
-        Date,
+    /**
+     * Date data type
+     */
+    Date,
 
-        /**
-         * Object data type
-         */
-        Object,
+    /**
+     * Object data type
+     */
+    Object,
 
-        /**
-         * List data type
-         */
-        List
-    }
+    /**
+     * List data type
+     */
+    List
 }

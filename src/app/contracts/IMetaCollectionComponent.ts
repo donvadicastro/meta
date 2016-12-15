@@ -1,10 +1,8 @@
-///<reference path='IMetaDataComponent.ts'/>
-///<reference path='IMetaContainerComponent.ts'/>
+import {IMetaContainerComponent} from "./IMetaContainerComponent";
+import {IMetaDataComponent} from "./IMetaDataComponent";
 
-module MetaApp.Contracts {
-    /**
-     * Base meta collection contract declaration. Inherits from IMetaDataComponent and IMetaContainerComponent.
-     */
-    export interface IMetaCollectionComponent extends IMetaDataComponent, IMetaContainerComponent {
-    }
+/**
+ * Base meta collection contract declaration. Inherits from IMetaDataComponent and IMetaContainerComponent.
+ */
+export interface IMetaCollectionComponent extends IMetaDataComponent, IMetaContainerComponent {
 }

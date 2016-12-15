@@ -1,38 +1,36 @@
-module MetaApp.Extensions.Converters {
+/**
+ * Meta component number data converter singleton class implementation. Used to convert incoming server data to correct type.
+ */
+export class NumberConverter {
     /**
-     * Meta component number data converter singleton class implementation. Used to convert incoming server data to correct type.
+     * Singleton class instance
+     * @type {MetaApp.Extensions.Converters.NumberConverter}
+     * @private
      */
-    export class NumberConverter {
-        /**
-         * Singleton class instance
-         * @type {MetaApp.Extensions.Converters.NumberConverter}
-         * @private
-         */
-        private static _instance:NumberConverter = new NumberConverter();
+    private static _instance:NumberConverter = new NumberConverter();
 
-        /**
-         * Constructor
-         */
-        constructor() {
-            NumberConverter._instance = this;
-        }
+    /**
+     * Constructor
+     */
+    constructor() {
+        NumberConverter._instance = this;
+    }
 
-        /**
-         * Return current class instance
-         * @returns {NumberConverter}
-         */
-        public static getInstance(): NumberConverter
-        {
-            return NumberConverter._instance;
-        }
+    /**
+     * Return current class instance
+     * @returns {NumberConverter}
+     */
+    public static getInstance(): NumberConverter
+    {
+        return NumberConverter._instance;
+    }
 
-        /**
-         * Convert input object into number value
-         * @param value
-         * @returns {boolean}
-         */
-        public parse(value: string): Number {
-            return parseInt(value);
-        }
+    /**
+     * Convert input object into number value
+     * @param value
+     * @returns {boolean}
+     */
+    public parse(value: string): Number {
+        return parseInt(value);
     }
 }

@@ -1,33 +1,32 @@
-///<reference path='IMetaBaseComponent.ts'/>
+import {IMetaBaseComponent} from "./IMetaBaseComponent";
+import {MetaComponentType} from "../enums/metaComponentType";
 
-module MetaApp.Contracts {
+/**
+ * Base meta data component contract declaration. Inherits from IMetaBaseComponent.
+ */
+export interface IMetaDataComponent extends IMetaBaseComponent {
 	/**
-	 * Base meta data component contract declaration. Inherits from IMetaBaseComponent.
+	 * Data binding path
 	 */
-	export interface IMetaDataComponent extends IMetaBaseComponent {
-		/**
-		 * Data binding path
-		 */
-		binding: string;
+	binding: string;
 
-		/**
-		 * Predefined component value
-		 */
-		value: any;
+	/**
+	 * Predefined component value
+	 */
+	value?: any;
 
-		/**
-		 * Component data type
-		 */
-		type?: Enums.MetaComponentType;
+	/**
+	 * Component data type
+	 */
+	type?: MetaComponentType;
 
-		/**
-		 * Component validation rules
-		 */
-		validation?: any;
+	/**
+	 * Component validation rules
+	 */
+	validation?: any;
 
-		/**
-		 * Component filtration rules
-		 */
-		filters?: Array<any>;
-	}
+	/**
+	 * Component filtration rules
+	 */
+	filters?: Array<any>;
 }

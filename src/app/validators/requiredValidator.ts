@@ -1,22 +1,21 @@
-///<reference path='base/baseValidator.ts'/>
-///<reference path='../managers/resourceManager.ts'/>
+import {BaseValidator} from "./base/baseValidator";
+import {IValidationResult} from "../contracts/IValidationResult";
+import {ResourceManager} from "../managers/resourceManager";
 
-module MetaApp.Validators {
+/**
+ * Required value validator class implementation. Used to check component value is set.
+ */
+export class RequiredValidator extends BaseValidator {
     /**
-     * Required value validator class implementation. Used to check component value is set.
+     * Validates component and return validation result.
+     * @returns {{isValid: boolean, message: string}}
      */
-    export class RequiredValidator extends BaseValidator {
-        /**
-         * Validates component and return validation result.
-         * @returns {{isValid: boolean, message: string}}
-         */
-        public validate(): Contracts.IValidationResult {
-            var value = this._element.getValue();
+    public validate(): IValidationResult {
+        var value = this._element.getValue();
 
-            return {
-                isValid: value !== undefined && value !== null && value !== '',
-                message: MetaApp.Managers.ResourceManager.get('validators.requiredValidator.message')
-            };
-        }
+        return {
+            isValid: value !== undefined && value !== null && value !== '',
+            message: ResourceManager.get('validators.requiredValidator.message')
+        };
     }
 }
