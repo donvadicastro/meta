@@ -13,4 +13,14 @@ export interface IMetaBaseComponent {
 	 * UI renderer type
 	 */
 	renderer?: MetaComponentRenderer;
+
+	/**
+	 * Component dynamic settings
+	 */
+	dynamic?: any;
+
+	/**
+	 * Component UI settings
+	 */
+	ui?: any;
 }
