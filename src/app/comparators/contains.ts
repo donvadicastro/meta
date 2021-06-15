@@ -12,7 +12,7 @@ export function contains(actual, declared) {
         return true;
     }
 
-    if((_.isArray(declared) || _.isString(declared)) && declared.indexOf(actual) !== -1) {
+    if ((_.isArray(declared) || _.isString(declared)) && declared.indexOf(actual) !== -1) {
         return true;
     }
 

@@ -49,7 +49,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * @param meta
      * @param options
      */
-    constructor(meta: IMetaDataComponent, options: any) {
+    constructor(meta: IMetaDataComponent, options?: any) {
         super(meta, options);
 
         this.binding = meta.binding;
