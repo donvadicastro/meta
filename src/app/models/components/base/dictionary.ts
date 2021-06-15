@@ -27,7 +27,7 @@ export class DictionaryBase extends DataBase implements IMetaDictionaryComponent
      * @param meta
      * @param options
      */
-    constructor(meta: IMetaDictionaryComponent, options: any) {
+    constructor(meta: IMetaDictionaryComponent, options?: any) {
         super(meta, options);
 
         this.dictionary = meta.dictionary;

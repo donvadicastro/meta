@@ -1,6 +1,7 @@
 import {DataBase} from "../../../../app/models/components/base/data";
 import {Form} from "../../../../app/models/components/form";
 import {expect} from "chai";
+import {MetaComponentType} from "../../../../app/enums/metaComponentType";
 
 describe('Models: Data', function () {
     it('should create data component correct', function () {
@@ -27,9 +28,9 @@ describe('Models: Data', function () {
     it('should support data convertions', function () {
         var form = new Form({name: 'dataForm', items: [
             {name: 'testDataComponent0', binding: 'b0'},
-            {name: 'testDataComponent1', binding: 'b1', type: 'date'},
-            {name: 'testDataComponent2', binding: 'b2', type: 'number'},
-            {name: 'testDataComponent3', binding: 'b3', type: 'bool'}
+            {name: 'testDataComponent1', binding: 'b1', type: MetaComponentType.Date},
+            {name: 'testDataComponent2', binding: 'b2', type: MetaComponentType.Number},
+            {name: 'testDataComponent3', binding: 'b3', type: MetaComponentType.Bool}
         ]});
 
         form.initialize();
@@ -57,9 +58,9 @@ describe('Models: Data', function () {
     it('should support predefined value', function () {
         var form = new Form({name: 'dataForm', items: [
             {name: 'testDataComponent0', binding: 'b0', value: 'a'},
-            {name: 'testDataComponent1', binding: 'b1', type: 'date', value: '2015-10-08T23:37:35'},
-            {name: 'testDataComponent2', binding: 'b2', type: 'number', value: 11},
-            {name: 'testDataComponent3', binding: 'b3', type: 'bool', value: true}
+            {name: 'testDataComponent1', binding: 'b1', type: MetaComponentType.Date, value: '2015-10-08T23:37:35'},
+            {name: 'testDataComponent2', binding: 'b2', type: MetaComponentType.Number, value: 11},
+            {name: 'testDataComponent3', binding: 'b3', type: MetaComponentType.Bool, value: true}
         ]});
 
         form.initialize();
