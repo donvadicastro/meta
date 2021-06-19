@@ -1,6 +1,6 @@
 {
-  "name": "meta",
-  "version": "1.0.0",
+  "name": "meta-framework",
+  "version": "1.0.1",
   "description": "Meta framework engine",
   "main": "index.js",
   "scripts": {
