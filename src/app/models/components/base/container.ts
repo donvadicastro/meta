@@ -101,7 +101,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 * @param destroy Destroy this component after removing
 	 */
 	public remove(component: ElementBase, destroy?: boolean) {
-		//delete component._parent;
+		delete component._parent;
 
 		this.items.splice(this.items.indexOf(component), 1);
 		destroy && component.destroy();
@@ -112,7 +112,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 * @param component
 	 */
 	public move(component: ElementBase) {
-		component._parent.remove(component);
+		component._parent && component._parent.remove(component);
 		this.add(component);
 	}
 

@@ -27,9 +27,10 @@ export class ElementBase {
 
 	//_parent and _form relations
 	/**
-	 * Parent container reference
+	 * Parent container reference.
+	 * Can be unset when element removed.
 	 */
-	_parent: ContainerBase;
+	_parent: ContainerBase | undefined;
 
 	/**
 	 * Root container reference
