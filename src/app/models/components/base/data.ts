@@ -68,7 +68,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * @param value
      */
     public setValue(value: any): DataBase {
-        var type = this.type,
+        const type = this.type,
             //@ts-ignore
             converter = type && Converters[MetaComponentType[type] + 'Converter'],
             newValue = converter ? converter.getInstance().parse(value) : value;

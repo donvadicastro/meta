@@ -117,10 +117,10 @@ export class FilterCollection {
      * @param value
      */
     private onDataChange(value: any): void {
-        var filter: any = this['filter']/*,
-            parent = this.parent*/;
+        //@ts-ignore: possible when context is specified by `call` and `apply`
+        const filter: any = this.filter, parent = this.parent;
 
         filter.val = value;
-        //parent._onChange && parent._onChange.apply(parent._element);
+        parent._onChange && parent._onChange.apply(parent._element);
     }
 }
