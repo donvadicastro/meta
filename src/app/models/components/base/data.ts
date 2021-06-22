@@ -36,7 +36,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
     /**
      * List of component filters
      */
-    filters: Array<any>;
+    filters?: Array<any>;
 
     /**
      * Component instantiated validators
@@ -53,7 +53,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
         super(meta, options);
 
         this.binding = meta.binding;
-        this.type = meta.type;
+        this.type = meta.type || MetaComponentType.String;
         this.validation = meta.validation;
         this.filters = meta.filters;
 
@@ -69,6 +69,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      */
     public setValue(value: any): DataBase {
         var type = this.type,
+            //@ts-ignore
             converter = type && Converters[MetaComponentType[type] + 'Converter'],
             newValue = converter ? converter.getInstance().parse(value) : value;
 
@@ -137,7 +138,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * @param value
      * @param sender
      */
-    private onDataChange(value, sender) {
+    private onDataChange(value: any, sender: IMetaDataComponent) {
         sender === this || this.setValue(value).validate();
     }
 
@@ -147,6 +148,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
     private addValidators() {
         for(var name in this.validation) {
             var v = this.validation[name],
+                //@ts-ignore
                 vRef = Validators[toUpperCaseFirstLetter(name) + 'Validator'];
 
             this.validators.push(new vRef(this));

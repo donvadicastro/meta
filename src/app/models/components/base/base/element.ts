@@ -16,9 +16,9 @@ export class ElementBase {
 	name: string;
 
 	/**
-	 * Component data type
+	 * Component data type (optional)
 	 */
-	type: MetaComponentType;
+	type?: MetaComponentType;
 
 	/**
 	 * Element meta declaration
@@ -40,6 +40,13 @@ export class ElementBase {
 	 * Root form reference
 	 */
 	_form: Form;
+
+	/**
+	 * Gets component dynamic settings
+	 */
+	get dynamic(): any {
+		return this._meta.dynamic;
+	}
 
 	/**
 	 * Constructor

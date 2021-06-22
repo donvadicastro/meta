@@ -10,5 +10,5 @@ export interface IValidationResult {
     /**
      * Validation message for invalid state
      */
-    message: string;
+    message?: string;
 }

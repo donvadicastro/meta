@@ -1,13 +1,12 @@
-/// <reference path="../../../typings/underscore.d.ts" />
-import _ = require('underscore');
-
 /**
  * "contains" comparator function implementation. Used to check one value is included in second.
  * @param actual Current data value to check
  * @param declared Statically declared value to check
  * @returns {boolean}
  */
-export function contains(actual, declared) {
+import _ from "underscore";
+
+export function contains(actual: any, declared: any) {
     if((_.isArray(actual) || _.isString(actual)) && actual.indexOf(declared) !== -1) {
         return true;
     }

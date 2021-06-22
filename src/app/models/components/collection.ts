@@ -1,11 +1,9 @@
-/// <reference path="../../../../typings/underscore.d.ts" />
-
 import {DataBase} from "./base/data";
 import {FilterCollection} from "../../collections/filterCollection";
 import {IMetaDataComponent} from "../../contracts/IMetaDataComponent";
 import {ContainerBase} from "./base/container";
 import {IMetaCollectionComponent} from "../../contracts/IMetaCollectionComponent";
-import _ = require('underscore');
+import _ from "underscore";
 
 /**
  * Base class to describe collections. All collection-based components should inherit from this base.
@@ -78,7 +76,7 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
      * @param id
      */
     public setSelected(id: number) {
-        var value = (this.getValue() || []).filter(i => i.id === id);
+        var value = (this.getValue() || []).filter((i: any) => i.id === id);
 
         if(value.length) {
             this.data = value[0];

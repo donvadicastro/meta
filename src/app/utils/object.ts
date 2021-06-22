@@ -1,14 +1,13 @@
-/// <reference path="../../../typings/underscore.d.ts" />
-import _ = require('underscore');
-
 /**
  * Return value from complex data object by its path
  * @param path
  * @param obj
  * @returns {any|*}
  */
+import _ from "underscore";
+
 export function getByPath(path: string, obj: any): any {
-    return obj && _.reduce<any, any>(path.split('.'), (memo, i) => { return memo = memo && memo[i]; }, obj);
+    return obj && _.reduce<any, any>(path.split('.'), (memo: any, i: string) => { return memo = memo && memo[i]; }, obj);
 }
 
 /**

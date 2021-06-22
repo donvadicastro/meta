@@ -1,16 +1,15 @@
-/// <reference path="../../../typings/underscore.d.ts" />
-import _ = require('underscore');
-
 /**
  * Resource manager class implementation. Responsible for localizing application through key-value hash table
  */
+import _ from "underscore";
+
 export class ResourceManager {
     /**
      * Resource hash list
      * @type {object}
      * @private
      */
-    private static _resourcesHash = {
+    private static _resourcesHash: {[key: string]: string|any} = {
         'validators.requiredValidator.message': 'this field is required',
         'validators.minValidator.message.string': 'validators.minValidator.message.string',
         'validators.minValidator.message.number': 'validators.minValidator.message.number',

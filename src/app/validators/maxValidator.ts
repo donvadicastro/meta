@@ -1,10 +1,7 @@
-/// <reference path="../../../typings/underscore.d.ts" />
-
-import _ = require('underscore');
-
 import {BaseValidator} from "./base/baseValidator";
 import {IValidationResult} from "../contracts/IValidationResult";
 import {ResourceManager} from "../managers/resourceManager";
+import _ from "underscore";
 
 /**
  * Max value component validator. Used to check that input value is less then allowed.
@@ -16,16 +13,17 @@ export class MaxValidator extends BaseValidator {
      * @returns {any}
      */
     public validate(): IValidationResult {
-        var value = this._element.getValue(),
-            valValue = this.getValidatorValue(),
-            type = this.getTypeName(value);
+        const value = this._element.getValue();
 
         //call base when value is not set
         if(_.isUndefined(value)) { return super.validate(); }
 
+        const valValue = this.getValidatorValue(),
+            validator = this.resolveValidator(value);
+
         return {
-            isValid: this[type + 'Validate'](value, valValue),
-            message: this.getErrorMessage(type)
+            isValid: validator(value, valValue),
+            message: this.getErrorMessage(typeof value)
         };
     }
 
@@ -72,10 +70,10 @@ export class MaxValidator extends BaseValidator {
      * @param actual
      * @returns {any}
      */
-    protected getTypeName(actual: any): string {
-        if(_.isString(actual)) { return 'string'; }
-        if(_.isNumber(actual)) { return 'number'; }
+    protected resolveValidator(actual: any): (actual: any, compare: any) => boolean {
+        if(_.isString(actual)) { return this.stringValidate; }
+        if(_.isNumber(actual)) { return this.numberValidate; }
 
-        return 'object';
+        throw new Error(`Validator not exists for type ${typeof actual}`);
     }
 }

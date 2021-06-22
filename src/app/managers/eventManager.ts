@@ -1,14 +1,11 @@
-/// <reference path="../../../typings/backbone.d.ts" />
-/// <reference path="../../../typings/underscore.d.ts" />
-
-import Backbone = require('backbone');
-import _ = require('underscore');
-
 /**
  * Global event mediator class implementation. Used to receive and send event across application.
  * Components can subscribe to app events through this mediator as well as send events through mediator.
  */
-export class EventManager{
+import _ from "underscore";
+import Backbone from "backbone";
+
+export class EventManager {
     /**
      * Constructor
      */

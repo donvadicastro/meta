@@ -1,5 +1,3 @@
-/// <reference path="../../../../../typings/underscore.d.ts" />
-
 import {IMetaCollectionComponent} from "../../../contracts/IMetaCollectionComponent";
 import {IMetaBaseComponent} from "../../../contracts/IMetaBaseComponent";
 import {IMetaContainerComponent} from "../../../contracts/IMetaContainerComponent";
@@ -11,8 +9,7 @@ import {DictionaryBase} from "./dictionary";
 import {DataBase} from "./data";
 import {IValidationResult} from "../../../contracts/IValidationResult";
 import {toUpperCaseFirstLetter} from "../../../utils/string";
-import _ = require('underscore');
-
+import _ from "underscore";
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
@@ -58,9 +55,10 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 		for(var i=0, len=(items || []).length, e; i<len; i++) {
 			e = items[i];
 
-			if(_.isString(e.type)) {
-				e.type = MetaComponentType[toUpperCaseFirstLetter(e.type)];
-			}
+			//TODO: looks like not possible
+			// if(_.isString(e.type)) {
+			// 	e.type = MetaComponentType[toUpperCaseFirstLetter(e.type)];
+			// }
 
 			e = new (ContainerBase.getComponentConstructor(e))(e, {parent: this, form: this._form, container: options.container});
 			e.initialize();
@@ -94,7 +92,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 */
 	public add(component: ElementBase, position?: number) {
 		component._parent = this;
-		this.items.splice(position >= 0 ? position : -1, 0, component);
+		this.items.splice((position && position >= 0) ? position : -1, 0, component);
 	}
 
 	/**
@@ -103,7 +101,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 * @param destroy Destroy this component after removing
 	 */
 	public remove(component: ElementBase, destroy?: boolean) {
-		delete component._parent;
+		//delete component._parent;
 
 		this.items.splice(this.items.indexOf(component), 1);
 		destroy && component.destroy();

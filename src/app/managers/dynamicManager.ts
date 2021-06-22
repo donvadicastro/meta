@@ -1,9 +1,9 @@
-///<reference path='../models/components/base/base/element.ts'/>
+import {IMetaDynamicWhen} from "../contracts/IMetaDynamicWhen";
+import {ElementBase} from "../models/components/base/base/element";
+import _ from "underscore";
+import * as Comparators from "../comparators";
 
 module MetaApp.Managers {
-    import ElementBase = MetaApp.Models.Components.ElementBase;
-    import Comparators = MetaApp.Comparators;
-
     /**
      * Dynamic manager class to handle element dynamic actions
      */
@@ -35,14 +35,14 @@ module MetaApp.Managers {
         }
 
         /**
-         * Bind element dynamic to form data processing
+         * Bind element dynamic to form data pocessing
          */
         bind(): void {
             let element = this._element,
                 form = element._form,
                 when = element.dynamic && element.dynamic.when;
 
-            form && when && when.forEach(i => {
+            form && when && when.forEach((i: IMetaDynamicWhen) => {
                 i.binding && form.eventManager.on('data:' + i.binding, this.onDataChange, { context: this, when: i });
                 i.val && i.val.indexOf('@')+1 && form.eventManager.on('data:' + i.val.slice(1), this.onDataChange, { context: this, when: i });
             });
@@ -56,7 +56,7 @@ module MetaApp.Managers {
                 form = element._form,
                 when = element.dynamic && element.dynamic.when;
 
-            form && when && when.forEach(i => {
+            form && when && when.forEach((i: IMetaDynamicWhen) => {
                 i.binding && form.eventManager.off('data:' + i.binding, this.onDataChange, { context: this, when: i });
             });
         }
@@ -66,17 +66,22 @@ module MetaApp.Managers {
          * @param model
          * @param value
          */
-        private onDataChange(val, options): void {
+        private onDataChange(val: any, options: any): void {
             options || (options = {});
 
-            let context = this['context'],
+            // this is possible to have ANY as function is called thgough `call` and `apply` semantic.
+            const self: any = this;
+
+            const context = self.context,
                 element = context._element,
                 dynamic = element.dynamic,
-                when = this['when'],
-                res = {};
+                when = self.when,
+                res: any = {};
 
             //comparator can be specified with negation (!eq, !contains), check this first
             var hasNegation = when.fn.charAt(0) === '!',
+
+                //@ts-ignore
                 compare = Comparators[hasNegation ? when.fn.substr(1) : when.fn](element._form.getDataByPath(when.binding), when.val.indexOf('@')+1 ?
                     element._form.getDataByPath(when.val.slice(1)) : when.val);
 
@@ -98,8 +103,8 @@ module MetaApp.Managers {
          */
         private evaluateDynamic(): boolean {
             return (this._element.dynamic.operator || 'and').toLowerCase() === 'and' ?
-                this._element.dynamic.when.reduce((memo, i) => this.evaluateWhen(i) && memo, true):
-                this._element.dynamic.when.reduce((memo, i) => this.evaluateWhen(i) || memo, false);
+                this._element.dynamic.when.reduce((memo: boolean, i: IMetaDynamicWhen) => this.evaluateWhen(i) && memo, true):
+                this._element.dynamic.when.reduce((memo: boolean, i: IMetaDynamicWhen) => this.evaluateWhen(i) || memo, false);
         }
 
         /**

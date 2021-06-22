@@ -90,7 +90,7 @@ export class Form extends ContainerBase {
      * @param binding
      * @param value
      */
-    private onDataChange(binding: string, value): void {
+    private onDataChange(binding: string, value: any): void {
         this._dataByBinding[binding] = value;
         this.setByPath(binding, value);
     }
@@ -112,7 +112,7 @@ export class Form extends ContainerBase {
      * @param binding
      * @param value
      */
-    private setByPath(binding: string, value): void {
+    private setByPath(binding: string, value: any): void {
         setByPath(this.data, binding, value);
     }
 }

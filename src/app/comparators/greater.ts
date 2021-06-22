@@ -4,6 +4,6 @@
  * @param declared Statically declared value to check
  * @returns {boolean}
  */
-export function greater(actual, declared) {
+export function greater(actual: any, declared: any) {
     return actual > declared;
 }

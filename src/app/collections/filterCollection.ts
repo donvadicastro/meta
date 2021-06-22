@@ -1,11 +1,10 @@
-/// <reference path="../../../typings/underscore.d.ts" />
-
 import {DictionaryBase} from "../models/components/base/dictionary";
 import {CollectionBase} from "../models/components/collection";
 import {getByPath} from '../utils/object';
 import * as Comparators from "../comparators";
 
-import _ = require('underscore');
+import {IMetaFilter} from "../contracts/IMetaFilter";
+import _ from "underscore";
 
 /**
  * Collection to store and work with component filters. Can support filters recalculation.
@@ -21,12 +20,12 @@ export class FilterCollection {
      * @type {Array}
      * @private
      */
-    private _items: Array<any> = [];
+    private _items: Array<IMetaFilter> = [];
 
     /**
      * Event notifier when filters was changed
      */
-    private _onChange: Function;
+    private _onChange?: Function;
 
     /**
      * Constructor
@@ -34,7 +33,7 @@ export class FilterCollection {
      */
     constructor(element: DictionaryBase | CollectionBase, onChange?: Function) {
         this._element = element;
-        this._items = element.filters;
+        this._items = element.filters || [];
         this._onChange = onChange;
 
         this.bind();
@@ -54,7 +53,7 @@ export class FilterCollection {
      * @returns {T[]|Array<any>}
      */
     public filter(dictionaryItems: Array<any>): Array<any> {
-        return this._items ? _.filter(dictionaryItems, i => this.filterItem(i)) : dictionaryItems;
+        return this._items ? _.filter(dictionaryItems, (i: any) => this.filterItem(i)) : dictionaryItems;
     }
 
     /**
@@ -62,14 +61,28 @@ export class FilterCollection {
      * @param item
      * @returns {boolean}
      */
-    private filterItem(item): boolean {
-        return _.all(this._items, i => {
+    private filterItem(item: any): boolean {
+        return _.all(this._items, (i: IMetaFilter) => {
             //comparator can be specified with negation (!eq, !contains), check this first
-            var hasNegation = i.comparator.charAt(0) === '!',
-                compare = Comparators[hasNegation ? i.comparator.substr(1) : i.comparator](getByPath(i.by, item), i.val);
+            const hasNegation = i.comparator.charAt(0) === '!',
+                compare = this.resolveComparator(i)(getByPath(i.by, item), i.val);
 
             return hasNegation ? !compare : compare;
         });
+    }
+
+    /**
+     * Resolve comparator
+     * @param metaFilter filter info
+     * @returns comparator function
+     * @private
+     */
+    private resolveComparator(metaFilter: IMetaFilter): (actual: any, declared?: any) => boolean {
+        const hasNegation = metaFilter.comparator.charAt(0) === '!',
+            comparatorName = hasNegation ? metaFilter.comparator.substr(1) : metaFilter.comparator;
+
+        //@ts-ignore
+        return Comparators[comparatorName];
     }
 
     /**
@@ -83,7 +96,7 @@ export class FilterCollection {
      * Bind particular dynamic filter to data model
      * @param filter
      */
-    private bindFilter(filter): void {
+    private bindFilter(filter: IMetaFilter): void {
         var path = filter.val.substr(1),
             form = this._element._form;
 
@@ -103,11 +116,11 @@ export class FilterCollection {
      * Dynamic value was changed event handler
      * @param value
      */
-    private onDataChange(value): void {
-        var filter: any = this['filter'],
-            parent = this['parent'];
+    private onDataChange(value: any): void {
+        var filter: any = this['filter']/*,
+            parent = this.parent*/;
 
         filter.val = value;
-        parent._onChange && parent._onChange.apply(parent._element);
+        //parent._onChange && parent._onChange.apply(parent._element);
     }
 }

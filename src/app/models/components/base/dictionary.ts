@@ -20,7 +20,7 @@ export class DictionaryBase extends DataBase implements IMetaDictionaryComponent
     /**
      * List of component filters
      */
-    filters: Array<any>;
+    filters?: Array<any>;
 
     /**
      * Constructor
