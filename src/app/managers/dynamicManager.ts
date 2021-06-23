@@ -66,7 +66,6 @@ export class DynamicManager {
      * @param value
      */
     private onDataChange(val: any, options: any): void {
-        console.log('onDataChange', val);
         options || (options = {});
 
         // this is possible to have ANY as function is called thgough `call` and `apply` semantic.
@@ -95,7 +94,6 @@ export class DynamicManager {
             //notify listeners that dynamic was changed
             context._dynamicEvaluations[dynamic.prop] = res[dynamic.prop];
             element._form.eventManager.trigger('prop:' + element.name, dynamic.prop, res[dynamic.prop]);
-            console.log('FIRED!!!', 'prop:' + element.name, dynamic.prop, res[dynamic.prop]);
         }
     }
 

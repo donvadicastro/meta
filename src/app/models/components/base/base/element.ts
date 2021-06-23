@@ -107,4 +107,20 @@ export class ElementBase {
 	public destroy(): void {
 		this._dynamicManager?.unbind();
 	}
+
+	/**
+	 * Bind to dynamic change.
+	 * @param onDataChange change handler.
+	 */
+	public bindDynamicChange(onDataChange: Function) {
+		this._form.eventManager.on('prop:' + this.name, onDataChange);
+	}
+
+	/**
+	 * Unbind to dynamic change.
+	 * @param onDataChange change handler.
+	 */
+	public unbindDynamicChange(onDataChange: Function) {
+		this._form.eventManager.off('prop:' + this.name, onDataChange);
+	}
 }

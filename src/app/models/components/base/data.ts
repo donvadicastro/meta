@@ -127,7 +127,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * Bind to data model change event.
      * @param onDataChange change handler.
      */
-    public bind(onDataChange: Function) {
+    public bindModelChange(onDataChange: Function) {
         this._form && this._form.eventManager.on('data:' + this.binding, onDataChange, this);
     }
 
@@ -135,7 +135,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * Unbind from data model change event.
      * @param onDataChange change handler.
      */
-    public unbind(onDataChange: Function) {
+    public unbindModelChange(onDataChange: Function) {
         this._form && this._form.eventManager.off('data:' + this.binding, onDataChange, this);
     }
 
