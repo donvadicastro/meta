@@ -4,6 +4,9 @@ import {Form} from "../../form";
 import {CollectionBase} from "../../collection";
 import {IValidationResult} from "../../../../contracts/IValidationResult";
 import {IMetaBaseComponent} from "../../../../contracts/IMetaBaseComponent";
+import {DynamicManager} from "../../../../managers/dynamicManager";
+import {getByPath} from "../../../../utils/object";
+import _ from "underscore";
 
 /**
  * Base class to describe meta component. All custom components should inherit from this base class.
@@ -43,10 +46,24 @@ export class ElementBase {
 	_form: Form;
 
 	/**
+	 * Dynamic manager. Can be unspecified when no dynamic config presented.
+	 */
+	_dynamicManager: DynamicManager | null = null;
+
+	/**
 	 * Gets component dynamic settings
 	 */
 	get dynamic(): any {
 		return this._meta.dynamic;
+	}
+
+	/**
+	 * Get dynamic value by key.
+	 * @param key
+	 */
+	getPropertyValue(key: string) {
+		const dynamic = this._dynamicManager?.getPropertyValue(key);
+		return _.isUndefined(dynamic) ? getByPath(key, this._meta) : dynamic;
 	}
 
 	/**
@@ -64,6 +81,8 @@ export class ElementBase {
 		this._parent = options.parent;
 
 		this._form = options.form;
+
+		meta.dynamic && (this._dynamicManager = new DynamicManager(this));
 	}
 
 	/**
@@ -71,7 +90,7 @@ export class ElementBase {
 	 * @param options
 	 */
 	public initialize(options?: any): void {
-
+		this._dynamicManager?.bind();
 	}
 
 	/**
@@ -86,6 +105,6 @@ export class ElementBase {
 	 * Destroy
 	 */
 	public destroy(): void {
-
+		this._dynamicManager?.unbind();
 	}
 }

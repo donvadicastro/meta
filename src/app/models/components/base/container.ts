@@ -8,8 +8,6 @@ import {CollectionBase} from "../collection";
 import {DictionaryBase} from "./dictionary";
 import {DataBase} from "./data";
 import {IValidationResult} from "../../../contracts/IValidationResult";
-import {toUpperCaseFirstLetter} from "../../../utils/string";
-import _ from "underscore";
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
