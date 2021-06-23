@@ -57,10 +57,14 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
         this.validation = meta.validation;
         this.filters = meta.filters;
 
-        this.bind();
-        this.addValidators();
+        this._bind();
+        this._addValidators();
 
         (meta.value === undefined) || this.setValue(meta.value);
+    }
+
+    initialize(options?: any) {
+        super.initialize(options);
     }
 
     /**
@@ -97,7 +101,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * Destroy
      */
     public destroy() {
-        this.unbind();
+        this._unbind();
         this.validators.length = 0;
     }
 
@@ -120,17 +124,33 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
     }
 
     /**
+     * Bind to data model change event.
+     * @param onDataChange change handler.
+     */
+    public bind(onDataChange: Function) {
+        this._form && this._form.eventManager.on('data:' + this.binding, onDataChange, this);
+    }
+
+    /**
+     * Unbind from data model change event.
+     * @param onDataChange change handler.
+     */
+    public unbind(onDataChange: Function) {
+        this._form && this._form.eventManager.off('data:' + this.binding, onDataChange, this);
+    }
+
+    /**
      * Bind component to form data processing mechanism
      */
-    private bind() {
-        this._form && this._form.eventManager.on('data:' + this.binding, this.onDataChange, this);
+    private _bind() {
+        this._form && this._form.eventManager.on('data:' + this.binding, this._onDataChange, this);
     }
 
     /**
      * Unbind component from form data processing mechanism
      */
-    private unbind() {
-        this._form && this._form.eventManager.off('data:' + this.binding, this.onDataChange, this);
+    private _unbind() {
+        this._form && this._form.eventManager.off('data:' + this.binding, this._onDataChange, this);
     }
 
     /**
@@ -138,14 +158,14 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * @param value
      * @param sender
      */
-    private onDataChange(value: any, sender: IMetaDataComponent) {
+    private _onDataChange(value: any, sender: IMetaDataComponent) {
         sender === this || this.setValue(value).validate();
     }
 
     /**
      * Apply component validators
      */
-    private addValidators() {
+    private _addValidators() {
         for(var name in this.validation) {
             var v = this.validation[name],
                 //@ts-ignore
