@@ -80,8 +80,9 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
         if(this.value !== newValue) {
             this.value = newValue;
 
-            this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
+            // form should catch event earlier to properly update data model before it use, so "*" is first
             this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
+            this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
 
             this._container && setByPath(this._container.data, this.binding, newValue);
         }

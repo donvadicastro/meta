@@ -79,7 +79,6 @@ export class ElementBase {
 		this._meta = meta;
 		this._container = options.container;
 		this._parent = options.parent;
-
 		this._form = options.form;
 
 		meta.dynamic && (this._dynamicManager = new DynamicManager(this));

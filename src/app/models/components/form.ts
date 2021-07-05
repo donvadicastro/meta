@@ -12,7 +12,7 @@ export class Form extends ContainerBase {
     /**
      * Data hash as set of key-value pairs where key is the binding
      */
-    private _dataByBinding: any;
+    private readonly _dataByBinding: any;
 
     /**
      * Component hash as set of key-value pairs where key is the component name
