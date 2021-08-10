@@ -2,11 +2,14 @@ import {IMetaDynamicWhen} from "../contracts/IMetaDynamicWhen";
 import {ElementBase} from "../models/components/base/base/element";
 import _ from "underscore";
 import * as Comparators from "../comparators";
+import * as Actions from "../actions";
 
 /**
  * Dynamic manager class to handle element dynamic actions
  */
 export class DynamicManager {
+    private static pipeRegex: RegExp = /(\w+)\(([^)]+)\)/; //@upperCase(path.to.data)
+
     /**
      * Form element to bind to
      */
@@ -90,7 +93,7 @@ export class DynamicManager {
         if(!options.silent) {
             //set dynamic
             res[dynamic.prop] = context.evaluateDynamic() ?
-                (dynamic.val.indexOf('@')+1 ? element._form.getDataByPath(dynamic.val.slice(1)) : dynamic.val) : undefined;
+                context.evaluateVal(dynamic, element) : undefined;
 
             //notify listeners that dynamic was changed
             context._dynamicEvaluations[dynamic.prop] = res[dynamic.prop];
@@ -99,7 +102,24 @@ export class DynamicManager {
     }
 
     /**
+     * Evaluate resulting value when condition passed.
+     * @private
+     */
+    private evaluateVal() {
+        if (this._element.dynamic.val.startsWith('@')) {
+            const pipeData = DynamicManager.pipeRegex.exec(this._element.dynamic.val);
+            const value = this._element._form.getDataByPath(pipeData ? pipeData[2] : this._element.dynamic.val.slice(1));
+
+            //@ts-ignore
+            return pipeData ? Actions[pipeData[1]](value) : value;
+        } else {
+            return this._element.dynamic.val;
+        }
+    }
+
+    /**
      * Evaluate full dynamic
+     * @private
      */
     private evaluateDynamic(): boolean {
         return (this._element.dynamic.operator || 'and').toLowerCase() === 'and' ?

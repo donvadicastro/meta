@@ -192,4 +192,30 @@ describe('Managers: DynamicManager', () => {
 		element.eventManager.trigger('data:b2', 'text-to-fire-1');
 		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
 	});
+
+	it('should support dynamic "val" value with transformation', () => {
+		const element = new Form({name: 'testContainerComponent', items: [{
+			name: 'child1',
+			binding: 'b1',
+			ui: { label: 'old label' },
+			dynamic: {
+				prop: 'ui.label',
+				val: '@upperCase(b2)',
+				when: [{
+					binding: 'b2',
+					fn: 'eq',
+					val: '@b1'
+				}]
+			}}
+		]});
+
+		element.initialize();
+		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		element.eventManager.trigger('data:b2', 'text-to-fire');
+
+		element.eventManager.trigger('data:*', 'b1', 'text-to-fire');
+		element.eventManager.trigger('data:b1', 'text-to-fire');
+
+		expect('TEXT-TO-FIRE').to.equal(element.items[0].getPropertyValue('ui.label'));
+	});
 });
