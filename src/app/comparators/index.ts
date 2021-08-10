@@ -3,3 +3,4 @@ export * from "./empty";
 export * from "./eq";
 export * from "./greater";
 export * from "./less";
+export * from "./change";

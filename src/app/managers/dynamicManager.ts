@@ -84,8 +84,8 @@ export class DynamicManager {
         const  hasNegation = when.fn.charAt(0) === '!',
 
             //@ts-ignore
-            compare = Comparators[hasNegation ? when.fn.substr(1) : when.fn](element._form.getDataByPath(when.binding), when.val.indexOf('@')+1 ?
-                element._form.getDataByPath(when.val.slice(1)) : when.val);
+            compare = Comparators[hasNegation ? when.fn.substr(1) : when.fn](element._form.getDataByPath(when.binding),
+                when.val?.indexOf('@')+1 ? element._form.getDataByPath(when.val.slice(1)) : when.val);
 
         //store evaluation result into local object
         when._evaluationResult = hasNegation ? !compare : compare;
@@ -112,9 +112,9 @@ export class DynamicManager {
 
             //@ts-ignore
             return pipeData ? Actions[pipeData[1]](value) : value;
-        } else {
-            return this._element.dynamic.val;
         }
+
+        return this._element.dynamic.val;
     }
 
     /**

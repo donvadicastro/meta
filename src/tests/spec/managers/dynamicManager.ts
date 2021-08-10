@@ -193,6 +193,28 @@ describe('Managers: DynamicManager', () => {
 		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
 	});
 
+	it('should support dynamic "val" value on change', () => {
+		const element = new Form({name: 'testContainerComponent', items: [{
+			name: 'child1',
+			binding: 'b1',
+			ui: { label: 'old label' },
+			dynamic: {
+				prop: 'ui.label',
+				val: '@b2',
+				when: [{
+					binding: 'b2',
+					fn: 'change'
+				}]
+			}}
+		]});
+
+		element.initialize();
+		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		element.eventManager.trigger('data:b2', 'text-to-fire');
+
+		expect('text-to-fire').to.equal(element.items[0].getPropertyValue('ui.label'));
+	});
+
 	it('should support dynamic "val" value with transformation', () => {
 		const element = new Form({name: 'testContainerComponent', items: [{
 			name: 'child1',
