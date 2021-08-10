@@ -78,7 +78,7 @@ export class DynamicManager {
             res: any = {};
 
         //comparator can be specified with negation (!eq, !contains), check this first
-        var hasNegation = when.fn.charAt(0) === '!',
+        const  hasNegation = when.fn.charAt(0) === '!',
 
             //@ts-ignore
             compare = Comparators[hasNegation ? when.fn.substr(1) : when.fn](element._form.getDataByPath(when.binding), when.val.indexOf('@')+1 ?
@@ -89,7 +89,8 @@ export class DynamicManager {
 
         if(!options.silent) {
             //set dynamic
-            res[dynamic.prop] = context.evaluateDynamic() ? dynamic.val : undefined;
+            res[dynamic.prop] = context.evaluateDynamic() ?
+                (dynamic.val.indexOf('@')+1 ? element._form.getDataByPath(dynamic.val.slice(1)) : dynamic.val) : undefined;
 
             //notify listeners that dynamic was changed
             context._dynamicEvaluations[dynamic.prop] = res[dynamic.prop];
@@ -111,7 +112,9 @@ export class DynamicManager {
      * @param when
      */
     private evaluateWhen(when: any): boolean {
-        _.isBoolean(when._evaluationResult) || this.onDataChange.call({context: this, when: when}, this._element._form.getDataByPath(when.binding), {silent: true});
+        _.isBoolean(when._evaluationResult) ||
+            this.onDataChange.call({context: this, when: when}, this._element._form.getDataByPath(when.binding), {silent: true});
+
         return when._evaluationResult;
     }
 }
