@@ -72,18 +72,23 @@ describe('Models: Data', () => {
     });
 
     it('should support object data binding with property binding', () => {
+        const data = {prop: 123, complex: {prop: '456'}};
         const form = new Form({name: 'dataForm', items: [
             {name: 'e1', binding: 'b1'},
             {name: 'e2', binding: 'b1.prop'},
+            {name: 'e3', binding: 'b1.complex.prop'},
         ]});
 
         form.initialize();
 
-        form.items[0].setValue({prop: 123});
-        expect({prop: 123}).to.deep.equal(form.data.b1);
-        expect({prop: 123}).to.deep.equal(form.items[0].getValue());
+        form.items[0].setValue(data);
+        expect(data).to.deep.equal(form.data.b1);
+        expect(data).to.deep.equal(form.items[0].getValue());
 
         expect(123).to.equal(form.data.b1.prop);
         expect(123).to.equal(form.items[1].getValue());
+
+        expect('456').to.equal(form.data.b1.complex.prop);
+        expect('456').to.equal(form.items[2].getValue());
     });
 });

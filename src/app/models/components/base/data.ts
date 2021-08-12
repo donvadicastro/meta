@@ -81,17 +81,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
         if(this.value !== newValue) {
             this.value = newValue;
 
-            // form should catch event earlier to properly update data model before it use, so "*" is first
-            this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
-            this._form && this._form.eventManager.trigger(`data:${this.binding}`, newValue, this);
-
-            // as well iterate over complex object to notify change happens when particular property binding exists
-            // one level support for now
-            _.isObject(value) && Object.keys(value).forEach(key => {
-                this._form && this._form.eventManager.trigger('data:*', `${this.binding}.${key}`, newValue[key], this);
-                this._form && this._form.eventManager.trigger(`data:${this.binding}.${key}`, newValue[key], this);
-            });
-
+            this._notifyChange(newValue, this.binding);
             this._container && setByPath(this._container.data, this.binding, newValue);
         }
 
@@ -182,5 +172,14 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
 
             this.validators.push(new vRef(this));
         }
+    }
+
+    private _notifyChange(value: any, binding: string) {
+        // form should catch event earlier to properly update data model before it use, so "*" is first
+        this._form && this._form.eventManager.trigger('data:*', binding, value, this);
+        this._form && this._form.eventManager.trigger(`data:${binding}`, value, this);
+
+        // as well iterate over complex object to notify change happens when particular property binding exists
+        _.isObject(value) && Object.keys(value).forEach(key => this._notifyChange(value[key], `${binding}.${key}`));
     }
 }
