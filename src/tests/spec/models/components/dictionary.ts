@@ -6,6 +6,9 @@ import MockAdapter from "axios-mock-adapter";
 import sinon from "sinon";
 
 describe('Models: Dictionary',  () => {
+	const mock = new MockAdapter(axios);
+	const axiosSpy = sinon.spy(axios, 'get');
+
 	it('should support reading dictionary', () => {
 		const element = new DictionaryBase({name: 'testDictionaryComponent', binding: 'binding', dictionary: 'dictionary'});
 		expect(element.getList).to.exist;
@@ -32,9 +35,6 @@ describe('Models: Dictionary',  () => {
 	});
 
 	it('should read remote dictionary', async () => {
-		const mock = new MockAdapter(axios);
-		const axiosSpy = sinon.spy(axios, 'get');
-
 		mock.onGet('d1').reply(200, [
 			{id: 1, name: 'a'},
 			{id: 2, name: 'b'},
@@ -52,6 +52,21 @@ describe('Models: Dictionary',  () => {
 		const list = await element.items[0].getList();
 		expect(axiosSpy.calledWith('d1')).to.be.true;
 		expect(list.length).to.equal(5);
-		expect(list[0].id).to.equal(1);
+		expect(list[0]).to.deep.equal({id: 1, name: 'a'});
+	});
+
+	it('should read remote string-list dictionary', async () => {
+		mock.onGet('d2').reply(200, ['a', 'b', 'c', 'd', 'e']);
+
+		const element = new Form({name: 'testFormComponent', items: [
+				{name: 'child2', binding: 'b2', dictionary: 'd2'}
+			]});
+
+		element.initialize();
+
+		const list = await element.items[0].getList();
+		expect(axiosSpy.calledWith('d2')).to.be.true;
+		expect(list.length).to.equal(5);
+		expect(list[0]).to.deep.equal({key: 'a', name: 'a'});
 	});
 });

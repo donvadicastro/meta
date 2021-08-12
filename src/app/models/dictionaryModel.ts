@@ -1,6 +1,7 @@
 import {DictionaryBase} from "./components/base/dictionary";
 import {FilterCollection} from "../collections/filterCollection";
 import axios, {AxiosResponse} from "axios";
+import _ from "underscore";
 
 /**
  * Dictionary manager class implementation.
@@ -39,6 +40,7 @@ export class DictionaryModel {
     }
 
     private async getRemoteList(): Promise<Array<any>> {
-        return axios.get(this._element.dictionary).then((response: AxiosResponse) => response.data);
+        return axios.get(this._element.dictionary).then(
+            (response: AxiosResponse) => response.data.map((x: any) => _.isString(x) ? {key: x, name: x} : x));
     }
 }
