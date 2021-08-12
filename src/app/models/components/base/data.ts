@@ -8,6 +8,7 @@ import _ from "underscore";
 
 import * as Converters from "../../../extensions/converters";
 import * as Validators from "../../../validators";
+import axios, {AxiosResponse} from "axios";
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
@@ -23,6 +24,11 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * Component predefined value
      */
     value: any;
+
+    /**
+     * Component remote value source to populate by binding during initialization.
+     */
+    valueSource: any;
 
     /**
      * Component data type
@@ -66,6 +72,11 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
 
     initialize(options?: any) {
         super.initialize(options);
+
+        // support remote load only when there is place to inject data into
+        if (this._meta.valueSource && this._meta.binding) {
+            this._loadRemote().then((data: any) => this.setValue(data));
+        }
     }
 
     /**
@@ -181,5 +192,9 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
 
         // as well iterate over complex object to notify change happens when particular property binding exists
         _.isObject(value) && Object.keys(value).forEach(key => this._notifyChange(value[key], `${binding}.${key}`));
+    }
+
+    private async _loadRemote(): Promise<any> {
+        return axios.get(this._meta.valueSource).then((response: AxiosResponse) => response.data);
     }
 }

@@ -16,6 +16,11 @@ export interface IMetaDataComponent extends IMetaBaseComponent {
 	value?: any;
 
 	/**
+	 * Remote source content.
+	 */
+	valueSource?: string;
+
+	/**
 	 * Component data type
 	 */
 	type?: MetaComponentType;

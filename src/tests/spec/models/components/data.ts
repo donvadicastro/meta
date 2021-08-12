@@ -2,8 +2,14 @@ import {DataBase} from "../../../../app/models/components/base/data";
 import {Form} from "../../../../app/models/components/form";
 import {expect} from "chai";
 import {MetaComponentType} from "../../../../app/enums/metaComponentType";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
+import sinon from "sinon";
 
 describe('Models: Data', () => {
+    const mock = new MockAdapter(axios);
+    const axiosSpy = sinon.spy(axios, 'get');
+
     it('should create data component correct', () => {
         const element = new DataBase({name: 'testDataComponent', binding: 'binding'});
 
@@ -90,5 +96,23 @@ describe('Models: Data', () => {
 
         expect('456').to.equal(form.data.b1.complex.prop);
         expect('456').to.equal(form.items[2].getValue());
+    });
+
+    it('should support "valueSource" properly', (done) => {
+        const data = {deep: {structure: {source: 'abc'}}};
+        mock.onGet('path').reply(200, data);
+
+        const form = new Form({name: 'dataForm', items: [
+            {name: 'e1', binding: 'b1', valueSource: 'path'}
+        ]});
+
+        form.initialize();
+
+        setTimeout(() => {
+            expect(axiosSpy.calledWith('path')).to.be.true;
+            expect(data).to.deep.equal(form.data.b1);
+            expect(data).to.deep.equal(form.items[0].getValue());
+            done();
+        }, 100);
     });
 });

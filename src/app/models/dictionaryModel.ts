@@ -34,12 +34,12 @@ export class DictionaryModel {
     public async getList(): Promise<Array<any>> {
         const element = this._element,
             dictionaries = element._form.dictionaries || {},
-            items = dictionaries[this._element.dictionary] || await this.getRemoteList();
+            items = dictionaries[this._element.dictionary] || await this._loadRemoteList();
 
         return Promise.resolve(this._filters.filter(items));
     }
 
-    private async getRemoteList(): Promise<Array<any>> {
+    private async _loadRemoteList(): Promise<Array<any>> {
         return axios.get(this._element.dictionary).then(
             (response: AxiosResponse) => response.data.map((x: any) => _.isString(x) ? {key: x, name: x} : x));
     }
