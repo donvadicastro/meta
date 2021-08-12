@@ -4,6 +4,7 @@ import {MetaComponentType} from "../../../enums/metaComponentType";
 import {IValidationResult} from "../../../contracts/IValidationResult";
 import {setByPath} from "../../../utils/object";
 import {toUpperCaseFirstLetter} from "../../../utils/string";
+import _ from "underscore";
 
 import * as Converters from "../../../extensions/converters";
 import * as Validators from "../../../validators";
@@ -82,7 +83,14 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
 
             // form should catch event earlier to properly update data model before it use, so "*" is first
             this._form && this._form.eventManager.trigger('data:*', this.binding, newValue, this);
-            this._form && this._form.eventManager.trigger('data:' + this.binding, newValue, this);
+            this._form && this._form.eventManager.trigger(`data:${this.binding}`, newValue, this);
+
+            // as well iterate over complex object to notify change happens when particular property binding exists
+            // one level support for now
+            _.isObject(value) && Object.keys(value).forEach(key => {
+                this._form && this._form.eventManager.trigger('data:*', `${this.binding}.${key}`, newValue[key], this);
+                this._form && this._form.eventManager.trigger(`data:${this.binding}.${key}`, newValue[key], this);
+            });
 
             this._container && setByPath(this._container.data, this.binding, newValue);
         }

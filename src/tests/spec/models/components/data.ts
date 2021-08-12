@@ -3,9 +3,9 @@ import {Form} from "../../../../app/models/components/form";
 import {expect} from "chai";
 import {MetaComponentType} from "../../../../app/enums/metaComponentType";
 
-describe('Models: Data', function () {
-    it('should create data component correct', function () {
-        var element = new DataBase({name: 'testDataComponent', binding: 'binding'});
+describe('Models: Data', () => {
+    it('should create data component correct', () => {
+        const element = new DataBase({name: 'testDataComponent', binding: 'binding'});
 
         expect('testDataComponent').to.equal(element.name);
         expect('binding').to.equal(element.binding);
@@ -14,8 +14,8 @@ describe('Models: Data', function () {
         expect(element.getValue).not.to.be.undefined;
     });
 
-    it('should support simple data binding', function () {
-        var form = new Form({name: 'dataForm', items: [{name: 'e1', binding: 'b1'}]});
+    it('should support simple data binding', () => {
+        const form = new Form({name: 'dataForm', items: [{name: 'e1', binding: 'b1'}]});
         form.initialize();
 
         expect(form.data.b1).to.be.undefined;
@@ -25,8 +25,8 @@ describe('Models: Data', function () {
         expect('a').to.equal(form.items[0].getValue());
     });
 
-    it('should support data convertions', function () {
-        var form = new Form({name: 'dataForm', items: [
+    it('should support data convertions', () => {
+        const form = new Form({name: 'dataForm', items: [
             {name: 'testDataComponent0', binding: 'b0'},
             {name: 'testDataComponent1', binding: 'b1', type: MetaComponentType.Date},
             {name: 'testDataComponent2', binding: 'b2', type: MetaComponentType.Number},
@@ -55,8 +55,8 @@ describe('Models: Data', function () {
         expect(false).to.equal(form.items[3].getValue());
     });
 
-    it('should support predefined value', function () {
-        var form = new Form({name: 'dataForm', items: [
+    it('should support predefined value', () =>  {
+        const form = new Form({name: 'dataForm', items: [
             {name: 'testDataComponent0', binding: 'b0', value: 'a'},
             {name: 'testDataComponent1', binding: 'b1', type: MetaComponentType.Date, value: '2015-10-08T23:37:35'},
             {name: 'testDataComponent2', binding: 'b2', type: MetaComponentType.Number, value: 11},
@@ -69,5 +69,21 @@ describe('Models: Data', function () {
         expect('2015-10-08T20:37:35.000Z').to.equal(form.items[1].getValue().toISOString());
         expect(11).to.equal(form.items[2].getValue());
         expect(true).to.equal(form.items[3].getValue());
+    });
+
+    it('should support object data binding with property binding', () => {
+        const form = new Form({name: 'dataForm', items: [
+            {name: 'e1', binding: 'b1'},
+            {name: 'e2', binding: 'b1.prop'},
+        ]});
+
+        form.initialize();
+
+        form.items[0].setValue({prop: 123});
+        expect({prop: 123}).to.deep.equal(form.data.b1);
+        expect({prop: 123}).to.deep.equal(form.items[0].getValue());
+
+        expect(123).to.equal(form.data.b1.prop);
+        expect(123).to.equal(form.items[1].getValue());
     });
 });

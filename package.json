@@ -14,17 +14,21 @@
     "@types/backbone": "^1.4.10",
     "@types/chai": "^4.2.19",
     "@types/mocha": "^8.2.2",
+    "@types/sinon": "^10.0.2",
     "@types/underscore": "^1.11.2",
+    "axios-mock-adapter": "^1.19.0",
     "chai": "^4.3.4",
     "ink-docstrap": "^0.5.4",
     "mocha": "^9.0.0",
     "nyc": "^15.1.0",
+    "sinon": "^11.1.2",
     "ts-mockito": "^2.6.1",
     "ts-node": "^10.0.0",
     "tsd": "^0.17.0",
     "typescript": "^4.3.2"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "backbone": "1.4.0",
     "jquery": "^3.6.0",
     "underscore": "^1.13.1"

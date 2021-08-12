@@ -50,6 +50,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 */
 	private initializeItems(items: Array<IMetaBaseComponent | IMetaCollectionComponent | IMetaContainerComponent>, options: any) {
 		options || (options = {});
+
 		for(var i=0, len=(items || []).length, e; i<len; i++) {
 			e = items[i];
 

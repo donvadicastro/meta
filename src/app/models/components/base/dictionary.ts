@@ -38,9 +38,9 @@ export class DictionaryBase extends DataBase implements IMetaDictionaryComponent
 
     /**
      * Returns component dictionary content which passed through dictionary manager pipeline
-     * @returns {Array<any>}
+     * @returns {Promise<Array<any>>}
      */
-    public getList(): Array<any> {
+    public async getList(): Promise<Array<any>> {
         return this._dictionaryModel.getList();
     }
 }
