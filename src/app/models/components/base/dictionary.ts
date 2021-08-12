@@ -6,7 +6,7 @@ import {DictionaryModel} from "../../dictionaryModel";
  * Dictionary-based component class implementation.
  * Main generic class to be inherited from for all components which uses dictionaries as set of allowed component values.
  */
-export class DictionaryBase extends DataBase implements IMetaDictionaryComponent{
+export class DictionaryBase extends DataBase implements IMetaDictionaryComponent {
     /**
      * Dictionary manager reference
      */

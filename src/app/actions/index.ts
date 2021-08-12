@@ -1,2 +1,1 @@
-export * from "./lowerCase";
-export * from "./upperCase";
+export * from './form/validate';

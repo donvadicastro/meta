@@ -2,13 +2,13 @@ import {IMetaDynamicWhen} from "../contracts/IMetaDynamicWhen";
 import {ElementBase} from "../models/components/base/base/element";
 import _ from "underscore";
 import * as Comparators from "../comparators";
-import * as Actions from "../actions";
+import * as Actions from "../pipes";
 
 /**
  * Dynamic manager class to handle element dynamic actions
  */
 export class DynamicManager {
-    private static pipeRegex: RegExp = /(\w+)\(([^)]+)\)/; //@upperCase(path.to.data)
+    private static pipeRegex: RegExp = /^@(\w+)\(([^)]+)\)$/; //@upperCase(path.to.data)
 
     /**
      * Form element to bind to

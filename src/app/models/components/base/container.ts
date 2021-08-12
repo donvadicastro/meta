@@ -8,6 +8,8 @@ import {CollectionBase} from "../collection";
 import {DictionaryBase} from "./dictionary";
 import {DataBase} from "./data";
 import {IValidationResult} from "../../../contracts/IValidationResult";
+import {Action} from "../action";
+import {IMetaActionComponent} from "../../../contracts/IMetaActionComponent";
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
@@ -48,7 +50,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	/**
 	 * Initialize children
 	 */
-	private initializeItems(items: Array<IMetaBaseComponent | IMetaCollectionComponent | IMetaContainerComponent>, options: any) {
+	private initializeItems(items: Array<IMetaBaseComponent | IMetaCollectionComponent | IMetaContainerComponent | IMetaActionComponent>, options: any) {
 		options || (options = {});
 
 		for(var i=0, len=(items || []).length, e; i<len; i++) {
@@ -74,11 +76,11 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 */
 	public static getComponentConstructor(meta: any): any {
 
-		if(meta.type === MetaComponentType.List) { return CollectionBase; }
-
-		if(meta.dictionary) { return DictionaryBase; }
-		if(meta.binding) { return DataBase; }
-		if(meta.items) { return ContainerBase; }
+		if (meta.type === MetaComponentType.List) { return CollectionBase; }
+		if (meta.dictionary) { return DictionaryBase; }
+		if (meta.binding) { return DataBase; }
+		if (meta.items) { return ContainerBase; }
+		if (meta.action) { return Action; }
 
 		return ElementBase;
 	}
