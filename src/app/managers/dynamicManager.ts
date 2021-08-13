@@ -65,8 +65,8 @@ export class DynamicManager {
 
     /**
      * Data change event handler
-     * @param model
-     * @param value
+     * @param val value
+     * @param options options
      */
     private onDataChange(val: any, options: any): void {
         options || (options = {});
@@ -106,7 +106,7 @@ export class DynamicManager {
      * @private
      */
     private evaluateVal() {
-        if (this._element.dynamic.val.startsWith('@')) {
+        if (_.isString(this._element.dynamic.val) && this._element.dynamic.val.startsWith('@')) {
             const pipeData = DynamicManager.pipeRegex.exec(this._element.dynamic.val);
             const value = this._element._form.getDataByPath(pipeData ? pipeData[2] : this._element.dynamic.val.slice(1));
 

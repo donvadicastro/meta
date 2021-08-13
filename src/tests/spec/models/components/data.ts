@@ -7,8 +7,18 @@ import axios from "axios";
 import sinon from "sinon";
 
 describe('Models: Data', () => {
-    const mock = new MockAdapter(axios);
-    const axiosSpy = sinon.spy(axios, 'get');
+    let mock: MockAdapter;
+    let axiosSpy;
+
+    before(() => {
+        mock = new MockAdapter(axios);
+        axiosSpy = sinon.spy(axios, 'get');
+    });
+
+    after(() => {
+        mock.reset();
+        axiosSpy.restore();
+    });
 
     it('should create data component correct', () => {
         const element = new DataBase({name: 'testDataComponent', binding: 'binding'});

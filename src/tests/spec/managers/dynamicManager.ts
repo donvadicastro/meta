@@ -1,9 +1,11 @@
 import {Form} from "../../../app/models/components/form";
 import {expect} from "chai";
+import * as Actions from '../../../app/actions';
+import sinon from "sinon";
 
 describe('Managers: DynamicManager', () => {
 	it('should set dynamic properties', () => {
-		const element = new Form({name: 'testContainerComponent', items: [
+		const form = new Form({name: 'testContainerComponent', items: [
 			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
@@ -17,20 +19,20 @@ describe('Managers: DynamicManager', () => {
 				}}
 		]});
 
-		element.initialize();
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.initialize();
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
-		expect('new label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
+		expect('new label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'not-text-to-fire');
-		element.eventManager.trigger('data:b2', 'not-text-to-fire');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'not-text-to-fire');
+		form.eventManager.trigger('data:b2', 'not-text-to-fire');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 	});
 
 	it('should set dynamic properties with negation', () => {
-		const element = new Form({name: 'testContainerComponent', items: [
+		const form = new Form({name: 'testContainerComponent', items: [
 			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
@@ -44,15 +46,15 @@ describe('Managers: DynamicManager', () => {
 				}}
 		]});
 
-		element.initialize();
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.initialize();
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:b2', 'not-text-to-fire');
-		expect('new label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:b2', 'not-text-to-fire');
+		expect('new label').to.equal(form.items[0].getPropertyValue('ui.label'));
 	});
 
 	it('should support multi-when with OR comparison', () => {
-		const element = new Form({name: 'testContainerComponent', items: [
+		const form = new Form({name: 'testContainerComponent', items: [
 			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
@@ -71,28 +73,28 @@ describe('Managers: DynamicManager', () => {
 				}}
 		]});
 
-		element.initialize();
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.initialize();
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire-1');
-		element.eventManager.trigger('data:b2', 'text-to-fire-1');
-		expect('new label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire-1');
+		form.eventManager.trigger('data:b2', 'text-to-fire-1');
+		expect('new label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire-2');
-		element.eventManager.trigger('data:b2', 'text-to-fire-2');
-		expect('new label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire-2');
+		form.eventManager.trigger('data:b2', 'text-to-fire-2');
+		expect('new label').to.equal(form.items[0].getPropertyValue('ui.label'));
 	});
 
 	it('should support multi-when with AND comparison', () => {
-		const element = new Form({name: 'testContainerComponent', items: [
+		const form = new Form({name: 'testContainerComponent', items: [
 			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
@@ -110,28 +112,28 @@ describe('Managers: DynamicManager', () => {
 				}}
 		]});
 
-		element.initialize();
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.initialize();
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b1', 'text-to-fire-1');
-		element.eventManager.trigger('data:b1', 'text-to-fire-1');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b1', 'text-to-fire-1');
+		form.eventManager.trigger('data:b1', 'text-to-fire-1');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire-2');
-		element.eventManager.trigger('data:b2', 'text-to-fire-2');
-		expect('new label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire-2');
+		form.eventManager.trigger('data:b2', 'text-to-fire-2');
+		expect('new label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b1', 'text-to-fire');
-		element.eventManager.trigger('data:b1', 'text-to-fire');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b1', 'text-to-fire');
+		form.eventManager.trigger('data:b1', 'text-to-fire');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 	});
 
 	it('should support dynamic "when" value', () => {
-		const element = new Form({name: 'testContainerComponent', items: [
+		const form = new Form({name: 'testContainerComponent', items: [
 			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
@@ -145,24 +147,24 @@ describe('Managers: DynamicManager', () => {
 				}}
 		]});
 
-		element.initialize();
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.initialize();
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b1', 'text-to-fire');
-		element.eventManager.trigger('data:b1', 'text-to-fire');
-		expect('new label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b1', 'text-to-fire');
+		form.eventManager.trigger('data:b1', 'text-to-fire');
+		expect('new label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire-1');
-		element.eventManager.trigger('data:b2', 'text-to-fire-1');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire-1');
+		form.eventManager.trigger('data:b2', 'text-to-fire-1');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 	});
 
 	it('should support dynamic "val" value', () => {
-		const element = new Form({name: 'testContainerComponent', items: [{
+		const form = new Form({name: 'testContainerComponent', items: [{
 			name: 'child1',
 			binding: 'b1',
 			ui: { label: 'old label' },
@@ -177,24 +179,24 @@ describe('Managers: DynamicManager', () => {
 			}}
 		]});
 
-		element.initialize();
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.initialize();
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b1', 'text-to-fire');
-		element.eventManager.trigger('data:b1', 'text-to-fire');
-		expect('text-to-fire').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b1', 'text-to-fire');
+		form.eventManager.trigger('data:b1', 'text-to-fire');
+		expect('text-to-fire').to.equal(form.items[0].getPropertyValue('ui.label'));
 
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire-1');
-		element.eventManager.trigger('data:b2', 'text-to-fire-1');
-		expect('old label').to.equal(element.items[0].getPropertyValue('ui.label'));
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire-1');
+		form.eventManager.trigger('data:b2', 'text-to-fire-1');
+		expect('old label').to.equal(form.items[0].getPropertyValue('ui.label'));
 	});
 
 	it('should support dynamic "val" value on change', () => {
-		const element = new Form({name: 'testContainerComponent', items: [{
+		const form = new Form({name: 'testContainerComponent', items: [{
 			name: 'child1',
 			binding: 'b1',
 			ui: { label: 'old label' },
@@ -208,15 +210,15 @@ describe('Managers: DynamicManager', () => {
 			}}
 		]});
 
-		element.initialize();
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
+		form.initialize();
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
 
-		expect('text-to-fire').to.equal(element.items[0].getPropertyValue('ui.label'));
+		expect('text-to-fire').to.equal(form.items[0].getPropertyValue('ui.label'));
 	});
 
 	it('should support dynamic "val" value with transformation', () => {
-		const element = new Form({name: 'testContainerComponent', items: [{
+		const form = new Form({name: 'testContainerComponent', items: [{
 			name: 'child1',
 			binding: 'b1',
 			ui: { label: 'old label' },
@@ -231,13 +233,37 @@ describe('Managers: DynamicManager', () => {
 			}}
 		]});
 
-		element.initialize();
-		element.eventManager.trigger('data:*', 'b2', 'text-to-fire');
-		element.eventManager.trigger('data:b2', 'text-to-fire');
+		form.initialize();
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
 
-		element.eventManager.trigger('data:*', 'b1', 'text-to-fire');
-		element.eventManager.trigger('data:b1', 'text-to-fire');
+		form.eventManager.trigger('data:*', 'b1', 'text-to-fire');
+		form.eventManager.trigger('data:b1', 'text-to-fire');
 
-		expect('TEXT-TO-FIRE').to.equal(element.items[0].getPropertyValue('ui.label'));
+		expect('TEXT-TO-FIRE').to.equal(form.items[0].getPropertyValue('ui.label'));
+	});
+
+	it('should support action triggering through dynamics', () => {
+		const mockFn = sinon.mock(),
+			form = new Form({name: 'testContainerComponent', items: [{
+				name: 'action',
+				action: {name: 'testAction'},
+				dynamic: {
+					prop: 'action.execute', val: true,
+					when: [{ binding: 'b2', fn: 'eq', val: 'text-to-fire' }]
+				}}
+			]});
+
+		form.initialize();
+		Actions['testAction'] = mockFn;
+		expect(mockFn.called).to.be.false;
+
+		form.eventManager.trigger('data:*', 'b2', 'do-not-fire');
+		form.eventManager.trigger('data:b2', 'do-not-fire');
+		expect(mockFn.called).to.be.false;
+
+		form.eventManager.trigger('data:*', 'b2', 'text-to-fire');
+		form.eventManager.trigger('data:b2', 'text-to-fire');
+		expect(mockFn.calledOnce).to.be.true;
 	});
 });

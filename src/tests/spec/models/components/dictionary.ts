@@ -6,8 +6,18 @@ import MockAdapter from "axios-mock-adapter";
 import sinon from "sinon";
 
 describe('Models: Dictionary',  () => {
-	const mock = new MockAdapter(axios);
-	const axiosSpy = sinon.spy(axios, 'get');
+	let mock: MockAdapter;
+	let axiosSpy;
+
+	before(() => {
+		mock = new MockAdapter(axios);
+		axiosSpy = sinon.spy(axios, 'get');
+	});
+
+	after(() => {
+		mock.reset();
+		axiosSpy.restore();
+	});
 
 	it('should support reading dictionary', () => {
 		const element = new DictionaryBase({name: 'testDictionaryComponent', binding: 'binding', dictionary: 'dictionary'});

@@ -25,11 +25,46 @@ export class Action extends ElementBase implements IMetaActionComponent {
     }
 
     /**
+     * Element initialization
+     * @param options
+     */
+    public initialize(options?: any): void {
+        super.initialize(options);
+        this._bindDynamicChange();
+    }
+
+    /**
+     * Destroy
+     */
+    public destroy(): void {
+        super.destroy();
+        this._unbindDynamicChange();
+    }
+
+    /**
      * Execute action
      */
     execute() {
         //@ts-ignore
         const actionFn = Actions[this.action.name];
         actionFn && actionFn.call(this);
+    }
+
+    /**
+     * Bind to dynamic change for action trigger event.
+     */
+    private _bindDynamicChange() {
+        this._form.eventManager.on(`prop:${this.name}`, this._onActionTrigger.bind(this));
+    }
+
+    /**
+     * Unbind to dynamic change for action trigger event.
+     */
+    private _unbindDynamicChange() {
+        this._form.eventManager.off(`prop:${this.name}`, this._onActionTrigger.bind(this));
+    }
+
+    private _onActionTrigger(prop: string, value: any) {
+        if (prop === 'action.execute' && value) this.execute();
     }
 }
