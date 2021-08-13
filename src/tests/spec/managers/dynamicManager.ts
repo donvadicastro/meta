@@ -266,4 +266,32 @@ describe('Managers: DynamicManager', () => {
 		form.eventManager.trigger('data:b2', 'text-to-fire');
 		expect(mockFn.calledOnce).to.be.true;
 	});
+
+	it('should support action triggering on each data change through dynamics', () => {
+		const mockFn = sinon.stub(),
+			form = new Form({name: 'testContainerComponent', items: [{
+				name: 'action',
+				action: {name: 'testAction'},
+				dynamic: {
+					prop: 'action.execute', val: true,
+					when: [{ binding: 'b2', fn: 'change' }]
+				}}
+			]});
+
+		form.initialize();
+		Actions['testAction'] = mockFn;
+		expect(mockFn.called).to.be.false;
+
+		form.eventManager.trigger('data:*', 'b2', 'fire1');
+		form.eventManager.trigger('data:b2', 'fire1');
+		expect(mockFn.calledOnce).to.be.true;
+
+		form.eventManager.trigger('data:*', 'b2', 'fire2');
+		form.eventManager.trigger('data:b2', 'fire2');
+		expect(mockFn.calledTwice).to.be.true;
+
+		form.eventManager.trigger('data:*', 'b2', 'fire3');
+		form.eventManager.trigger('data:b2', 'fire3');
+		expect(mockFn.calledThrice).to.be.true;
+	});
 });
