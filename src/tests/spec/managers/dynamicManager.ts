@@ -1,7 +1,7 @@
 import {Form} from "../../../app/models/components/form";
 import {expect} from "chai";
-import * as Actions from '../../../app/actions';
 import sinon from "sinon";
+import {ActionFactory} from "../../../app/actions/factory";
 
 describe('Managers: DynamicManager', () => {
 	it('should set dynamic properties', () => {
@@ -254,8 +254,9 @@ describe('Managers: DynamicManager', () => {
 				}}
 			]});
 
+		ActionFactory.put('testAction', mockFn);
+
 		form.initialize();
-		(<any>Actions)['testAction'] = mockFn;
 		expect(mockFn.called).to.be.false;
 
 		form.eventManager.trigger('data:*', 'b2', 'do-not-fire');
@@ -278,8 +279,9 @@ describe('Managers: DynamicManager', () => {
 				}}
 			]});
 
+		ActionFactory.put('testAction', mockFn);
+
 		form.initialize();
-		(<any>Actions)['testAction'] = mockFn;
 		expect(mockFn.called).to.be.false;
 
 		form.eventManager.trigger('data:*', 'b2', 'fire1');

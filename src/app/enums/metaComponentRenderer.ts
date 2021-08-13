@@ -21,4 +21,9 @@ export enum MetaComponentRenderer {
      * Root form renderer
      */
     Form = 'form',
+
+    /**
+     * Simple button renderer
+     */
+    Button = 'button,'
 }

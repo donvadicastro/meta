@@ -1,7 +1,7 @@
 import {ElementBase} from "./base/base/element";
 import {IMetaAction} from "../../contracts/IMetaAction";
 import {IMetaActionComponent} from "../../contracts/IMetaActionComponent";
-import * as Actions from '../../actions';
+import {ActionFactory} from '../../actions/factory';
 
 /**
  * Action is an form trigger or processing unit. Behaves as a button clicked or submitted action.
@@ -45,9 +45,7 @@ export class Action extends ElementBase implements IMetaActionComponent {
      * Execute action
      */
     execute() {
-        //@ts-ignore
-        const actionFn = Actions[this.action.name];
-        actionFn && actionFn.call(this);
+        ActionFactory.get(this.action.name)?.call(this);
     }
 
     /**

@@ -1,7 +1,7 @@
 import {Form} from "../../../../app/models/components/form";
 import sinon from "sinon";
 import {expect} from "chai";
-import * as Actions from '../../../../app/actions';
+import {ActionFactory} from '../../../../app/actions/factory';
 
 describe('Models: Action',  () => {
     it('should execute action', () => {
@@ -18,7 +18,7 @@ describe('Models: Action',  () => {
         const form = new Form({name: 'testFormComponent', items: [{name: 'child1', action: {name: 'custom'}}]}),
             mockFn = sinon.mock();
 
-        (<any>Actions)['custom'] = mockFn;
+        ActionFactory.put('custom', mockFn);
 
         form.initialize();
         form.items[0].execute();
