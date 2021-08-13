@@ -4,11 +4,11 @@ import {expect} from "chai";
 import {MetaComponentType} from "../../../../app/enums/metaComponentType";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
-import sinon from "sinon";
+import sinon, {SinonSpy} from "sinon";
 
 describe('Models: Data', () => {
     let mock: MockAdapter;
-    let axiosSpy;
+    let axiosSpy: SinonSpy;
 
     before(() => {
         mock = new MockAdapter(axios);

@@ -3,11 +3,11 @@ import {Form} from "../../../../app/models/components/form";
 import {expect} from "chai";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import sinon from "sinon";
+import sinon, {SinonSpy} from "sinon";
 
 describe('Models: Dictionary',  () => {
 	let mock: MockAdapter;
-	let axiosSpy;
+	let axiosSpy: SinonSpy;
 
 	before(() => {
 		mock = new MockAdapter(axios);

@@ -18,7 +18,7 @@ describe('Models: Action',  () => {
         const form = new Form({name: 'testFormComponent', items: [{name: 'child1', action: {name: 'custom'}}]}),
             mockFn = sinon.mock();
 
-        Actions['custom'] = mockFn;
+        (<any>Actions)['custom'] = mockFn;
 
         form.initialize();
         form.items[0].execute();

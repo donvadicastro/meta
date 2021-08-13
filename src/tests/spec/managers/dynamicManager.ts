@@ -255,7 +255,7 @@ describe('Managers: DynamicManager', () => {
 			]});
 
 		form.initialize();
-		Actions['testAction'] = mockFn;
+		(<any>Actions)['testAction'] = mockFn;
 		expect(mockFn.called).to.be.false;
 
 		form.eventManager.trigger('data:*', 'b2', 'do-not-fire');
@@ -279,7 +279,7 @@ describe('Managers: DynamicManager', () => {
 			]});
 
 		form.initialize();
-		Actions['testAction'] = mockFn;
+		(<any>Actions)['testAction'] = mockFn;
 		expect(mockFn.called).to.be.false;
 
 		form.eventManager.trigger('data:*', 'b2', 'fire1');
