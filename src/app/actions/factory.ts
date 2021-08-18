@@ -1,7 +1,7 @@
 import * as formValidate from './form/validate';
 
 export class ActionFactory {
-    private static _actions: {[key: string]: Function} = {
+    private static _actions: {[key: string]: () => Promise<boolean>} = {
         'formValidate': formValidate.formValidate
     };
 
@@ -9,7 +9,7 @@ export class ActionFactory {
      * Returns action by key
      * @param key
      */
-    public static get(key: string): Function {
+    public static get(key: string): () => Promise<boolean> {
         return this._actions[key];
     }
 
@@ -18,7 +18,7 @@ export class ActionFactory {
      * @param key
      * @param action
      */
-    public static put(key: string, action: Function) {
+    public static put(key: string, action: () => Promise<boolean>) {
         this._actions[key] = action;
     }
 }

@@ -2,6 +2,7 @@ import {ElementBase} from "./base/base/element";
 import {IMetaAction} from "../../contracts/IMetaAction";
 import {IMetaActionComponent} from "../../contracts/IMetaActionComponent";
 import {ActionFactory} from '../../actions/factory';
+import _ from "underscore";
 
 /**
  * Action is an form trigger or processing unit. Behaves as a button clicked or submitted action.
@@ -12,7 +13,7 @@ export class Action extends ElementBase implements IMetaActionComponent {
      * Action declaration
      * @private
      */
-    action: IMetaAction;
+    action: IMetaAction | IMetaAction[];
 
     /**
      * Element constructor
@@ -44,8 +45,14 @@ export class Action extends ElementBase implements IMetaActionComponent {
     /**
      * Execute action
      */
-    execute() {
-        ActionFactory.get(this.action.name)?.call(this);
+    async execute(): Promise<boolean> {
+        const sequence = _.isArray(this.action) ? this.action : [this.action];
+
+        for (let i = 0; i < sequence.length; i++) {
+            if (!await ActionFactory.get(sequence[i].name)?.call(this)) return false;
+        }
+
+        return true;
     }
 
     /**
