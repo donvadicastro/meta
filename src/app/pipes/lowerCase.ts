@@ -1,4 +1,4 @@
-import _ = require('underscore');
+import * as _ from "underscore";
 
 /**
  * Convert string to lower case.

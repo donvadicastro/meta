@@ -25,5 +25,15 @@ export enum MetaComponentRenderer {
     /**
      * Simple button renderer
      */
-    Button = 'button,'
+    Button = 'button',
+
+    /**
+     * Dropdown renderer
+     */
+    Dropdown = 'dropdown',
+
+    /**
+     * Table renderer
+     */
+    Table = 'table'
 }

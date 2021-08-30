@@ -1,4 +1,4 @@
-import _ = require('underscore');
+import * as _ from "underscore";
 
 /**
  * "equal" comparator function implementation. Used to check two values are identical.
