@@ -1,5 +1,3 @@
-import {MetaComponentRenderer} from "../enums/metaComponentRenderer";
-
 /**
  * Base meta component contract declaration.
  */
@@ -12,7 +10,7 @@ export interface IMetaBaseComponent {
 	/**
 	 * UI renderer type
 	 */
-	renderer?: MetaComponentRenderer;
+	renderer?: 'default' | 'textbox' | 'label' | 'form' | 'button' | 'dropdown' | 'table' | 'container';
 
 	/**
 	 * Component dynamic settings

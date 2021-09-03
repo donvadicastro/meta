@@ -1,7 +1,6 @@
 import {CollectionBase} from "../../../../app/models/components/collection";
 import {Form} from "../../../../app/models/components/form";
 import {expect} from "chai";
-import {MetaComponentType} from "../../../../app/enums/metaComponentType";
 
 describe('Models: Collection', function () {
     it('should create collection component correct', function () {
@@ -16,7 +15,7 @@ describe('Models: Collection', function () {
 
     it('should select correct initializer', function () {
         var element = new Form({name: 'testFormComponent', items: [
-            {name: 'child', binding: 'b', type: MetaComponentType.List}
+            {name: 'child', binding: 'b', type: 'list'}
         ]});
 
         element.initialize();
@@ -32,8 +31,8 @@ describe('Models: Collection', function () {
 
     it('should support dynamic filtering', function () {
         var form = new Form({name: 'testFormComponent', items: [
-            {name: 'child1', binding: 'b1', type: MetaComponentType.List, filters: [{by: 'name', comparator: 'eq', val: '@b3'}]},
-            {name: 'child2', binding: 'b1', type: MetaComponentType.List, filters: [{by: 'name', comparator: '!eq', val: '@b3'}]},
+            {name: 'child1', binding: 'b1', type: 'list', filters: [{by: 'name', comparator: 'eq', val: '@b3'}]},
+            {name: 'child2', binding: 'b1', type: 'list', filters: [{by: 'name', comparator: '!eq', val: '@b3'}]},
             {name: 'child3', binding: 'b3'}
         ]});
         form.initialize();

@@ -3,7 +3,7 @@ import {IMetaDataComponent} from "../../../contracts/IMetaDataComponent";
 import {MetaComponentType} from "../../../enums/metaComponentType";
 import {IValidationResult} from "../../../contracts/IValidationResult";
 import {setByPath} from "../../../utils/object";
-import {toUpperCaseFirstLetter} from "../../../utils/string";
+import {capitalize} from "../../../utils/string";
 import _ from "underscore";
 
 import * as Converters from "../../../extensions/converters";
@@ -60,7 +60,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
         super(meta, options);
 
         this.binding = meta.binding;
-        this.type = meta.type || MetaComponentType.String;
+        this.type = meta.type || 'string';
         this.validation = meta.validation;
         this.filters = meta.filters;
 
@@ -86,7 +86,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
     public setValue(value: any): DataBase {
         const type = this.type,
             //@ts-ignore
-            converter = type && Converters[MetaComponentType[type] + 'Converter'],
+            converter = type && Converters[capitalize(type) + 'Converter'],
             newValue = converter ? converter.getInstance().parse(value) : value;
 
         if(this.value !== newValue) {
@@ -179,7 +179,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
         for(var name in this.validation) {
             var v = this.validation[name],
                 //@ts-ignore
-                vRef = Validators[toUpperCaseFirstLetter(name) + 'Validator'];
+                vRef = Validators[capitalize(name) + 'Validator'];
 
             this.validators.push(new vRef(this));
         }

@@ -1,7 +1,6 @@
 import {DataBase} from "../../../../app/models/components/base/data";
 import {Form} from "../../../../app/models/components/form";
 import {expect} from "chai";
-import {MetaComponentType} from "../../../../app/enums/metaComponentType";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import sinon, {SinonSpy} from "sinon";
@@ -44,9 +43,9 @@ describe('Models: Data', () => {
     it('should support data convertions', () => {
         const form = new Form({name: 'dataForm', items: [
             {name: 'testDataComponent0', binding: 'b0'},
-            {name: 'testDataComponent1', binding: 'b1', type: MetaComponentType.Date},
-            {name: 'testDataComponent2', binding: 'b2', type: MetaComponentType.Number},
-            {name: 'testDataComponent3', binding: 'b3', type: MetaComponentType.Bool}
+            {name: 'testDataComponent1', binding: 'b1', type: 'date'},
+            {name: 'testDataComponent2', binding: 'b2', type: 'number'},
+            {name: 'testDataComponent3', binding: 'b3', type: 'bool'}
         ]});
 
         form.initialize();
@@ -74,9 +73,9 @@ describe('Models: Data', () => {
     it('should support predefined value', () =>  {
         const form = new Form({name: 'dataForm', items: [
             {name: 'testDataComponent0', binding: 'b0', value: 'a'},
-            {name: 'testDataComponent1', binding: 'b1', type: MetaComponentType.Date, value: '2015-10-08T23:37:35'},
-            {name: 'testDataComponent2', binding: 'b2', type: MetaComponentType.Number, value: 11},
-            {name: 'testDataComponent3', binding: 'b3', type: MetaComponentType.Bool, value: true}
+            {name: 'testDataComponent1', binding: 'b1', type: 'date', value: '2015-10-08T23:37:35'},
+            {name: 'testDataComponent2', binding: 'b2', type: 'number', value: 11},
+            {name: 'testDataComponent3', binding: 'b3', type: 'bool', value: true}
         ]});
 
         form.initialize();

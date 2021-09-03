@@ -1,7 +1,6 @@
 import {DataBase} from "../../../app/models/components/base/data";
 import {ResourceManager} from "../../../app/managers/resourceManager";
 import {expect} from "chai";
-import {MetaComponentType} from "../../../app/enums/metaComponentType";
 
 describe('Validators: Min', function () {
 	it('should support min validation for string type', function () {
@@ -22,7 +21,7 @@ describe('Validators: Min', function () {
 	});
 
 	it('should support min validation for number type', function () {
-		var element = new DataBase({name: 'testDataComponent', binding: 'binding', type: MetaComponentType.Number, validation: {min: 5}}),
+		var element = new DataBase({name: 'testDataComponent', binding: 'binding', type: 'number', validation: {min: 5}}),
 			valResult = element.validate();
 
 		expect(valResult.isValid).to.be.true;

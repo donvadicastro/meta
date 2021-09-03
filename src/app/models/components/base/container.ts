@@ -3,7 +3,6 @@ import {IMetaBaseComponent} from "../../../contracts/IMetaBaseComponent";
 import {IMetaContainerComponent} from "../../../contracts/IMetaContainerComponent";
 
 import {ElementBase} from "./base/element";
-import {MetaComponentType} from "../../../enums/metaComponentType";
 import {CollectionBase} from "../collection";
 import {DictionaryBase} from "./dictionary";
 import {DataBase} from "./data";
@@ -76,7 +75,7 @@ export class ContainerBase extends ElementBase implements IMetaContainerComponen
 	 */
 	public static getComponentConstructor(meta: any): any {
 
-		if (meta.type === MetaComponentType.List) { return CollectionBase; }
+		if (meta.type === 'list') { return CollectionBase; }
 		if (meta.dictionary) { return DictionaryBase; }
 		if (meta.binding) { return DataBase; }
 		if (meta.items) { return ContainerBase; }

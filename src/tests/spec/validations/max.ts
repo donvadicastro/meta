@@ -1,5 +1,4 @@
 import {DataBase} from "../../../app/models/components/base/data";
-import {MetaComponentType} from "../../../app/enums/metaComponentType";
 import {ResourceManager} from "../../../app/managers/resourceManager";
 import {expect} from "chai";
 
@@ -22,7 +21,7 @@ describe('Validators: Max', function () {
 	});
 
 	it('should support max validation for number type', function () {
-		var element = new DataBase({name: 'testDataComponent', binding: 'binding', type: MetaComponentType.String, validation: {max: 5}}),
+		var element = new DataBase({name: 'testDataComponent', binding: 'binding', type: 'string', validation: {max: 5}}),
 			valResult = element.validate();
 
 		expect(valResult.isValid).to.be.true;

@@ -1,34 +1,33 @@
 /**
  * Meta component bind data types
  */
-export enum MetaComponentType {
+export type MetaComponentType =
     /**
      * String data type
      */
-    String,
+    | 'string'
 
     /**
      * Number data type
      */
-    Number,
+    | 'number'
 
     /**
      * Boolean data type
      */
-    Bool,
+    | 'bool'
 
     /**
      * Date data type
      */
-    Date,
+    | 'date'
 
     /**
      * Object data type
      */
-    Object,
+    | 'object'
 
     /**
      * List data type
      */
-    List
-}
+    | 'list';
