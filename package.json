@@ -1,6 +1,6 @@
 {
   "name": "meta-framework",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Meta framework engine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
