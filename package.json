@@ -1,12 +1,13 @@
 {
   "name": "meta-framework",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Meta framework engine",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "nyc ./node_modules/.bin/_mocha 'src/tests/**/*.ts'",
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "postpublish": "npm version patch"
   },
   "author": "",
   "license": "ISC",
