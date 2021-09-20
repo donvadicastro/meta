@@ -1,3 +1,13 @@
+export type RendererType = 'default'
+	| 'textbox'
+	| 'label'
+	| 'form'
+	| 'button'
+	| 'dropdown'
+	| 'table'
+	| 'container'
+	| 'section';
+
 /**
  * Base meta component contract declaration.
  */
@@ -10,7 +20,7 @@ export interface IMetaBaseComponent {
 	/**
 	 * UI renderer type
 	 */
-	renderer?: 'default' | 'textbox' | 'label' | 'form' | 'button' | 'dropdown' | 'table' | 'container';
+	renderer?: RendererType;
 
 	/**
 	 * Component dynamic settings
