@@ -8,7 +8,7 @@ import _ from "underscore";
 
 import * as Converters from "../../../extensions/converters";
 import * as Validators from "../../../validators";
-import axios, {AxiosResponse} from "axios";
+import {request} from "../../../utils/remote";
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
@@ -18,17 +18,12 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
     /**
      * Data binding as path in data model tree
      */
-    binding: string;
+    binding?: string;
 
     /**
      * Component predefined value
      */
     value: any;
-
-    /**
-     * Component remote value source to populate by binding during initialization.
-     */
-    valueSource: any;
 
     /**
      * Component data type
@@ -75,7 +70,7 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
 
         // support remote load only when there is place to inject data into
         if (this._meta.valueSource && this._meta.binding) {
-            this._loadRemote().then((data: any) => this.setValue(data));
+            request(this._meta.valueSource).then((data: any) => this.setValue(data));
         }
     }
 
@@ -92,8 +87,10 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
         if(this.value !== newValue) {
             this.value = newValue;
 
-            this._notifyChange(newValue, this.binding);
-            this._container && setByPath(this._container.data, this.binding, newValue);
+            if (this.binding) {
+                this._notifyChange(newValue, this.binding);
+                this._container && setByPath(this._container.data, this.binding, newValue);
+            }
         }
 
         return this;
@@ -120,9 +117,9 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * @returns {IValidationResult}
      */
     public validate(): IValidationResult {
-        var valResult: IValidationResult = super.validate();
+        let valResult: IValidationResult = super.validate();
 
-        for(var i=0, len=this.validators.length, v; i<len; i++) {
+        for(let i=0, len=this.validators.length, v; i<len; i++) {
             v = this.validators[i].validate(this.value);
             if(!v.success) { valResult = v; }
         }
@@ -153,14 +150,16 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * Bind component to form data processing mechanism
      */
     private _bind() {
-        this._form && this._form.eventManager.on('data:' + this.binding, this._onDataChange, this);
+        const binding = this._parent?.binding ? `${this._parent?.binding}.${this.binding}` : this.binding;
+        this._form && this._form.eventManager.on('data:' + binding, this._onDataChange, this);
     }
 
     /**
      * Unbind component from form data processing mechanism
      */
     private _unbind() {
-        this._form && this._form.eventManager.off('data:' + this.binding, this._onDataChange, this);
+        const binding = this._parent?.binding ? `${this._parent?.binding}.${this.binding}` : this.binding;
+        this._form && this._form.eventManager.off('data:' + binding, this._onDataChange, this);
     }
 
     /**
@@ -176,11 +175,9 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
      * Apply component validators
      */
     private _addValidators() {
-        for(var name in this.validation) {
-            var v = this.validation[name],
-                //@ts-ignore
-                vRef = Validators[capitalize(name) + 'Validator'];
-
+        for(let name in this.validation) {
+            //@ts-ignore
+            const vRef = Validators[capitalize(name) + 'Validator'];
             this.validators.push(new vRef(this));
         }
     }
@@ -192,9 +189,5 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
 
         // as well iterate over complex object to notify change happens when particular property binding exists
         _.isObject(value) && Object.keys(value).forEach(key => this._notifyChange(value[key], `${binding}.${key}`));
-    }
-
-    private async _loadRemote(): Promise<any> {
-        return axios.get(this._meta.valueSource).then((response: AxiosResponse) => response.data);
     }
 }

@@ -34,7 +34,7 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
         super(meta, options);
 
         //create container
-        var o = _.extend(options || {}, {container: this});
+        const o = _.extend(options || {}, {container: this});
         this._collectionContainer = new ContainerBase(meta, o);
         this._collectionContainer.initialize(o);
 
@@ -76,7 +76,7 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
      * @param id
      */
     public setSelected(id: number) {
-        var value = (this.getValue() || []).filter((i: any) => i.id === id);
+        const value = (this.getValue() || []).filter((i: any) => i.id === id);
 
         if(value.length) {
             this.data = value[0];
@@ -88,7 +88,7 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
      * @param data
      */
     public addItem(data: any): void {
-        var value = this.getValue();
+        let value = this.getValue();
         (value || (value = [])).push(data);
 
         this.setValue(value);
@@ -107,7 +107,7 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
      * @param id
      */
     public removeItem(id: number): void {
-        var data = this.getValue() || [],
+        const data = this.getValue() || [],
             value = _.without(data, _.findWhere(data, {id: id}));
 
         this.setValue(value);
@@ -117,6 +117,6 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
      * Filter changed event handler
      */
     private onFilterChange() {
-        this.setValue(this._form.getDataByPath(this.binding));
+        this.binding && this.setValue(this._form.getDataByPath(this.binding));
     }
 }

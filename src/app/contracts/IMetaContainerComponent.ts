@@ -1,4 +1,3 @@
-import {IMetaBaseComponent} from "./IMetaBaseComponent";
 import {IMetaDataComponent} from "./IMetaDataComponent";
 import {IMetaDictionaryComponent} from "./IMetaDictionaryComponent";
 import {IMetaCollectionComponent} from "./IMetaCollectionComponent";
@@ -7,7 +6,7 @@ import {IMetaActionComponent} from "./IMetaActionComponent";
 /**
  * Base meta container contract declaration. Inherits from IMetaBaseComponent.
  */
-export interface IMetaContainerComponent extends IMetaBaseComponent {
+export interface IMetaContainerComponent extends IMetaDataComponent {
 	/**
 	 * List of child components
 	 */

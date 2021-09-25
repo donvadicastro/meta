@@ -8,7 +8,7 @@ export interface IMetaDataComponent extends IMetaBaseComponent {
 	/**
 	 * Data binding path
 	 */
-	binding: string;
+	binding?: string;
 
 	/**
 	 * Predefined component value

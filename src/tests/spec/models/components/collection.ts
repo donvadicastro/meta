@@ -4,7 +4,7 @@ import {expect} from "chai";
 
 describe('Models: Collection', function () {
     it('should create collection component correct', function () {
-        var element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: []});
+        const element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: []});
 
         expect('testCollectionComponent').to.equal(element.name);
         expect('binding').to.equal(element.binding);
@@ -14,7 +14,7 @@ describe('Models: Collection', function () {
     });
 
     it('should select correct initializer', function () {
-        var element = new Form({name: 'testFormComponent', items: [
+        const element = new Form({name: 'testFormComponent', items: [
             {name: 'child', binding: 'b', type: 'list'}
         ]});
 
@@ -23,14 +23,14 @@ describe('Models: Collection', function () {
     });
 
     it('should support static filtering', function () {
-        var element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', filters: [{by: 'name', comparator: 'eq', val: 'b'}]});
+        const element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', filters: [{by: 'name', comparator: 'eq', val: 'b'}]});
 
         element.setValue([{id:1, name: 'a'},{id:2, name: 'b'},{id:3, name: 'c'}]);
         expect(element.getValue()).to.deep.equal([{id:2, name: 'b'}]);
     });
 
     it('should support dynamic filtering', function () {
-        var form = new Form({name: 'testFormComponent', items: [
+        const form = new Form({name: 'testFormComponent', items: [
             {name: 'child1', binding: 'b1', type: 'list', filters: [{by: 'name', comparator: 'eq', val: '@b3'}]},
             {name: 'child2', binding: 'b1', type: 'list', filters: [{by: 'name', comparator: '!eq', val: '@b3'}]},
             {name: 'child3', binding: 'b3'}
@@ -50,7 +50,7 @@ describe('Models: Collection', function () {
     });
 
     it('should support adding new item', function () {
-        var element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: [
+        const element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: [
             {name: 'child1', binding: 'b1'},
             {name: 'child2', binding: 'b2'}
         ] });
@@ -63,7 +63,7 @@ describe('Models: Collection', function () {
     });
 
     it('should support editing existing item', function () {
-        var element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: [
+        const element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: [
             {name: 'child1', binding: 'b1'},
             {name: 'child2', binding: 'b2'}
         ] });
@@ -75,12 +75,12 @@ describe('Models: Collection', function () {
         element.getContainer().items[1].setValue('bb');
 
         element.editItem(element.getSelected());
-        expect(JSON.stringify([{id: -100, b1: 'aa', b2: 'bb'}])).to.equal(JSON.stringify(element.getValue()));
+        expect([{id: -100, b1: 'aa', b2: 'bb'}]).to.deep.equal(element.getValue());
     });
 
 
     it('should support deleting existing item', function () {
-        var element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: [
+        const element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: [
             {name: 'child1', binding: 'b1'},
             {name: 'child2', binding: 'b2'}
         ] });
