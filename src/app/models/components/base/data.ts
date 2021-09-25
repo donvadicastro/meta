@@ -81,8 +81,8 @@ export class DataBase extends ElementBase implements IMetaDataComponent {
     public setValue(value: any): DataBase {
         const type = this.type,
             //@ts-ignore
-            converter = type && Converters[capitalize(type) + 'Converter'],
-            newValue = converter ? converter.getInstance().parse(value) : value;
+            converter = type && Converters['convert' + capitalize(type)],
+            newValue = converter ? converter(value) : value;
 
         if(this.value !== newValue) {
             this.value = newValue;

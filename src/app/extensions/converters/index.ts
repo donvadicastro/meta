@@ -1,3 +1,3 @@
-export {BoolConverter} from "./bool";
-export {DateConverter} from "./date";
-export {NumberConverter} from "./number";
+export {convertBool} from "./bool";
+export {convertDate} from "./date";
+export {convertNumber} from "./number";

@@ -68,6 +68,18 @@ describe('Models: Data', () => {
 
         form.eventManager.trigger('data:b3', false);
         expect(false).to.equal(form.items[3].getValue());
+
+        form.eventManager.trigger('data:b3', 'false');
+        expect(false).to.equal(form.items[3].getValue());
+
+        form.eventManager.trigger('data:b3', 'true');
+        expect(true).to.equal(form.items[3].getValue());
+
+        form.eventManager.trigger('data:b3', '0');
+        expect(false).to.equal(form.items[3].getValue());
+
+        form.eventManager.trigger('data:b3', '1');
+        expect(true).to.equal(form.items[3].getValue());
     });
 
     it('should support predefined value', () =>  {
