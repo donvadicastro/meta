@@ -1,10 +1,28 @@
 import {Form} from "../../../../app/models/components/form";
-import sinon from "sinon";
+import sinon, {SinonSpy} from "sinon";
 import {expect} from "chai";
 import {ActionFactory} from '../../../../app/actions/factory';
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
 describe('Models: Action',  () => {
-    it('should execute action', () => {
+    let mock: MockAdapter;
+    let axiosPostSpy: SinonSpy;
+    let axiosPutSpy: SinonSpy;
+
+    before(() => {
+        mock = new MockAdapter(axios);
+        axiosPostSpy = sinon.spy(axios, 'post');
+        axiosPutSpy = sinon.spy(axios, 'put');
+    });
+
+    after(() => {
+        mock.reset();
+        axiosPostSpy.restore();
+        axiosPutSpy.restore();
+    });
+
+    it('should execute validate action', () => {
         const form = new Form({name: 'testFormComponent', items: [{name: 'child1', action: {name: 'formValidate'}}]}),
             validateSpy = sinon.spy(form, 'validate');
 
@@ -12,6 +30,33 @@ describe('Models: Action',  () => {
         form.items[0].execute();
 
         expect(validateSpy.called).to.be.true;
+    });
+
+    it('should execute form submit action', () => {
+        const form = new Form({name: 'testFormComponent', action: {name: 'formSubmit', url: 'test'}});
+
+        form.initialize();
+        form.execute();
+
+        expect(axiosPostSpy.calledWith('test')).to.be.true;
+    });
+
+    it('should execute form submit action with custom method', () => {
+        const form = new Form({name: 'testFormComponent', action: {name: 'formSubmit', url: 'test', method: 'put'}});
+
+        form.initialize();
+        form.execute();
+
+        expect(axiosPutSpy.calledWith('test')).to.be.true;
+    });
+
+    it('should execute form submit action', () => {
+        const form = new Form({name: 'testFormComponent', action: {name: 'formSubmit', url: 'test', method: 'post'}});
+
+        form.initialize();
+        form.execute();
+
+        expect(axiosPostSpy.calledWith('test')).to.be.true;
     });
 
     it('should execute custom action', () => {

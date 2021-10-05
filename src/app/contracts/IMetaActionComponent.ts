@@ -8,5 +8,5 @@ export interface IMetaActionComponent extends IMetaBaseComponent {
 	/**
 	 * Action declaration
 	 */
-	action: IMetaAction | IMetaAction[];
+	action?: IMetaAction & any;
 }

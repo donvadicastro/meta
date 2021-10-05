@@ -7,7 +7,7 @@ import {CollectionBase} from "../collection";
 import {DictionaryBase} from "./dictionary";
 import {DataBase} from "./data";
 import {IValidationResult} from "../../../contracts/IValidationResult";
-import {Action} from "../action";
+import {ActionBase} from "./action";
 import {IMetaActionComponent} from "../../../contracts/IMetaActionComponent";
 import {request} from "../../../utils/remote";
 
@@ -96,7 +96,7 @@ export class ContainerBase extends DataBase implements IMetaContainerComponent {
 		if (meta.dictionary) { return DictionaryBase; }
 		if (meta.items) { return ContainerBase; }
 		if (meta.binding) { return DataBase; }
-		if (meta.action) { return Action; }
+		if (meta.action) { return ActionBase; }
 
 		return ElementBase;
 	}

@@ -1,14 +1,14 @@
-import {ElementBase} from "./base/base/element";
-import {IMetaAction} from "../../contracts/IMetaAction";
-import {IMetaActionComponent} from "../../contracts/IMetaActionComponent";
-import {ActionFactory} from '../../actions/factory';
+import {ElementBase} from "./base/element";
+import {IMetaAction} from "../../../contracts/IMetaAction";
+import {IMetaActionComponent} from "../../../contracts/IMetaActionComponent";
+import {ActionFactory} from '../../../actions/factory';
 import _ from "underscore";
 
 /**
  * Action is an form trigger or processing unit. Behaves as a button clicked or submitted action.
  * Advantages of using actions - it can be invisible and react to data model events.
  */
-export class Action extends ElementBase implements IMetaActionComponent {
+export class ActionBase extends ElementBase implements IMetaActionComponent {
     /**
      * Action declaration
      * @private
@@ -59,14 +59,14 @@ export class Action extends ElementBase implements IMetaActionComponent {
      * Bind to dynamic change for action trigger event.
      */
     private _bindDynamicChange() {
-        this._form.eventManager.on(`prop:${this.name}`, this._onActionTrigger.bind(this));
+        this._form && this._form.eventManager.on(`prop:${this.name}`, this._onActionTrigger.bind(this));
     }
 
     /**
      * Unbind to dynamic change for action trigger event.
      */
     private _unbindDynamicChange() {
-        this._form.eventManager.off(`prop:${this.name}`, this._onActionTrigger.bind(this));
+        this._form && this._form.eventManager.off(`prop:${this.name}`, this._onActionTrigger.bind(this));
     }
 
     private _onActionTrigger(prop: string, value: any) {

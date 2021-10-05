@@ -1,10 +1,11 @@
 import {IMetaBaseComponent} from "./IMetaBaseComponent";
 import {MetaComponentType} from "../enums/metaComponentType";
+import {IMetaActionComponent} from "./IMetaActionComponent";
 
 /**
  * Base meta data component contract declaration. Inherits from IMetaBaseComponent.
  */
-export interface IMetaDataComponent extends IMetaBaseComponent {
+export interface IMetaDataComponent extends IMetaBaseComponent, IMetaActionComponent {
 	/**
 	 * Data binding path
 	 */

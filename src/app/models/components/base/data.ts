@@ -1,4 +1,3 @@
-import {ElementBase} from "./base/element";
 import {IMetaDataComponent} from "../../../contracts/IMetaDataComponent";
 import {MetaComponentType} from "../../../enums/metaComponentType";
 import {IValidationResult} from "../../../contracts/IValidationResult";
@@ -9,12 +8,13 @@ import _ from "underscore";
 import * as Converters from "../../../extensions/converters";
 import * as Validators from "../../../validators";
 import {request} from "../../../utils/remote";
+import {ActionBase} from "./action";
 
 /**
  * Base class to describe containers. All container-based components should inherit from this base.
  * Handle all child relations.
  */
-export class DataBase extends ElementBase implements IMetaDataComponent {
+export class DataBase extends ActionBase implements IMetaDataComponent {
     /**
      * Data binding as path in data model tree
      */

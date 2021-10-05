@@ -1,14 +1,14 @@
 import {ContainerBase} from './base/container';
 import {EventManager} from '../../managers/eventManager';
-import {IMetaContainerComponent} from '../../contracts/IMetaContainerComponent';
 import {ElementBase} from "./base/base/element";
 import {setByPath} from '../../utils/object';
+import {IMetaFormComponent} from "../../contracts/IMetaFormComponent";
 
 /**
  * Form is the main logical container for some set of components which bound to some single data model.
  * Form handles all communications inside this logical container and is fully isolated.
  */
-export class Form extends ContainerBase {
+export class Form extends ContainerBase implements IMetaFormComponent {
     /**
      * Data hash as set of key-value pairs where key is the binding
      */
@@ -44,7 +44,7 @@ export class Form extends ContainerBase {
      * @param meta
      * @param options
      */
-    constructor(meta: IMetaContainerComponent, options?: any) {
+    constructor(meta: IMetaFormComponent, options?: any) {
         super(meta, options);
         this.eventManager = new EventManager();
 

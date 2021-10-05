@@ -1,8 +1,10 @@
-import * as formValidate from './form/validate';
+import {formValidate} from './form/validate';
+import {formSubmit} from "./form/submit";
 
 export class ActionFactory {
     private static _actions: {[key: string]: () => Promise<boolean>} = {
-        'formValidate': formValidate.formValidate
+        'formValidate': formValidate,
+        'formSubmit': formSubmit,
     };
 
     /**
