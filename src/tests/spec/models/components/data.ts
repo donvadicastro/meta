@@ -85,7 +85,7 @@ describe('Models: Data', () => {
     it('should support predefined value', () =>  {
         const form = new Form({name: 'dataForm', items: [
             {name: 'testDataComponent0', binding: 'b0', value: 'a'},
-            {name: 'testDataComponent1', binding: 'b1', type: 'date', value: '2015-10-08T23:37:35.000Z'},
+            {name: 'testDataComponent1', binding: 'b1', type: 'date', value: '2015-10-08T23:37:35'},
             {name: 'testDataComponent2', binding: 'b2', type: 'number', value: 11},
             {name: 'testDataComponent3', binding: 'b3', type: 'bool', value: true}
         ]});
@@ -93,7 +93,7 @@ describe('Models: Data', () => {
         form.initialize();
 
         expect('a').to.equal(form.items[0].getValue());
-        expect('2015-10-08T23:37:35.000Z').to.equal(form.items[1].getValue().toISOString());
+        expect(new Date('2015-10-08T23:37:35').toISOString()).to.equal(form.items[1].getValue().toISOString());
         expect(11).to.equal(form.items[2].getValue());
         expect(true).to.equal(form.items[3].getValue());
     });
