@@ -34,3 +34,13 @@ jobs:
       - run: npm publish --tag ${{ github.event.release.target_commitish }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+  bump:
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag-prefix: 'v'
