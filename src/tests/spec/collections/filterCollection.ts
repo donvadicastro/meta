@@ -9,7 +9,7 @@ describe('Collection: FilterCollection', function () {
 		}, {});
 
 		var element2 = new DictionaryBase({
-			name: 'e2', binding: '', dictionary: 'dic1', value: null, filters: [{by: 'id', val: 'a'}]
+			name: 'e2', binding: '', dictionary: 'dic1', value: null, filters: [{by: 'id', comparator: 'eq', val: 'a'}]
 		}, {});
 
 		expect((new FilterCollection(element1)).count()).to.equal(0);

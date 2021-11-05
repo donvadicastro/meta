@@ -12,11 +12,19 @@ import _ from "underscore";
 export class CollectionBase extends DataBase implements IMetaDataComponent {
     /**
      * Filter collection
+     * @private
      */
     private _filters: FilterCollection;
 
     /**
+     * Default sort order
+     * @private
+     */
+    private _ascending: boolean = true;
+
+    /**
      * Collection container reference
+     * @private
      */
     private _collectionContainer: ContainerBase;
 
@@ -43,6 +51,9 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
 
         //create filter collection
         this._filters = new FilterCollection(this, this.onFilterChange);
+
+        // define default sort order
+        this._ascending = !meta.sort || meta.sort === 'ASC';
     }
 
     /**
@@ -53,6 +64,12 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
         super.setValue(value);
 
         this.value = this._filters.filter(value);
+
+        // reverse collection when DESC sort order specified
+        if(!this._ascending && _.isArray(value)) {
+            this.value = this.value.reverse();
+        }
+
         return this;
     }
 

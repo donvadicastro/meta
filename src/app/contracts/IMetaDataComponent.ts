@@ -32,7 +32,12 @@ export interface IMetaDataComponent extends IMetaBaseComponent, IMetaActionCompo
 	validation?: any;
 
 	/**
+	 * Component sorting rule
+	 */
+	sort?: 'ASC' | 'DESC';
+
+	/**
 	 * Component filtration rules
 	 */
-	filters?: Array<any>;
+	filters?: Array<{by: string, comparator: string, val: string}>;
 }

@@ -49,6 +49,24 @@ describe('Models: Collection', function () {
         expect(form.data.b1).to.deep.equal([{id:1, name: 'a'},{id:2, name: 'b'},{id:3, name: 'c'}]);
     });
 
+    describe('Collection wide sorting', () => {
+        it('should support ASC sorting (preserve list order)', () => {
+            const data = [{id:1, name: 'a'},{id:2, name: 'b'},{id:3, name: 'c'}];
+            const element = new CollectionBase({name: 'testSortAsc', binding: 'binding', sort: 'ASC' });
+
+            element.setValue(data);
+            expect(element.getValue()).to.deep.eq(data);
+        });
+
+        it('should support DESC sorting (reverse list order)', () => {
+            const data = [{id:1, name: 'a'},{id:2, name: 'b'},{id:3, name: 'c'}];
+            const element = new CollectionBase({name: 'testSortAsc', binding: 'binding', sort: 'DESC' });
+
+            element.setValue(data);
+            expect(element.getValue()).to.deep.eq(data.reverse());
+        });
+    });
+
     it('should support adding new item', function () {
         const element = new CollectionBase({name: 'testCollectionComponent', binding: 'binding', items: [
             {name: 'child1', binding: 'b1'},
