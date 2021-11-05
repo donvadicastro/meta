@@ -17,6 +17,9 @@ jobs:
           node-version: 14
       - run: npm ci
       - run: npm test
+      - run: |
+         git config --global user.name 'Vadym Barylo'
+         git config --global user.email 'donvadicastro@users.noreply.github.com'
 
   publish-npm:
     needs: build
