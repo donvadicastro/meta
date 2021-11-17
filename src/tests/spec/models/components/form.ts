@@ -4,7 +4,7 @@ import {expect} from "chai";
 
 describe('Models: Form', function () {
     it('should create _form component correct', function () {
-        var element = new Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]});
+        const element = new Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]});
         element.initialize();
 
         expect('testContainerComponent').to.equal(element.name);
@@ -15,14 +15,14 @@ describe('Models: Form', function () {
     });
 
     it('should save _form reference child level', function () {
-        var element = new Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]});
+        const element = new Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1'}, {name: 'child2', binding: 'b2'}]});
         element.initialize();
 
         expect(element).to.equal(element.items[0]._form);
     });
 
     it('should create data model correct', function () {
-        var element = new Form({name: 'testContainerComponent'});
+        const element = new Form({name: 'testContainerComponent'});
         element.initialize();
 
         element.eventManager.trigger('data:*', 'prop1.prop2.prop3', 'aa');
@@ -53,7 +53,7 @@ describe('Models: Form', function () {
     });
 
     it('should support full form validation', function () {
-        var element = new Form({name: 'testFormComponent', items: [
+        const element = new Form({name: 'testFormComponent', items: [
             {name: 'child1', binding: 'b1', validation: {required: true}},
             {name: 'child2', binding: 'b2', validation: {required: true}},
             {name: 'child3', items: [
@@ -67,7 +67,7 @@ describe('Models: Form', function () {
             ]}
         ]});
 
-        var msg = ResourceManager.get('validators.requiredValidator.message');
+        const msg = ResourceManager.get('validators.requiredValidator.message');
 
         element.initialize();
 
@@ -96,7 +96,7 @@ describe('Models: Form', function () {
     });
 
     it('should allow to change component validation status when data was changed another way', function () {
-        var element1 = new Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1', validation: {required: true}}]}),
+        const element1 = new Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1', validation: {required: true}}]}),
             element2 = new Form({name: 'testContainerComponent', items: [{name: 'child1', binding: 'b1', value: 'a', validation: {required: true}}]});
 
         element1.initialize();
@@ -111,6 +111,22 @@ describe('Models: Form', function () {
 
         expect(element1.invalidElements).to.deep.equal({});
         expect(element2.invalidElements).to.deep.equal({child1: ResourceManager.get('validators.requiredValidator.message')});
+    });
 
+    describe('setting value', () => {
+        it('should properly bind data', () => {
+            const form = new Form({name: 'testContainerComponent',
+                items: [
+                    {name: 'child1', binding: 'b1'},
+                    {name: 'child2', binding: 'b2.b3.b4'},
+                ]
+            });
+
+            form.initialize();
+            form.setValue({b1: 'abc', b2: {b3: {b4: 'cde'}}});
+
+            expect('abc', form.items[0].getValue());
+            expect('cde', form.items[1].getValue());
+        });
     });
 });
