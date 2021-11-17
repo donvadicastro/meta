@@ -115,7 +115,8 @@ describe('Models: Form', function () {
 
     describe('setting value', () => {
         it('should properly bind data', () => {
-            const form = new Form({name: 'testContainerComponent',
+            const form = new Form({
+                name: 'testContainerComponent',
                 items: [
                     {name: 'child1', binding: 'b1'},
                     {name: 'child2', binding: 'b2.b3.b4'},
@@ -125,8 +126,8 @@ describe('Models: Form', function () {
             form.initialize();
             form.setValue({b1: 'abc', b2: {b3: {b4: 'cde'}}});
 
-            expect('abc', form.items[0].getValue());
-            expect('cde', form.items[1].getValue());
+            expect('abc').to.eq(form.items[0].getValue());
+            expect('cde').to.eq(form.items[1].getValue());
         });
     });
 });

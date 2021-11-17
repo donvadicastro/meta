@@ -16,9 +16,15 @@ import {ActionBase} from "./action";
  */
 export class DataBase extends ActionBase implements IMetaDataComponent {
     /**
+     * Component instantiated validators
+     * @type {Array}
+     */
+    private validators: Array<any> = [];
+
+    /**
      * Data binding as path in data model tree
      */
-    binding?: string;
+    private readonly _binding?: string;
 
     /**
      * Component predefined value
@@ -41,10 +47,11 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
     filters?: Array<any>;
 
     /**
-     * Component instantiated validators
-     * @type {Array}
+     * Gets binding
      */
-    private validators: Array<any> = [];
+    get binding(): string | undefined {
+        return this._binding || this._parent?.binding;
+    }
 
     /**
      * Constructor
@@ -54,7 +61,7 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
     constructor(meta: IMetaDataComponent, options?: any) {
         super(meta, options);
 
-        this.binding = meta.binding;
+        this._binding = meta.binding;
         this.type = meta.type || 'string';
         this.validation = meta.validation;
         this.filters = meta.filters;
@@ -84,13 +91,11 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
             converter = type && Converters['convert' + capitalize(type)],
             newValue = converter ? converter(value) : value;
 
-        if(this.value !== newValue) {
+        if (this.value !== newValue) {
             this.value = newValue;
 
-            if (this.binding) {
-                this._notifyChange(newValue, this.binding);
-                this._container && setByPath(this._container.data, this.binding, newValue);
-            }
+            this._notifyChange(newValue, this.binding);
+            this._container && setByPath(this._container.data, this.binding || '', newValue);
         }
 
         return this;
@@ -135,7 +140,7 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
      * @param onDataChange change handler.
      */
     public bindModelChange(onDataChange: Function) {
-        this._form && this._form.eventManager.on('data:' + this.binding, onDataChange, this);
+        this._form && this._form.eventManager.on('data:' + this._binding, onDataChange, this);
     }
 
     /**
@@ -143,14 +148,14 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
      * @param onDataChange change handler.
      */
     public unbindModelChange(onDataChange: Function) {
-        this._form && this._form.eventManager.off('data:' + this.binding, onDataChange, this);
+        this._form && this._form.eventManager.off('data:' + this._binding, onDataChange, this);
     }
 
     /**
      * Bind component to form data processing mechanism
      */
     private _bind() {
-        const binding = this._parent?.binding ? `${this._parent?.binding}.${this.binding}` : this.binding;
+        const binding = this._parent?._binding ? `${this._parent?._binding}.${this._binding}` : this._binding;
         this._form && this._form.eventManager.on('data:' + binding, this._onDataChange, this);
     }
 
@@ -158,7 +163,7 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
      * Unbind component from form data processing mechanism
      */
     private _unbind() {
-        const binding = this._parent?.binding ? `${this._parent?.binding}.${this.binding}` : this.binding;
+        const binding = this._parent?._binding ? `${this._parent?._binding}.${this._binding}` : this._binding;
         this._form && this._form.eventManager.off('data:' + binding, this._onDataChange, this);
     }
 
@@ -182,12 +187,14 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
         }
     }
 
-    private _notifyChange(value: any, binding: string) {
-        // form should catch event earlier to properly update data model before it use, so "*" is first
-        this._form && this._form.eventManager.trigger('data:*', binding, value, this);
-        this._form && this._form.eventManager.trigger(`data:${binding}`, value, this);
+    private _notifyChange(value: any, binding?: string) {
+        if (binding) {
+            // form should catch event earlier to properly update data model before it use, so "*" is first
+            this._form && this._form.eventManager.trigger('data:*', binding, value, this);
+            this._form && this._form.eventManager.trigger(`data:${binding}`, value, this);
+        }
 
         // as well iterate over complex object to notify change happens when particular property binding exists
-        _.isObject(value) && Object.keys(value).forEach(key => this._notifyChange(value[key], `${binding}.${key}`));
+        _.isObject(value) && Object.keys(value).forEach(key => this._notifyChange(value[key], binding ? `${binding}.${key}` : key));
     }
 }

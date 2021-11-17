@@ -134,6 +134,6 @@ export class CollectionBase extends DataBase implements IMetaDataComponent {
      * Filter changed event handler
      */
     private onFilterChange() {
-        this.binding && this.setValue(this._form.getDataByPath(this.binding));
+        this._binding && this.setValue(this._form.getDataByPath(this._binding));
     }
 }
