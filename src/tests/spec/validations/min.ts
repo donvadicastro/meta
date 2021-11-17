@@ -4,7 +4,7 @@ import {expect} from "chai";
 
 describe('Validators: Min', function () {
 	it('should support min validation for string type', function () {
-		var element = new DataBase({name: 'testDataComponent', _binding: 'binding', validation: {min: 5}}),
+		var element = new DataBase({name: 'testDataComponent', binding: 'binding', validation: {min: 5}}),
 			valResult = element.validate();
 
 		expect(valResult.isValid).to.be.true;
@@ -21,7 +21,7 @@ describe('Validators: Min', function () {
 	});
 
 	it('should support min validation for number type', function () {
-		var element = new DataBase({name: 'testDataComponent', _binding: 'binding', type: 'number', validation: {min: 5}}),
+		let element = new DataBase({name: 'testDataComponent', binding: 'binding', type: 'number', validation: {min: 5}}),
 			valResult = element.validate();
 
 		expect(valResult.isValid).to.be.true;

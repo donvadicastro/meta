@@ -5,7 +5,7 @@ import {expect} from "chai";
 
 describe('Filtration: Static', function () {
 	it('should support static string local filter', async () => {
-		var item1: IMetaDictionaryComponent = {name: 'child', _binding: 'b1', dictionary: 'dic1', filters: [{by: 'name', comparator: 'eq', val: 'b'}]};
+		var item1: IMetaDictionaryComponent = {name: 'child', binding: 'b1', dictionary: 'dic1', filters: [{by: 'name', comparator: 'eq', val: 'b'}]};
 
 		var form = new Form({name: 'testFormComponent', items: [item1], dictionaries: {
 			dic1: [{id:1, name: 'a'},{id:2, name: 'b'},{id:3, name: 'c'}]

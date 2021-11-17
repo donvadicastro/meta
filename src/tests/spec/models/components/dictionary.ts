@@ -20,13 +20,13 @@ describe('Models: Dictionary',  () => {
 	});
 
 	it('should support reading dictionary', () => {
-		const element = new DictionaryBase({name: 'testDictionaryComponent', _binding: 'binding', dictionary: 'dictionary'});
+		const element = new DictionaryBase({name: 'testDictionaryComponent', binding: 'binding', dictionary: 'dictionary'});
 		expect(element.getList).to.exist;
 	});
 
 	it('should read local dictionary', async () => {
 		const element = new Form({name: 'testFormComponent', items: [
-			{name: 'child1', _binding: 'b1', dictionary: 'd1'}
+			{name: 'child1', binding: 'b1', dictionary: 'd1'}
 		], dictionaries: {
 			d1: [
 				{id: 1, name: 'a'},
@@ -54,7 +54,7 @@ describe('Models: Dictionary',  () => {
 		]);
 
 		const element = new Form({name: 'testFormComponent', items: [
-			{name: 'child1', _binding: 'b1', dictionary: 'd1'}
+			{name: 'child1', binding: 'b1', dictionary: 'd1'}
 		]});
 
 		element.initialize();
@@ -69,7 +69,7 @@ describe('Models: Dictionary',  () => {
 		mock.onGet('d2').reply(200, ['a', 'b', 'c', 'd', 'e']);
 
 		const element = new Form({name: 'testFormComponent', items: [
-				{name: 'child2', _binding: 'b2', dictionary: 'd2'}
+				{name: 'child2', binding: 'b2', dictionary: 'd2'}
 			]});
 
 		element.initialize();

@@ -24,7 +24,7 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
     /**
      * Data binding as path in data model tree
      */
-    private readonly _binding?: string;
+    protected readonly _binding?: string;
 
     /**
      * Component predefined value

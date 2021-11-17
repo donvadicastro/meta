@@ -6,7 +6,7 @@ import {ActionFactory} from "../../../app/actions/factory";
 describe('Managers: DynamicManager', () => {
 	it('should set dynamic properties', () => {
 		const form = new Form({name: 'testContainerComponent', items: [
-			{ name: 'child1', _binding: 'b1',
+			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
 					prop: 'ui.label',
@@ -33,7 +33,7 @@ describe('Managers: DynamicManager', () => {
 
 	it('should set dynamic properties with negation', () => {
 		const form = new Form({name: 'testContainerComponent', items: [
-			{ name: 'child1', _binding: 'b1',
+			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
 					prop: 'ui.label',
@@ -55,7 +55,7 @@ describe('Managers: DynamicManager', () => {
 
 	it('should support multi-when with OR comparison', () => {
 		const form = new Form({name: 'testContainerComponent', items: [
-			{ name: 'child1', _binding: 'b1',
+			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
 					prop: 'ui.label',
@@ -95,7 +95,7 @@ describe('Managers: DynamicManager', () => {
 
 	it('should support multi-when with AND comparison', () => {
 		const form = new Form({name: 'testContainerComponent', items: [
-			{ name: 'child1', _binding: 'b1',
+			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
 					prop: 'ui.label',
@@ -134,7 +134,7 @@ describe('Managers: DynamicManager', () => {
 
 	it('should support dynamic "when" value', () => {
 		const form = new Form({name: 'testContainerComponent', items: [
-			{ name: 'child1', _binding: 'b1',
+			{ name: 'child1', binding: 'b1',
 				ui: { label: 'old label' },
 				dynamic: {
 					prop: 'ui.label',
@@ -166,7 +166,7 @@ describe('Managers: DynamicManager', () => {
 	it('should support dynamic "val" value', () => {
 		const form = new Form({name: 'testContainerComponent', items: [{
 			name: 'child1',
-			_binding: 'b1',
+			binding: 'b1',
 			ui: { label: 'old label' },
 			dynamic: {
 				prop: 'ui.label',
@@ -198,7 +198,7 @@ describe('Managers: DynamicManager', () => {
 	it('should support dynamic "val" value on change', () => {
 		const form = new Form({name: 'testContainerComponent', items: [{
 			name: 'child1',
-			_binding: 'b1',
+			binding: 'b1',
 			ui: { label: 'old label' },
 			dynamic: {
 				prop: 'ui.label',
@@ -220,7 +220,7 @@ describe('Managers: DynamicManager', () => {
 	it('should support dynamic "val" value with transformation', () => {
 		const form = new Form({name: 'testContainerComponent', items: [{
 			name: 'child1',
-			_binding: 'b1',
+			binding: 'b1',
 			ui: { label: 'old label' },
 			dynamic: {
 				prop: 'ui.label',

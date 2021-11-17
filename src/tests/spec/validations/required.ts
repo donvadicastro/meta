@@ -4,7 +4,7 @@ import {expect} from "chai";
 
 describe('Validators: Required', function () {
 	it('should support required validation', function () {
-		var element = new DataBase({name: 'testDataComponent', _binding: 'binding', validation: {required: true}}),
+		let element = new DataBase({name: 'testDataComponent', binding: 'binding', validation: {required: true}}),
 			valResult = element.validate();
 
 		expect(valResult.isValid).to.be.false;
