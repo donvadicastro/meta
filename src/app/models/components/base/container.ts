@@ -58,9 +58,7 @@ export class ContainerBase extends DataBase implements IMetaContainerComponent {
 		this.initializeItems(this._meta.items, options || {});
 
 		// support remote load only when there is place to inject data into
-		if (this._meta.valueSource && this._meta.binding) {
-			request(this._meta.valueSource).then((data: any) => this.setValue(data));
-		}
+		this._meta.valueSource && request(this._meta.valueSource).then((data: any) => this.setValue(data));
 	}
 
 	/**

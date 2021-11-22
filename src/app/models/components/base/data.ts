@@ -76,7 +76,9 @@ export class DataBase extends ActionBase implements IMetaDataComponent {
         super.initialize(options);
 
         // support remote load only when there is place to inject data into
-        this._meta.valueSource && request(this._meta.valueSource).then((data: any) => this.setValue(data));
+        if (this._meta.valueSource && this._meta.binding) {
+            request(this._meta.valueSource).then((data: any) => this.setValue(data));
+        }
     }
 
     /**
