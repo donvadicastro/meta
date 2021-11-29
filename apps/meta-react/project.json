@@ -1,0 +1,72 @@
+{
+  "root": "apps/meta-react",
+  "sourceRoot": "apps/meta-react/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/meta-react",
+        "index": "apps/meta-react/src/index.html",
+        "baseHref": "/",
+        "main": "apps/meta-react/src/main.tsx",
+        "polyfills": "apps/meta-react/src/polyfills.ts",
+        "tsConfig": "apps/meta-react/tsconfig.app.json",
+        "assets": [
+          "apps/meta-react/src/favicon.ico",
+          "apps/meta-react/src/assets"
+        ],
+        "styles": ["apps/meta-react/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/meta-react/src/environments/environment.ts",
+              "with": "apps/meta-react/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "meta-react:build",
+        "hmr": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "meta-react:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/meta-react/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/meta-react"],
+      "options": {
+        "jestConfig": "apps/meta-react/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

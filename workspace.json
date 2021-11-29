@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "projects": {
+    "core": "libs/core",
+    "meta-react": "apps/meta-react",
+    "meta-react-e2e": "apps/meta-react-e2e"
+  }
+}
