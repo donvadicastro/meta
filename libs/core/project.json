@@ -3,6 +3,25 @@
   "sourceRoot": "libs/core/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/web:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/core",
+        "tsConfig": "libs/core/tsconfig.lib.json",
+        "project": "libs/core/package.json",
+        "entryFile": "libs/core/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "assets": [
+          {
+            "glob": "libs/core/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

@@ -3,7 +3,7 @@
  * Components can subscribe to app events through this mediator as well as send events through mediator.
  */
 import * as _ from "underscore";
-import Backbone from "backbone";
+import * as Backbone from "backbone";
 
 export class EventManager {
     /**
