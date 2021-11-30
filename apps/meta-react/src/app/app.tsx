@@ -1,99 +1,91 @@
-import styles from './app.module.scss';
+import React, {useState} from 'react';
+import {FormComponentWrapper} from "../components";
+import 'bootstrap/dist/css/bootstrap.css';
+import AceEditor from "react-ace";
 
-import { ReactComponent as Logo } from './logo.svg';
-import star from './star.svg';
+import "ace-builds/src-noconflict/mode-yaml";
+import "ace-builds/src-noconflict/theme-xcode";
+import {Ace} from "ace-builds";
+
+import {mainFormDefinitionYAML} from "../definitions/custom/mainFormYAML";
+import {dataBindingWithPrimitives} from "../definitions/dataBindingWithPrimitives.yml";
+import {dataBindingWithDictionaries} from "../definitions/dataBindingWithDictionaries.yml";
+import {dataBindingWithCollections} from "../definitions/dataBindingWithCollections.yml";
+import {actions} from "../definitions/actions.yml";
+import {dynamics} from "../definitions/dynamics.yml";
+import {layout} from "../definitions/layout.yml";
+
+const YAML = require('yamljs');
 
 export function App() {
+  const [value, setValue] = useState(mainFormDefinitionYAML);
+
+  function onBlur(event: any, editor?: Ace.Editor) {
+    try {
+      YAML.parse(editor?.getValue());
+      editor && setValue(editor.getValue());
+    } catch (e) {
+      alert(e);
+    }
+  }
+
+  function loadFile(yml: string) {
+    setValue({
+      dataBindingWithPrimitives,
+      dataBindingWithDictionaries,
+      dataBindingWithCollections,
+      actions, dynamics, layout}[yml] || '');
+  }
+
   return (
-    <div className={styles.app}>
-      <header className="flex">
-        <Logo width="75" height="75" />
-        <h1>Welcome to meta-react!</h1>
-      </header>
-      <main>
-        <h2>Resources &amp; Tools</h2>
-        <p>Thank you for using and showing some ♥ for Nx.</p>
-        <div className="flex github-star-container">
-          <a
-            href="https://github.com/nrwl/nx"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {' '}
-            If you like Nx, please give it a star:
-            <div className="github-star-badge">
-              <img src={star} className="material-icons" alt="" />
-              Star
-            </div>
+    <div className="min-100 d-flex flex-column overflow-hidden">
+      <header className="site-header sticky-top py-2">
+        <nav className="container d-flex flex-md-row justify-content-between">
+          <a className="py-2" href="#logo" aria-label="Product">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor"
+                 className="d-block mx-auto"
+                 role="img" viewBox="0 0 24 24"><title>Product</title>
+              <circle cx="12" cy="12" r="10"/>
+              <path
+                d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/>
+            </svg>
           </a>
+          <a className="py-2 d-none d-md-inline-block" onClick={() => loadFile('dataBindingWithPrimitives')} href="#binding-primitives">
+            Data binding with primitives
+          </a>
+          <a className="py-2 d-none d-md-inline-block" onClick={() => loadFile('dataBindingWithDictionaries')} href="#binding-dictionaries">
+            Data binding with dictionaries
+          </a>
+          <a className="py-2 d-none d-md-inline-block" onClick={() => loadFile('dataBindingWithCollections')} href="#binding-collections">
+            Data binding with collections
+          </a>
+          {/*<a className="py-2 d-none d-md-inline-block" onClick={() => loadFile('dynamics')} href="#dynamics">*/}
+          {/*    Dynamics*/}
+          {/*</a>*/}
+          {/*<a className="py-2 d-none d-md-inline-block" onClick={() => loadFile('actions')} href="#actions">*/}
+          {/*    Actions*/}
+          {/*</a>*/}
+          {/*<a className="py-2 d-none d-md-inline-block" onClick={() => loadFile('layout')} href="#layout">*/}
+          {/*    Layout*/}
+          {/*</a>*/}
+        </nav>
+      </header>
+      <div className="row flex-grow-1">
+        <div className="col-sm-4">
+          <AceEditor
+            mode="yaml"
+            theme="xcode"
+            value={value}
+            width={"100%"}
+            height={"100%"}
+            onBlur={onBlur}
+            name="FormYamlEditor"
+            editorProps={{ $blockScrolling: true }} />
         </div>
-        <p>Here are some links to help you get started.</p>
-        <ul className="resources">
-          <li className="col-span-2">
-            <a
-              className="resource flex"
-              href="https://egghead.io/playlists/scale-react-development-with-nx-4038"
-            >
-              Scale React Development with Nx (Course)
-            </a>
-          </li>
-          <li className="col-span-2">
-            <a
-              className="resource flex"
-              href="https://nx.dev/latest/react/tutorial/01-create-application"
-            >
-              Interactive tutorial
-            </a>
-          </li>
-          <li className="col-span-2">
-            <a className="resource flex" href="https://nx.app/">
-              <svg
-                width="36"
-                height="36"
-                viewBox="0 0 120 120"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M120 15V30C103.44 30 90 43.44 90 60C90 76.56 76.56 90 60 90C43.44 90 30 103.44 30 120H15C6.72 120 0 113.28 0 105V15C0 6.72 6.72 0 15 0H105C113.28 0 120 6.72 120 15Z"
-                  fill="#0E2039"
-                />
-                <path
-                  d="M120 30V105C120 113.28 113.28 120 105 120H30C30 103.44 43.44 90 60 90C76.56 90 90 76.56 90 60C90 43.44 103.44 30 120 30Z"
-                  fill="white"
-                />
-              </svg>
-              <span className="gutter-left">Nx Cloud</span>
-            </a>
-          </li>
-        </ul>
-        <h2>Next Steps</h2>
-        <p>Here are some things you can do with Nx.</p>
-        <details open>
-          <summary>Add UI library</summary>
-          <pre>{`# Generate UI lib
-nx g @nrwl/react:lib ui
-
-# Add a component
-nx g @nrwl/react:component xyz --project ui`}</pre>
-        </details>
-        <details>
-          <summary>View dependency graph</summary>
-          <pre>{`nx dep-graph`}</pre>
-        </details>
-        <details>
-          <summary>Run affected commands</summary>
-          <pre>{`# see what's been affected by changes
-nx affected:dep-graph
-
-# run tests for current changes
-nx affected:test
-
-# run e2e tests for current changes
-nx affected:e2e
-  `}</pre>
-        </details>
-      </main>
+        <div className="col-sm-8 pt-2">
+          <FormComponentWrapper yaml={value} />
+        </div>
+      </div>
     </div>
   );
 }
