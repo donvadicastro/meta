@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 14
       - run: npm ci
-      - run: npm test
+      - run: npm run build
 
   publish-npm:
     needs: build
@@ -30,7 +30,9 @@ jobs:
       - run: |
           git config --global user.name 'Vadym Barylo'
           git config --global user.email 'donvadicastro@users.noreply.github.com'
-      - run: npm ci
-      - run: npm publish --tag ${{ github.event.release.target_commitish }}
+      - run: npm publish dist/libs/core --tag ${{ github.event.release.target_commitish }}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - run: npm publish dist/libs/react-components --tag ${{ github.event.release.target_commitish }}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

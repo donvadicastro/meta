@@ -1,0 +1,28 @@
+{
+  "root": "apps/meta-react-e2e",
+  "sourceRoot": "apps/meta-react-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/meta-react-e2e/cypress.json",
+        "devServerTarget": "meta-react:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "meta-react:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/meta-react-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["meta-react"]
+}
