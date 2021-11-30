@@ -3,6 +3,8 @@ module.exports = (config) => {
     ...config,
 
     resolve: {
+      ...config.resolve,
+
       fallback: {
         'fs': false
       }
