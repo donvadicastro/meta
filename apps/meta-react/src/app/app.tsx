@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {FormComponentWrapper} from "../components";
 import 'bootstrap/dist/css/bootstrap.css';
 import AceEditor from "react-ace";
+import {FormComponentWrapper} from "@meta/react-components";
 
 import "ace-builds/src-noconflict/mode-yaml";
 import "ace-builds/src-noconflict/theme-xcode";

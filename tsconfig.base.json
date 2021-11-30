@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@meta/core": ["libs/core/src"]
+      "@meta/core": ["libs/core/src"],
+      "@meta/react-components": ["libs/react-components/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
