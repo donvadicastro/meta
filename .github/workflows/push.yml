@@ -19,14 +19,12 @@ jobs:
         uses: 'phips28/gh-action-bump-version@master'
         with:
           tag-prefix: 'v'
-          push: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Automated Version Bump for core'
         uses: 'phips28/gh-action-bump-version@master'
         with:
           tag-prefix: 'v'
-          push: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGEJSON_DIR:  'libs/core'
