@@ -20,7 +20,7 @@
         ],
         "styles": ["apps/meta-react/src/styles.scss"],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "apps/meta-react/webpackConfig.js"
       },
       "configurations": {
         "production": {
