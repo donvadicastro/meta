@@ -8,3 +8,5 @@ Meta - is a way to describe form tree abstractively without any implementation o
 - we do not want limitation is using just HTML markup on our devices
 
 Detailed architecture description can be found on [wiki](../../wiki).
+
+Form generation playground: https://meta-renderer-react.vercel.app/
